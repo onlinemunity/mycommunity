@@ -10,3 +10,19 @@ export type Profile = {
   role: 'member' | 'admin';
   updated_at?: string;
 };
+
+export type Course = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  rating: number;
+  students: number;
+  duration: string;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  instructor: string;
+  category: string;
+  href: string;
+  created_at?: string;
+  updated_at?: string;
+};
