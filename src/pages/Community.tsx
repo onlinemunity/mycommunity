@@ -17,7 +17,7 @@ const Community = () => {
       name: 'Laura Schmidt',
       role: 'Community Member',
       image: '/placeholder.svg',
-      text: 'Being part of this community has transformed my learning journey. The support and connections I've made are invaluable.',
+      quote: "Being part of this community has transformed my learning journey. The support and connections I've made are invaluable.",
       rating: 5,
     },
     {
@@ -25,7 +25,7 @@ const Community = () => {
       name: 'Marco Perez',
       role: 'Premium Member',
       image: '/placeholder.svg',
-      text: 'The community discussions and exclusive events have accelerated my growth. Totally worth the investment!',
+      quote: "The community discussions and exclusive events have accelerated my growth. Totally worth the investment!",
       rating: 5,
     },
     {
@@ -33,7 +33,7 @@ const Community = () => {
       name: 'Sophia Chen',
       role: 'Lifetime Member',
       image: '/placeholder.svg',
-      text: 'As a lifetime member, I've seen this community evolve and grow. The value keeps increasing and the network is priceless.',
+      quote: "As a lifetime member, I've seen this community evolve and grow. The value keeps increasing and the network is priceless.",
       rating: 5,
     }
   ];
@@ -135,10 +135,10 @@ const Community = () => {
               {testimonials.map((testimonial) => (
                 <TestimonialCard
                   key={testimonial.id}
-                  name={testimonial.name}
+                  author={testimonial.name}
                   role={testimonial.role}
-                  text={testimonial.text}
-                  image={testimonial.image}
+                  quote={testimonial.quote}
+                  avatar={testimonial.image}
                   rating={testimonial.rating}
                 />
               ))}
