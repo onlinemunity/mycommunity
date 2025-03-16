@@ -1,113 +1,107 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout } from '@/components/Layout';
-import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { CourseCard } from '@/components/ui-components/CourseCard';
-import { Search, Filter, BookOpen, Clock, ChevronDown } from 'lucide-react';
+import { SectionHeading } from '@/components/ui-components/SectionHeading';
+import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/useTranslation';
-
-// Course difficulty level types
-type DifficultyLevel = 'all' | 'beginner' | 'intermediate' | 'advanced';
-type CategoryType = 'all' | 'development' | 'design' | 'business' | 'marketing';
+import { Search, Filter, BookOpen, Clock, Users, BadgeCheck } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 const Courses = () => {
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<DifficultyLevel>('all');
-  const [categoryFilter, setCategoryFilter] = useState<CategoryType>('all');
-  const [filtersOpen, setFiltersOpen] = useState(false);
-
-  // Mock courses data
-  const courses = [
+  
+  const popularCourses = [
     {
       id: 1,
-      title: 'Web Development Fundamentals',
-      description: 'Learn the basics of HTML, CSS, and JavaScript to build responsive websites.',
+      title: 'Introduction to Web Development',
+      description: 'Learn the fundamentals of web development including HTML, CSS, and JavaScript.',
       image: '/placeholder.svg',
-      lessons: 24,
-      duration: '10 hours',
-      difficulty: 'beginner',
-      category: 'development',
-      price: 'Free',
-      featured: true,
+      rating: 4.8,
+      students: 1250,
+      duration: '8 weeks',
+      level: 'Beginner',
+      instructor: 'Alex Johnson'
     },
     {
       id: 2,
-      title: 'Advanced React Patterns',
-      description: 'Master advanced React concepts like hooks, context, and custom renderers.',
+      title: 'Advanced React & Redux',
+      description: 'Master React.js, Redux, Hooks, and best practices for building scalable applications.',
       image: '/placeholder.svg',
-      lessons: 18,
-      duration: '8 hours',
-      difficulty: 'advanced',
-      category: 'development',
-      price: 'Premium',
-      featured: true,
+      rating: 4.9,
+      students: 940,
+      duration: '10 weeks',
+      level: 'Intermediate',
+      instructor: 'Sarah Miller'
     },
     {
       id: 3,
       title: 'UI/UX Design Principles',
-      description: 'Learn the core principles of effective user interface and experience design.',
+      description: 'Understand the core principles of user experience and interface design.',
       image: '/placeholder.svg',
-      lessons: 15,
-      duration: '6 hours',
-      difficulty: 'intermediate',
-      category: 'design',
-      price: 'Free',
-      featured: false,
+      rating: 4.7,
+      students: 780,
+      duration: '6 weeks',
+      level: 'All Levels',
+      instructor: 'Michael Chen'
     },
     {
       id: 4,
-      title: 'Digital Marketing Essentials',
-      description: 'Understand the fundamentals of digital marketing and customer acquisition.',
+      title: 'Node.js Backend Development',
+      description: 'Build scalable backends with Node.js, Express, and MongoDB.',
       image: '/placeholder.svg',
-      lessons: 20,
-      duration: '8 hours',
-      difficulty: 'beginner',
-      category: 'marketing',
-      price: 'Premium',
-      featured: false,
+      rating: 4.6,
+      students: 620,
+      duration: '8 weeks',
+      level: 'Intermediate',
+      instructor: 'Jessica Brown'
     },
     {
       id: 5,
-      title: 'Business Strategy for Startups',
-      description: 'Learn how to develop effective business strategies for early-stage companies.',
+      title: 'DevOps & CI/CD Pipelines',
+      description: 'Learn to automate your development workflow with modern DevOps practices.',
       image: '/placeholder.svg',
-      lessons: 12,
-      duration: '5 hours',
-      difficulty: 'intermediate',
-      category: 'business',
-      price: 'Premium',
-      featured: true,
+      rating: 4.8,
+      students: 450,
+      duration: '12 weeks',
+      level: 'Advanced',
+      instructor: 'David Wilson'
     },
     {
       id: 6,
-      title: 'Data Visualization with D3.js',
-      description: 'Create powerful interactive data visualizations using the D3.js library.',
+      title: 'Machine Learning Fundamentals',
+      description: 'Introduction to core machine learning concepts and practical applications.',
       image: '/placeholder.svg',
-      lessons: 16,
-      duration: '7 hours',
-      difficulty: 'advanced',
-      category: 'development',
-      price: 'Premium',
-      featured: false,
-    },
+      rating: 4.9,
+      students: 820,
+      duration: '10 weeks',
+      level: 'Intermediate',
+      instructor: 'Emily Zhang'
+    }
   ];
-
-  // Filter courses based on search, difficulty, and category
-  const filteredCourses = courses.filter((course) => {
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          course.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDifficulty = difficultyFilter === 'all' || course.difficulty === difficultyFilter;
-    const matchesCategory = categoryFilter === 'all' || course.category === categoryFilter;
-    
-    return matchesSearch && matchesDifficulty && matchesCategory;
-  });
+  
+  const categories = [
+    { name: 'Web Development', count: 28 },
+    { name: 'UI/UX Design', count: 15 },
+    { name: 'Mobile Development', count: 12 },
+    { name: 'Data Science', count: 20 },
+    { name: 'DevOps', count: 8 },
+    { name: 'Cyber Security', count: 10 },
+  ];
+  
+  const features = [
+    { name: 'Project-Based Learning', icon: <BookOpen className="h-5 w-5" /> },
+    { name: 'Self-Paced Courses', icon: <Clock className="h-5 w-5" /> },
+    { name: 'Community Support', icon: <Users className="h-5 w-5" /> },
+    { name: 'Verified Certificates', icon: <BadgeCheck className="h-5 w-5" /> },
+  ];
 
   return (
     <Layout>
       <div className="page-transition">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-b from-white to-blue-50 py-16">
+        {/* Hero section */}
+        <section className="bg-gradient-to-b from-white to-blue-50 py-20">
           <div className="container-wide">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="heading-xl mb-6">
@@ -119,127 +113,158 @@ const Courses = () => {
                 {t('courses.hero.subtitle')}
               </p>
               
-              {/* Search bar */}
-              <div className="relative max-w-xl mx-auto">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <input
-                  type="text"
-                  className="input-base pl-10 w-full"
-                  placeholder={t('courses.search.placeholder')}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Courses Section */}
-        <section className="section-padding bg-background">
-          <div className="container-wide">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-              <SectionHeading
-                title={t('courses.list.title')}
-                subtitle={t('courses.list.subtitle')}
-                align="left"
-              />
-              
-              <button 
-                className="flex items-center gap-2 md:hidden mt-4 text-sm font-medium"
-                onClick={() => setFiltersOpen(!filtersOpen)}
-              >
-                <Filter size={16} />
-                {t('courses.filters.toggle')}
-                <ChevronDown size={16} className={`transition-transform ${filtersOpen ? 'rotate-180' : ''}`} />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Filters - Always visible on desktop, toggleable on mobile */}
-              <div className={`lg:block ${filtersOpen ? 'block' : 'hidden'} glassmorphism p-6 rounded-xl mb-6 lg:mb-0`}>
-                <h3 className="heading-sm mb-4">{t('courses.filters.title')}</h3>
-                
-                {/* Difficulty filter */}
-                <div className="mb-6">
-                  <h4 className="font-medium mb-2">{t('courses.filters.difficulty')}</h4>
-                  <div className="space-y-2">
-                    {(['all', 'beginner', 'intermediate', 'advanced'] as const).map((level) => (
-                      <label key={level} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="difficulty"
-                          checked={difficultyFilter === level}
-                          onChange={() => setDifficultyFilter(level)}
-                          className="rounded-full h-4 w-4 text-accent1"
-                        />
-                        <span className="text-sm">
-                          {t(`courses.filters.levels.${level}`)}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Category filter */}
-                <div>
-                  <h4 className="font-medium mb-2">{t('courses.filters.category')}</h4>
-                  <div className="space-y-2">
-                    {(['all', 'development', 'design', 'business', 'marketing'] as const).map((category) => (
-                      <label key={category} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="category"
-                          checked={categoryFilter === category}
-                          onChange={() => setCategoryFilter(category)}
-                          className="rounded-full h-4 w-4 text-accent1"
-                        />
-                        <span className="text-sm">
-                          {t(`courses.filters.categories.${category}`)}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Course list */}
-              <div className="lg:col-span-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredCourses.length > 0 ? (
-                    filteredCourses.map((course) => (
-                      <CourseCard
-                        key={course.id}
-                        title={course.title}
-                        description={course.description}
-                        image={course.image}
-                        badges={[
-                          { text: t(`courses.difficulty.${course.difficulty}`), variant: 'secondary' },
-                          { text: course.price, variant: course.price === 'Free' ? 'success' : 'primary' }
-                        ]}
-                        footerItems={[
-                          { icon: <BookOpen className="h-4 w-4" />, text: `${course.lessons} ${t('courses.lessons')}` },
-                          { icon: <Clock className="h-4 w-4" />, text: course.duration }
-                        ]}
-                        href={`/courses/${course.id}`}
-                        featured={course.featured}
-                      />
-                    ))
-                  ) : (
-                    <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
-                      <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-                      <h3 className="heading-sm mb-2">{t('courses.noResults.title')}</h3>
-                      <p className="text-muted-foreground">{t('courses.noResults.message')}</p>
-                    </div>
-                  )}
+              {/* Search form */}
+              <div className="max-w-lg mx-auto">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                  <Input 
+                    className="pl-10 h-12 bg-white rounded-lg" 
+                    type="search" 
+                    placeholder={t('courses.hero.searchPlaceholder')}
+                  />
+                  <Button className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10">
+                    {t('courses.hero.searchButton')}
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
         </section>
         
-        {/* CTA Section */}
+        {/* Features section */}
+        <section className="py-16">
+          <div className="container-wide">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {features.map((feature, i) => (
+                <div 
+                  key={i}
+                  className="bg-white rounded-xl p-6 border border-metal/30 shadow-sm flex items-center gap-4"
+                >
+                  <div className="bg-primary/10 rounded-full p-2">
+                    {feature.icon}
+                  </div>
+                  <div className="font-medium">{feature.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Main courses section */}
+        <section className="section-padding bg-muted/30">
+          <div className="container-wide">
+            <SectionHeading
+              title={t('courses.popular.title')}
+              subtitle={t('courses.popular.subtitle')}
+              align="center"
+            />
+            
+            <div className="mt-8 flex flex-col md:flex-row gap-8">
+              {/* Filters sidebar */}
+              <div className="w-full md:w-64 space-y-6">
+                <div className="bg-white rounded-xl border border-metal/30 p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Filter className="h-5 w-5 text-accent1" />
+                    <h3 className="font-semibold">{t('courses.filters.title')}</h3>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">{t('courses.filters.categories')}</h4>
+                      <div className="space-y-2">
+                        {categories.map((category, i) => (
+                          <div key={i} className="flex items-center justify-between">
+                            <label className="text-sm flex items-center cursor-pointer">
+                              <input type="checkbox" className="mr-2" />
+                              {category.name}
+                            </label>
+                            <span className="text-xs text-muted-foreground">({category.count})</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="pt-2 border-t border-metal/30">
+                      <h4 className="text-sm font-medium mb-2">{t('courses.filters.level')}</h4>
+                      <div className="space-y-2">
+                        {['Beginner', 'Intermediate', 'Advanced', 'All Levels'].map((level, i) => (
+                          <div key={i} className="flex items-center">
+                            <label className="text-sm flex items-center cursor-pointer">
+                              <input type="checkbox" className="mr-2" />
+                              {level}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="pt-2 border-t border-metal/30">
+                      <h4 className="text-sm font-medium mb-2">{t('courses.filters.duration')}</h4>
+                      <div className="space-y-2">
+                        {['< 4 weeks', '4-8 weeks', '> 8 weeks'].map((duration, i) => (
+                          <div key={i} className="flex items-center">
+                            <label className="text-sm flex items-center cursor-pointer">
+                              <input type="checkbox" className="mr-2" />
+                              {duration}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <Button variant="outline" className="w-full mt-4">
+                    {t('courses.filters.resetButton')}
+                  </Button>
+                </div>
+              </div>
+              
+              {/* Courses grid */}
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex gap-2">
+                    <Badge variant="outline" className="cursor-pointer">
+                      {t('courses.sortby.newest')}
+                    </Badge>
+                    <Badge variant="outline" className="cursor-pointer">
+                      {t('courses.sortby.popular')}
+                    </Badge>
+                    <Badge variant="outline" className="cursor-pointer">
+                      {t('courses.sortby.rating')}
+                    </Badge>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {popularCourses.length} {t('courses.results')}
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {popularCourses.map((course) => (
+                    <CourseCard
+                      key={course.id}
+                      title={course.title}
+                      description={course.description}
+                      image={course.image}
+                      rating={course.rating}
+                      instructor={course.instructor}
+                      duration={course.duration}
+                      level={course.level}
+                      students={course.students}
+                    />
+                  ))}
+                </div>
+                
+                <div className="mt-10 flex justify-center">
+                  <Button>
+                    {t('courses.loadMoreButton')}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* CTA section */}
         <section className="py-20 bg-gradient-to-br from-accent1/10 to-accent2/10">
           <div className="container-wide">
             <div className="max-w-3xl mx-auto text-center">
@@ -249,9 +274,14 @@ const Courses = () => {
               <p className="body-lg mb-8 text-muted-foreground">
                 {t('courses.cta.subtitle')}
               </p>
-              <button className="button-primary">
-                {t('courses.cta.button')}
-              </button>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Button className="button-primary">
+                  {t('courses.cta.button')}
+                </Button>
+                <Button variant="outline">
+                  {t('courses.cta.secondaryButton')}
+                </Button>
+              </div>
             </div>
           </div>
         </section>

@@ -1,14 +1,17 @@
 
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { useTranslation } from "../hooks/useTranslation";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Navbar = () => {
   const { t } = useTranslation();
+  const { user, profile, signOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -35,6 +38,16 @@ export const Navbar = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
+
+  const getInitials = (name: string | null) => {
+    if (!name) return 'U';
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  };
 
   return (
     <header
@@ -70,26 +83,71 @@ export const Navbar = () => {
               {item.name}
             </Link>
           ))}
+          {user && (
+            <Link
+              to="/dashboard"
+              className={cn(
+                "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                location.pathname.startsWith("/dashboard")
+                  ? "text-accent1 bg-accent1/5"
+                  : "text-foreground/80 hover:text-foreground hover:bg-secondary/80"
+              )}
+            >
+              {t("navigation.dashboard") || "Dashboard"}
+            </Link>
+          )}
         </nav>
 
         {/* Right side - Auth buttons & Language switcher */}
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitcher />
-          <Link to="/login">
-            <Button variant="ghost" size="sm">
-              {t("common.signIn")}
-            </Button>
-          </Link>
-          <Link to="/register">
-            <Button variant="default" size="sm">
-              {t("common.signUp")}
-            </Button>
-          </Link>
+          
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Link to="/dashboard" className="flex items-center gap-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={profile?.avatar_url || undefined} />
+                  <AvatarFallback className="text-xs">
+                    {getInitials(profile?.full_name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-sm font-medium hidden lg:inline-block">
+                  {profile?.username || profile?.full_name || user.email?.split('@')[0]}
+                </span>
+              </Link>
+              <Button variant="ghost" size="sm" onClick={() => signOut()}>
+                {t("common.signOut")}
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Link to="/auth">
+                <Button variant="ghost" size="sm">
+                  {t("common.signIn")}
+                </Button>
+              </Link>
+              <Link to="/auth">
+                <Button variant="default" size="sm">
+                  {t("common.signUp")}
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu button */}
         <div className="flex items-center gap-2 md:hidden">
           <LanguageSwitcher />
+          {user && (
+            <Link to="/dashboard">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={profile?.avatar_url || undefined} />
+                <AvatarFallback className="text-xs">
+                  {getInitials(profile?.full_name)}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+          )}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-2 rounded-md text-foreground hover:bg-secondary/80"
@@ -113,7 +171,7 @@ export const Navbar = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "px-4 py-3 text-base font-medium rounded-lg animate-slide-up transition-colors",
+                  "px-4 py-3 text-base font-medium rounded-lg transition-colors",
                   location.pathname === item.path
                     ? "bg-accent1/10 text-accent1"
                     : "hover:bg-secondary/80"
@@ -123,22 +181,50 @@ export const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            
+            {user && (
+              <Link
+                to="/dashboard"
+                className={cn(
+                  "px-4 py-3 text-base font-medium rounded-lg transition-colors",
+                  location.pathname.startsWith("/dashboard")
+                    ? "bg-accent1/10 text-accent1"
+                    : "hover:bg-secondary/80"
+                )}
+                style={{ animationDelay: `${navItems.length * 50}ms` }}
+              >
+                {t("navigation.dashboard") || "Dashboard"}
+              </Link>
+            )}
 
             <div className="pt-4 mt-6 border-t border-metal flex flex-col gap-3">
-              <Link 
-                to="/login"
-                className="w-full px-4 py-3 text-center rounded-lg border border-metal hover:bg-secondary/80 animate-slide-up"
-                style={{ animationDelay: `${navItems.length * 50 + 50}ms` }}
-              >
-                {t("common.signIn")}
-              </Link>
-              <Link 
-                to="/register"
-                className="w-full px-4 py-3 text-center rounded-lg bg-accent1 text-white hover:bg-accent1/90 animate-slide-up"
-                style={{ animationDelay: `${navItems.length * 50 + 100}ms` }}
-              >
-                {t("common.signUp")}
-              </Link>
+              {user ? (
+                <Button
+                  variant="outline"
+                  className="w-full px-4 py-3 text-center"
+                  onClick={() => signOut()}
+                  style={{ animationDelay: `${navItems.length * 50 + 50}ms` }}
+                >
+                  {t("common.signOut")}
+                </Button>
+              ) : (
+                <>
+                  <Link 
+                    to="/auth"
+                    className="w-full px-4 py-3 text-center rounded-lg border border-metal hover:bg-secondary/80"
+                    style={{ animationDelay: `${navItems.length * 50 + 50}ms` }}
+                  >
+                    {t("common.signIn")}
+                  </Link>
+                  <Link 
+                    to="/auth"
+                    className="w-full px-4 py-3 text-center rounded-lg bg-accent1 text-white hover:bg-accent1/90"
+                    style={{ animationDelay: `${navItems.length * 50 + 100}ms` }}
+                  >
+                    {t("common.signUp")}
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
