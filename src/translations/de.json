@@ -244,6 +244,7 @@
   "dashboard": {
     "overview": "Hauptmenü",
     "welcome": "Willkommen zurück",
+    "upcomingEvents" : "Bevorstehende Events",
     "stats": {
       "title": "Deine Statistiken",
       "courses": "Eingeschriebene Kurse",
