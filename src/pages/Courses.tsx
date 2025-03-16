@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { CourseCard } from '@/components/ui-components/CourseCard';
@@ -21,8 +20,10 @@ const Courses = () => {
       rating: 4.8,
       students: 1250,
       duration: '8 weeks',
-      level: 'Beginner',
-      instructor: 'Alex Johnson'
+      level: 'beginner' as const,
+      instructor: 'Alex Johnson',
+      category: 'Web Development',
+      href: '/course/intro-web-dev'
     },
     {
       id: 2,
@@ -32,8 +33,10 @@ const Courses = () => {
       rating: 4.9,
       students: 940,
       duration: '10 weeks',
-      level: 'Intermediate',
-      instructor: 'Sarah Miller'
+      level: 'intermediate' as const,
+      instructor: 'Sarah Miller',
+      category: 'Frontend',
+      href: '/course/advanced-react'
     },
     {
       id: 3,
@@ -43,8 +46,10 @@ const Courses = () => {
       rating: 4.7,
       students: 780,
       duration: '6 weeks',
-      level: 'All Levels',
-      instructor: 'Michael Chen'
+      level: 'beginner' as const,
+      instructor: 'Michael Chen',
+      category: 'Design',
+      href: '/course/uiux-design'
     },
     {
       id: 4,
@@ -54,8 +59,10 @@ const Courses = () => {
       rating: 4.6,
       students: 620,
       duration: '8 weeks',
-      level: 'Intermediate',
-      instructor: 'Jessica Brown'
+      level: 'intermediate' as const,
+      instructor: 'Jessica Brown',
+      category: 'Backend',
+      href: '/course/nodejs-backend'
     },
     {
       id: 5,
@@ -65,8 +72,10 @@ const Courses = () => {
       rating: 4.8,
       students: 450,
       duration: '12 weeks',
-      level: 'Advanced',
-      instructor: 'David Wilson'
+      level: 'advanced' as const,
+      instructor: 'David Wilson',
+      category: 'DevOps',
+      href: '/course/devops-cicd'
     },
     {
       id: 6,
@@ -76,8 +85,10 @@ const Courses = () => {
       rating: 4.9,
       students: 820,
       duration: '10 weeks',
-      level: 'Intermediate',
-      instructor: 'Emily Zhang'
+      level: 'intermediate' as const,
+      instructor: 'Emily Zhang',
+      category: 'Data Science',
+      href: '/course/ml-fundamentals'
     }
   ];
   
@@ -100,7 +111,6 @@ const Courses = () => {
   return (
     <Layout>
       <div className="page-transition">
-        {/* Hero section */}
         <section className="bg-gradient-to-b from-white to-blue-50 py-20">
           <div className="container-wide">
             <div className="max-w-3xl mx-auto text-center">
@@ -113,7 +123,6 @@ const Courses = () => {
                 {t('courses.hero.subtitle')}
               </p>
               
-              {/* Search form */}
               <div className="max-w-lg mx-auto">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -131,7 +140,6 @@ const Courses = () => {
           </div>
         </section>
         
-        {/* Features section */}
         <section className="py-16">
           <div className="container-wide">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -150,7 +158,6 @@ const Courses = () => {
           </div>
         </section>
         
-        {/* Main courses section */}
         <section className="section-padding bg-muted/30">
           <div className="container-wide">
             <SectionHeading
@@ -160,7 +167,6 @@ const Courses = () => {
             />
             
             <div className="mt-8 flex flex-col md:flex-row gap-8">
-              {/* Filters sidebar */}
               <div className="w-full md:w-64 space-y-6">
                 <div className="bg-white rounded-xl border border-metal/30 p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-4">
@@ -219,7 +225,6 @@ const Courses = () => {
                 </div>
               </div>
               
-              {/* Courses grid */}
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex gap-2">
@@ -250,6 +255,8 @@ const Courses = () => {
                       duration={course.duration}
                       level={course.level}
                       students={course.students}
+                      category={course.category}
+                      href={course.href}
                     />
                   ))}
                 </div>
@@ -264,7 +271,6 @@ const Courses = () => {
           </div>
         </section>
         
-        {/* CTA section */}
         <section className="py-20 bg-gradient-to-br from-accent1/10 to-accent2/10">
           <div className="container-wide">
             <div className="max-w-3xl mx-auto text-center">
