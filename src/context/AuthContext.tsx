@@ -1,17 +1,9 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
-
-type Profile = {
-  id: string;
-  username: string | null;
-  full_name: string | null;
-  avatar_url: string | null;
-  role: 'member' | 'admin';
-};
+import { Profile } from '@/types/supabase';
 
 type AuthContextType = {
   session: Session | null;
