@@ -242,6 +242,7 @@
     }
   },
   "dashboard": {
+    "overview": "Hauptmenü",
     "welcome": "Willkommen zurück",
     "stats": {
       "title": "Deine Statistiken",
