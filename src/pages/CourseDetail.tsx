@@ -14,12 +14,12 @@ const CourseDetail = () => {
   const { courseId } = useParams();
 
   const { data: course, isLoading, error } = useQuery({
-    queryKey: ['course', href],
+    queryKey: ['course', courseId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('courses')
         .select('*')
-        .eq('id', courseId)
+        .eq('href', courseId)
         .single();
 
       if (error) throw error;
