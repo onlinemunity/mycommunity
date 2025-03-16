@@ -14,7 +14,7 @@ const CourseDetail = () => {
   const { courseId } = useParams();
 
   const { data: course, isLoading, error } = useQuery({
-    queryKey: ['course', courseId],
+    queryKey: ['course', href],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('courses')
