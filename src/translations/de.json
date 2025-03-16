@@ -254,6 +254,12 @@
       "posts": "Forum-Beiträge",
       "connections": "Verbindungen"
     },
+
+      "member": {
+      "title": "Mein Bereich",
+      "subtitle": "Übersicht über alle Kurse, Events und Community-Beiträge"
+    },
+    
     "activity": {
       "title": "Neueste Aktivitäten",
       "empty": "Noch keine Aktivitäten",
