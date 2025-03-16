@@ -21,7 +21,19 @@
     "delete": "Löschen",
     "back": "Zurück",
     "next": "Weiter",
-    "previous": "Zurück"
+    "previous": "Zurück",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
+    "filters": "Filter",
+    "all": "Alle",
+    "noResults": "Keine Ergebnisse gefunden",
+    "tryAgain": "Erneut versuchen",
+    "emailAddress": "E-Mail-Adresse",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "resetPassword": "Passwort zurücksetzen",
+    "alreadyHaveAccount": "Bereits ein Konto? Anmelden",
+    "dontHaveAccount": "Kein Konto? Registrieren"
   },
   "navigation": {
     "home": "Startseite",
@@ -108,6 +120,16 @@
         "title": "Exklusive Inhalte",
         "description": "Zugang zu speziellen Ressourcen und Materialien"
       }
+    },
+    "join": {
+      "title": "Werde Teil unserer Community",
+      "description": "Tausche dich mit Gleichgesinnten aus und lerne gemeinsam",
+      "button": "Jetzt beitreten"
+    },
+    "stats": {
+      "members": "Aktive Mitglieder",
+      "posts": "Beiträge pro Tag",
+      "groups": "Interessengruppen"
     }
   },
   "courses": {
@@ -120,6 +142,39 @@
       "beginner": "Anfänger",
       "intermediate": "Fortgeschritten",
       "advanced": "Experte"
+    },
+    "search": {
+      "placeholder": "Kurs suchen...",
+      "button": "Suchen",
+      "noResults": "Keine Kurse gefunden",
+      "tryAgain": "Versuche es mit anderen Suchbegriffen"
+    },
+    "categories": {
+      "webDevelopment": "Web-Entwicklung",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "design": "Design",
+      "dataScience": "Data Science",
+      "devOps": "DevOps",
+      "mobile": "Mobile Entwicklung"
+    },
+    "courseDetails": {
+      "duration": "Dauer",
+      "level": "Niveau",
+      "students": "Studenten",
+      "instructor": "Kursleiter",
+      "enrollNow": "Jetzt einschreiben",
+      "viewCourse": "Kurs ansehen"
+    },
+    "sort": {
+      "label": "Sortieren nach",
+      "popular": "Beliebtheit",
+      "newest": "Neueste",
+      "highestRated": "Beste Bewertung"
+    },
+    "error": {
+      "title": "Fehler beim Laden der Kurse",
+      "message": "Bitte versuche es später erneut oder kontaktiere den Support"
     }
   },
   "about": {
@@ -143,6 +198,112 @@
         "title": "Qualität",
         "description": "Wir streben nach höchsten Standards in allem, was wir tun"
       }
+    },
+    "team": {
+      "title": "Unser Team",
+      "description": "Erfahrene Fachleute, die unsere Community unterstützen",
+      "members": {
+        "founder": "Gründer & CEO",
+        "coFounder": "Mitgründer & CTO",
+        "communityManager": "Community Manager",
+        "contentCreator": "Content Creator",
+        "customerSupport": "Kundendienst"
+      }
+    },
+    "story": {
+      "title": "Unsere Geschichte",
+      "description": "Von den Anfängen bis heute",
+      "timeline": {
+        "founding": "Gründung",
+        "growth": "Wachstum",
+        "expansion": "Expansion",
+        "today": "Heute"
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontaktiere uns",
+    "subtitle": "Wir freuen uns, von dir zu hören",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "submit": "Nachricht senden",
+      "success": "Deine Nachricht wurde gesendet. Wir werden uns bald bei dir melden!",
+      "error": "Es gab ein Problem beim Senden deiner Nachricht. Bitte versuche es erneut."
+    },
+    "info": {
+      "title": "Kontaktinformationen",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "address": "Adresse",
+      "hours": "Geschäftszeiten"
+    }
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück",
+    "stats": {
+      "title": "Deine Statistiken",
+      "courses": "Eingeschriebene Kurse",
+      "completed": "Abgeschlossene Kurse",
+      "posts": "Forum-Beiträge",
+      "connections": "Verbindungen"
+    },
+    "activity": {
+      "title": "Neueste Aktivitäten",
+      "empty": "Noch keine Aktivitäten",
+      "viewAll": "Alle anzeigen"
+    },
+    "courses": {
+      "title": "Deine Kurse",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "continued": "Fortsetzen"
+    },
+    "profile": {
+      "title": "Dein Profil",
+      "edit": "Profil bearbeiten",
+      "save": "Änderungen speichern",
+      "personalInfo": "Persönliche Informationen",
+      "accountSettings": "Kontoeinstellungen",
+      "notifications": "Benachrichtigungen",
+      "privacy": "Datenschutz",
+      "fullName": "Vollständiger Name",
+      "username": "Benutzername",
+      "bio": "Über mich",
+      "avatar": "Profilbild",
+      "upload": "Hochladen",
+      "remove": "Entfernen"
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Anmelden",
+      "subtitle": "Willkommen zurück! Melde dich an, um fortzufahren",
+      "button": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "createAccount": "Konto erstellen",
+      "withGoogle": "Mit Google anmelden",
+      "withGithub": "Mit GitHub anmelden"
+    },
+    "signUp": {
+      "title": "Registrieren",
+      "subtitle": "Erstelle dein Konto und werde Teil unserer Community",
+      "button": "Registrieren",
+      "hasAccount": "Bereits ein Konto?",
+      "signIn": "Anmelden",
+      "withGoogle": "Mit Google registrieren",
+      "withGithub": "Mit GitHub registrieren",
+      "terms": "Durch die Registrierung stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu"
+    },
+    "forgotPassword": {
+      "title": "Passwort vergessen",
+      "subtitle": "Gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen",
+      "button": "Zurücksetzen-Link senden",
+      "backToSignIn": "Zurück zur Anmeldung",
+      "success": "Wenn ein Konto mit dieser E-Mail existiert, haben wir einen Zurücksetzen-Link gesendet"
     }
   }
 }

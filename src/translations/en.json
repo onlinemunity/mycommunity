@@ -21,7 +21,19 @@
     "delete": "Delete",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "filters": "Filters",
+    "all": "All",
+    "noResults": "No results found",
+    "tryAgain": "Try again",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "alreadyHaveAccount": "Already have an account? Sign in",
+    "dontHaveAccount": "Don't have an account? Sign up"
   },
   "navigation": {
     "home": "Home",
@@ -108,6 +120,16 @@
         "title": "Exclusive Content",
         "description": "Access to special resources and materials"
       }
+    },
+    "join": {
+      "title": "Join Our Community",
+      "description": "Connect with like-minded individuals and learn together",
+      "button": "Join now"
+    },
+    "stats": {
+      "members": "Active Members",
+      "posts": "Posts per Day",
+      "groups": "Interest Groups"
     }
   },
   "courses": {
@@ -120,6 +142,39 @@
       "beginner": "Beginner",
       "intermediate": "Intermediate",
       "advanced": "Advanced"
+    },
+    "search": {
+      "placeholder": "Search courses...",
+      "button": "Search",
+      "noResults": "No courses found",
+      "tryAgain": "Try different search terms"
+    },
+    "categories": {
+      "webDevelopment": "Web Development",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "design": "Design",
+      "dataScience": "Data Science",
+      "devOps": "DevOps",
+      "mobile": "Mobile Development"
+    },
+    "courseDetails": {
+      "duration": "Duration",
+      "level": "Level",
+      "students": "Students",
+      "instructor": "Instructor",
+      "enrollNow": "Enroll Now",
+      "viewCourse": "View Course"
+    },
+    "sort": {
+      "label": "Sort by",
+      "popular": "Most Popular",
+      "newest": "Newest",
+      "highestRated": "Highest Rated"
+    },
+    "error": {
+      "title": "Error loading courses",
+      "message": "Please try again later or contact support"
     }
   },
   "about": {
@@ -143,6 +198,112 @@
         "title": "Quality",
         "description": "We strive for the highest standards in everything we do"
       }
+    },
+    "team": {
+      "title": "Our Team",
+      "description": "Experienced professionals supporting our community",
+      "members": {
+        "founder": "Founder & CEO",
+        "coFounder": "Co-founder & CTO",
+        "communityManager": "Community Manager",
+        "contentCreator": "Content Creator",
+        "customerSupport": "Customer Support"
+      }
+    },
+    "story": {
+      "title": "Our Story",
+      "description": "From our beginnings to where we are today",
+      "timeline": {
+        "founding": "Founding",
+        "growth": "Growth",
+        "expansion": "Expansion",
+        "today": "Today"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Your message has been sent. We'll get back to you soon!",
+      "error": "There was a problem sending your message. Please try again."
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "hours": "Business Hours"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "stats": {
+      "title": "Your Stats",
+      "courses": "Enrolled Courses",
+      "completed": "Completed Courses",
+      "posts": "Forum Posts",
+      "connections": "Connections"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "empty": "No activity yet",
+      "viewAll": "View all"
+    },
+    "courses": {
+      "title": "Your Courses",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "continue": "Continue"
+    },
+    "profile": {
+      "title": "Your Profile",
+      "edit": "Edit Profile",
+      "save": "Save Changes",
+      "personalInfo": "Personal Information",
+      "accountSettings": "Account Settings",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "fullName": "Full Name",
+      "username": "Username",
+      "bio": "About Me",
+      "avatar": "Profile Picture",
+      "upload": "Upload",
+      "remove": "Remove"
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign In",
+      "subtitle": "Welcome back! Sign in to continue",
+      "button": "Sign In",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create an account",
+      "withGoogle": "Sign in with Google",
+      "withGithub": "Sign in with GitHub"
+    },
+    "signUp": {
+      "title": "Sign Up",
+      "subtitle": "Create your account and join our community",
+      "button": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "withGoogle": "Sign up with Google",
+      "withGithub": "Sign up with GitHub",
+      "terms": "By signing up, you agree to our Terms of Service and Privacy Policy"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to reset your password",
+      "button": "Send Reset Link",
+      "backToSignIn": "Back to sign in",
+      "success": "If an account with that email exists, we've sent a password reset link"
     }
   }
 }

@@ -21,7 +21,19 @@
     "delete": "Eliminar",
     "back": "Atrás",
     "next": "Siguiente",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos",
+    "filters": "Filtros",
+    "all": "Todos",
+    "noResults": "No se encontraron resultados",
+    "tryAgain": "Intentar de nuevo",
+    "emailAddress": "Dirección de correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer contraseña",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta? Inicia sesión",
+    "dontHaveAccount": "¿No tienes una cuenta? Regístrate"
   },
   "navigation": {
     "home": "Inicio",
@@ -108,6 +120,16 @@
         "title": "Contenido Exclusivo",
         "description": "Acceso a recursos y materiales especiales"
       }
+    },
+    "join": {
+      "title": "Únete a Nuestra Comunidad",
+      "description": "Conéctate con personas afines y aprende juntos",
+      "button": "Únete ahora"
+    },
+    "stats": {
+      "members": "Miembros Activos",
+      "posts": "Publicaciones por Día",
+      "groups": "Grupos de Interés"
     }
   },
   "courses": {
@@ -120,6 +142,39 @@
       "beginner": "Principiante",
       "intermediate": "Intermedio",
       "advanced": "Avanzado"
+    },
+    "search": {
+      "placeholder": "Buscar cursos...",
+      "button": "Buscar",
+      "noResults": "No se encontraron cursos",
+      "tryAgain": "Intenta con otros términos de búsqueda"
+    },
+    "categories": {
+      "webDevelopment": "Desarrollo Web",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "design": "Diseño",
+      "dataScience": "Ciencia de Datos",
+      "devOps": "DevOps",
+      "mobile": "Desarrollo Móvil"
+    },
+    "courseDetails": {
+      "duration": "Duración",
+      "level": "Nivel",
+      "students": "Estudiantes",
+      "instructor": "Instructor",
+      "enrollNow": "Inscribirse Ahora",
+      "viewCourse": "Ver Curso"
+    },
+    "sort": {
+      "label": "Ordenar por",
+      "popular": "Más Popular",
+      "newest": "Más Recientes",
+      "highestRated": "Mejor Valorados"
+    },
+    "error": {
+      "title": "Error al cargar los cursos",
+      "message": "Por favor intenta más tarde o contacta con soporte"
     }
   },
   "about": {
@@ -143,6 +198,112 @@
         "title": "Calidad",
         "description": "Nos esforzamos por alcanzar los más altos estándares en todo lo que hacemos"
       }
+    },
+    "team": {
+      "title": "Nuestro Equipo",
+      "description": "Profesionales experimentados que apoyan nuestra comunidad",
+      "members": {
+        "founder": "Fundador y CEO",
+        "coFounder": "Cofundador y CTO",
+        "communityManager": "Gestor de Comunidad",
+        "contentCreator": "Creador de Contenido",
+        "customerSupport": "Atención al Cliente"
+      }
+    },
+    "story": {
+      "title": "Nuestra Historia",
+      "description": "Desde nuestros inicios hasta donde estamos hoy",
+      "timeline": {
+        "founding": "Fundación",
+        "growth": "Crecimiento",
+        "expansion": "Expansión",
+        "today": "Hoy"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "Nos encantaría saber de ti",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "submit": "Enviar Mensaje",
+      "success": "Tu mensaje ha sido enviado. ¡Nos pondremos en contacto pronto!",
+      "error": "Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo."
+    },
+    "info": {
+      "title": "Información de Contacto",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "hours": "Horario de Atención"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo",
+    "stats": {
+      "title": "Tus Estadísticas",
+      "courses": "Cursos Inscritos",
+      "completed": "Cursos Completados",
+      "posts": "Publicaciones en el Foro",
+      "connections": "Conexiones"
+    },
+    "activity": {
+      "title": "Actividad Reciente",
+      "empty": "Aún no hay actividad",
+      "viewAll": "Ver todo"
+    },
+    "courses": {
+      "title": "Tus Cursos",
+      "inProgress": "En Progreso",
+      "completed": "Completados",
+      "continue": "Continuar"
+    },
+    "profile": {
+      "title": "Tu Perfil",
+      "edit": "Editar Perfil",
+      "save": "Guardar Cambios",
+      "personalInfo": "Información Personal",
+      "accountSettings": "Configuración de la Cuenta",
+      "notifications": "Notificaciones",
+      "privacy": "Privacidad",
+      "fullName": "Nombre Completo",
+      "username": "Nombre de Usuario",
+      "bio": "Sobre Mí",
+      "avatar": "Foto de Perfil",
+      "upload": "Subir",
+      "remove": "Eliminar"
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Iniciar Sesión",
+      "subtitle": "¡Bienvenido de nuevo! Inicia sesión para continuar",
+      "button": "Iniciar Sesión",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes una cuenta?",
+      "createAccount": "Crear una cuenta",
+      "withGoogle": "Iniciar sesión con Google",
+      "withGithub": "Iniciar sesión con GitHub"
+    },
+    "signUp": {
+      "title": "Registrarse",
+      "subtitle": "Crea tu cuenta y únete a nuestra comunidad",
+      "button": "Registrarse",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar sesión",
+      "withGoogle": "Registrarse con Google",
+      "withGithub": "Registrarse con GitHub",
+      "terms": "Al registrarte, aceptas nuestros Términos de Servicio y Política de Privacidad"
+    },
+    "forgotPassword": {
+      "title": "Contraseña Olvidada",
+      "subtitle": "Ingresa tu correo electrónico para restablecer tu contraseña",
+      "button": "Enviar Enlace de Restablecimiento",
+      "backToSignIn": "Volver a iniciar sesión",
+      "success": "Si existe una cuenta con ese correo electrónico, hemos enviado un enlace para restablecer la contraseña"
     }
   }
 }

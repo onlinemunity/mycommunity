@@ -12,6 +12,8 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Community from "./pages/Community";
 import Courses from "./pages/Courses";
+import Contact from "./pages/Contact";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/auth/AuthPage";
 import AuthSuccess from "./pages/auth/AuthSuccess";
@@ -38,6 +40,8 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/community" element={<Community />} />
               <Route path="/courses" element={<Courses />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/pricing" element={<Pricing />} />
               
               {/* Auth routes */}
               <Route path="/auth" element={<AuthPage />} />
