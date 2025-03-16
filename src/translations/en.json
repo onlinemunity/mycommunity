@@ -1,0 +1,148 @@
+
+{
+  "common": {
+    "learnMore": "Learn more",
+    "joinNow": "Join now",
+    "readMore": "Read more",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logOut": "Log out",
+    "search": "Search...",
+    "loading": "Loading...",
+    "close": "Close",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About us",
+    "community": "Community",
+    "courses": "Courses",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Welcome to our Community",
+      "subtitle": "Learn, Grow, and Connect in a Supportive Environment",
+      "cta": "Join free today"
+    },
+    "features": {
+      "title": "What we offer",
+      "subtitle": "Discover all the benefits of our community",
+      "community": {
+        "title": "Vibrant Community",
+        "description": "Connect with like-minded individuals and exchange knowledge"
+      },
+      "courses": {
+        "title": "Quality Courses",
+        "description": "Learn from experts with our structured courses"
+      },
+      "discussions": {
+        "title": "Themed Discussions",
+        "description": "Participate in exciting conversations on various topics"
+      }
+    },
+    "testimonials": {
+      "title": "What our members say",
+      "subtitle": "Experiences from our community"
+    },
+    "pricing": {
+      "title": "Choose your plan",
+      "subtitle": "Find the right offer for your needs",
+      "plans": {
+        "free": {
+          "title": "Free",
+          "description": "Basic community features",
+          "price": "$0",
+          "period": "Forever free",
+          "cta": "Register for free"
+        },
+        "annual": {
+          "title": "Annual Membership",
+          "description": "Full access to all features",
+          "price": "$99",
+          "period": "per year",
+          "cta": "Upgrade now"
+        },
+        "lifetime": {
+          "title": "Lifetime Deal",
+          "description": "One-time payment, lifetime access",
+          "price": "$399",
+          "period": "One-time",
+          "cta": "Secure lifetime access"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to become part of our community?",
+      "description": "Start your journey with us now",
+      "button": "Join now"
+    }
+  },
+  "community": {
+    "title": "Our Community",
+    "subtitle": "A place to learn, share, and grow",
+    "features": {
+      "title": "Community Features",
+      "forums": {
+        "title": "Topic-Based Forums",
+        "description": "Discuss in organized topic areas"
+      },
+      "members": {
+        "title": "Build a Network",
+        "description": "Connect with like-minded individuals"
+      },
+      "content": {
+        "title": "Exclusive Content",
+        "description": "Access to special resources and materials"
+      }
+    }
+  },
+  "courses": {
+    "title": "Our Courses",
+    "subtitle": "Specialized knowledge for your development",
+    "filter": {
+      "all": "All",
+      "category": "Category",
+      "level": "Difficulty",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Our story, mission, and team",
+    "mission": {
+      "title": "Our Mission",
+      "description": "We aim to bring people together to learn and grow collectively"
+    },
+    "values": {
+      "title": "Our Values",
+      "learning": {
+        "title": "Continuous Learning",
+        "description": "We believe in lifelong learning and personal development"
+      },
+      "community": {
+        "title": "Community",
+        "description": "We create a supportive environment for all members"
+      },
+      "quality": {
+        "title": "Quality",
+        "description": "We strive for the highest standards in everything we do"
+      }
+    }
+  }
+}

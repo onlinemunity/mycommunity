@@ -1,0 +1,148 @@
+
+{
+  "common": {
+    "learnMore": "Mehr erfahren",
+    "joinNow": "Jetzt beitreten",
+    "readMore": "Weiterlesen",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logOut": "Abmelden",
+    "search": "Suchen...",
+    "loading": "Wird geladen...",
+    "close": "Schließen",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "community": "Community",
+    "courses": "Kurse",
+    "pricing": "Preise",
+    "contact": "Kontakt",
+    "blog": "Blog"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Willkommen in unserer Community",
+      "subtitle": "Lernen, Wachsen und Verbinden in einer unterstützenden Umgebung",
+      "cta": "Heute kostenlos beitreten"
+    },
+    "features": {
+      "title": "Was wir bieten",
+      "subtitle": "Entdecke alle Vorteile unserer Community",
+      "community": {
+        "title": "Lebendige Community",
+        "description": "Verbinde dich mit Gleichgesinnten und tausche Wissen aus"
+      },
+      "courses": {
+        "title": "Hochwertige Kurse",
+        "description": "Lerne von Experten mit unseren strukturierten Kursen"
+      },
+      "discussions": {
+        "title": "Thematische Diskussionen",
+        "description": "Beteilige dich an spannenden Gesprächen zu verschiedenen Themen"
+      }
+    },
+    "testimonials": {
+      "title": "Was unsere Mitglieder sagen",
+      "subtitle": "Erfahrungen aus unserer Community"
+    },
+    "pricing": {
+      "title": "Wähle dein Paket",
+      "subtitle": "Finde das passende Angebot für deine Bedürfnisse",
+      "plans": {
+        "free": {
+          "title": "Kostenlos",
+          "description": "Grundlegende Community-Funktionen",
+          "price": "0€",
+          "period": "Für immer kostenlos",
+          "cta": "Kostenlos registrieren"
+        },
+        "annual": {
+          "title": "Jahresmitgliedschaft",
+          "description": "Voller Zugriff auf alle Funktionen",
+          "price": "99€",
+          "period": "pro Jahr",
+          "cta": "Jetzt upgraden"
+        },
+        "lifetime": {
+          "title": "Lifetime Deal",
+          "description": "Einmalige Zahlung, lebenslanger Zugriff",
+          "price": "399€",
+          "period": "Einmalig",
+          "cta": "Lifetime-Zugang sichern"
+        }
+      }
+    },
+    "cta": {
+      "title": "Bereit, Teil unserer Community zu werden?",
+      "description": "Starte jetzt deine Reise mit uns",
+      "button": "Jetzt beitreten"
+    }
+  },
+  "community": {
+    "title": "Unsere Community",
+    "subtitle": "Ein Ort zum Lernen, Teilen und Wachsen",
+    "features": {
+      "title": "Community-Funktionen",
+      "forums": {
+        "title": "Themenbasierte Foren",
+        "description": "Diskutiere in organisierten Themenbereichen"
+      },
+      "members": {
+        "title": "Netzwerk aufbauen",
+        "description": "Verbinde dich mit Gleichgesinnten"
+      },
+      "content": {
+        "title": "Exklusive Inhalte",
+        "description": "Zugang zu speziellen Ressourcen und Materialien"
+      }
+    }
+  },
+  "courses": {
+    "title": "Unsere Kurse",
+    "subtitle": "Spezialisiertes Wissen für deine Entwicklung",
+    "filter": {
+      "all": "Alle",
+      "category": "Kategorie",
+      "level": "Schwierigkeit",
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "advanced": "Experte"
+    }
+  },
+  "about": {
+    "title": "Über uns",
+    "subtitle": "Unsere Geschichte, Mission und Team",
+    "mission": {
+      "title": "Unsere Mission",
+      "description": "Wir möchten Menschen zusammenbringen, um gemeinsam zu lernen und zu wachsen"
+    },
+    "values": {
+      "title": "Unsere Werte",
+      "learning": {
+        "title": "Kontinuierliches Lernen",
+        "description": "Wir glauben an lebenslanges Lernen und persönliche Entwicklung"
+      },
+      "community": {
+        "title": "Gemeinschaft",
+        "description": "Wir schaffen eine unterstützende Umgebung für alle Mitglieder"
+      },
+      "quality": {
+        "title": "Qualität",
+        "description": "Wir streben nach höchsten Standards in allem, was wir tun"
+      }
+    }
+  }
+}

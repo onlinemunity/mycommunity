@@ -1,0 +1,148 @@
+
+{
+  "common": {
+    "learnMore": "Saber más",
+    "joinNow": "Únete ahora",
+    "readMore": "Leer más",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "dashboard": "Panel",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logOut": "Cerrar sesión",
+    "search": "Buscar...",
+    "loading": "Cargando...",
+    "close": "Cerrar",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "about": "Sobre nosotros",
+    "community": "Comunidad",
+    "courses": "Cursos",
+    "pricing": "Precios",
+    "contact": "Contacto",
+    "blog": "Blog"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Bienvenido a nuestra Comunidad",
+      "subtitle": "Aprende, Crece y Conéctate en un Ambiente de Apoyo",
+      "cta": "Únete gratis hoy"
+    },
+    "features": {
+      "title": "Lo que ofrecemos",
+      "subtitle": "Descubre todos los beneficios de nuestra comunidad",
+      "community": {
+        "title": "Comunidad Vibrante",
+        "description": "Conéctate con personas afines e intercambia conocimientos"
+      },
+      "courses": {
+        "title": "Cursos de Calidad",
+        "description": "Aprende de expertos con nuestros cursos estructurados"
+      },
+      "discussions": {
+        "title": "Discusiones Temáticas",
+        "description": "Participa en conversaciones interesantes sobre diversos temas"
+      }
+    },
+    "testimonials": {
+      "title": "Lo que dicen nuestros miembros",
+      "subtitle": "Experiencias de nuestra comunidad"
+    },
+    "pricing": {
+      "title": "Elige tu plan",
+      "subtitle": "Encuentra la oferta adecuada para tus necesidades",
+      "plans": {
+        "free": {
+          "title": "Gratis",
+          "description": "Funciones básicas de la comunidad",
+          "price": "0€",
+          "period": "Siempre gratis",
+          "cta": "Regístrate gratis"
+        },
+        "annual": {
+          "title": "Membresía Anual",
+          "description": "Acceso completo a todas las funciones",
+          "price": "99€",
+          "period": "por año",
+          "cta": "Actualiza ahora"
+        },
+        "lifetime": {
+          "title": "Acceso de por Vida",
+          "description": "Pago único, acceso de por vida",
+          "price": "399€",
+          "period": "Pago único",
+          "cta": "Asegura acceso de por vida"
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Listo para formar parte de nuestra comunidad?",
+      "description": "Comienza tu viaje con nosotros ahora",
+      "button": "Únete ahora"
+    }
+  },
+  "community": {
+    "title": "Nuestra Comunidad",
+    "subtitle": "Un lugar para aprender, compartir y crecer",
+    "features": {
+      "title": "Características de la Comunidad",
+      "forums": {
+        "title": "Foros por Temas",
+        "description": "Discute en áreas temáticas organizadas"
+      },
+      "members": {
+        "title": "Construye una Red",
+        "description": "Conéctate con personas afines"
+      },
+      "content": {
+        "title": "Contenido Exclusivo",
+        "description": "Acceso a recursos y materiales especiales"
+      }
+    }
+  },
+  "courses": {
+    "title": "Nuestros Cursos",
+    "subtitle": "Conocimiento especializado para tu desarrollo",
+    "filter": {
+      "all": "Todos",
+      "category": "Categoría",
+      "level": "Dificultad",
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    }
+  },
+  "about": {
+    "title": "Sobre Nosotros",
+    "subtitle": "Nuestra historia, misión y equipo",
+    "mission": {
+      "title": "Nuestra Misión",
+      "description": "Buscamos reunir a personas para aprender y crecer colectivamente"
+    },
+    "values": {
+      "title": "Nuestros Valores",
+      "learning": {
+        "title": "Aprendizaje Continuo",
+        "description": "Creemos en el aprendizaje permanente y el desarrollo personal"
+      },
+      "community": {
+        "title": "Comunidad",
+        "description": "Creamos un entorno de apoyo para todos los miembros"
+      },
+      "quality": {
+        "title": "Calidad",
+        "description": "Nos esforzamos por alcanzar los más altos estándares en todo lo que hacemos"
+      }
+    }
+  }
+}
