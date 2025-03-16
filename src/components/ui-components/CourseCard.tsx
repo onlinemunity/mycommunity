@@ -1,8 +1,8 @@
-
 import { ReactNode } from "react";
 import { Clock, Users, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 interface CourseCardProps {
   title: string;
@@ -39,7 +39,6 @@ export const CourseCard = ({
   animated = true,
   delay = 0,
 }: CourseCardProps) => {
-  // Level badge color
   const levelColors = {
     beginner: "bg-green-100 text-green-800",
     intermediate: "bg-blue-100 text-blue-800",
@@ -56,8 +55,8 @@ export const CourseCard = ({
   };
 
   return (
-    <a
-      href={href}
+    <Link
+      to={`/courses/${href}`}
       className={cn(
         "group block overflow-hidden rounded-xl border border-metal/30 bg-white hover:shadow-elevated transition-all duration-300",
         animated && "animate-scale-in",
@@ -65,7 +64,6 @@ export const CourseCard = ({
       )}
       style={animated ? { animationDelay: `${delay}ms` } : {}}
     >
-      {/* Course Image */}
       <div className="relative aspect-video overflow-hidden">
         <img
           src={image}
@@ -74,14 +72,12 @@ export const CourseCard = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* Category Badge */}
         <Badge 
           className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm text-foreground hover:bg-white/90"
         >
           {category}
         </Badge>
 
-        {/* Level Badge */}
         <Badge 
           className={cn(
             "absolute top-3 right-3",
@@ -93,7 +89,6 @@ export const CourseCard = ({
         </Badge>
       </div>
 
-      {/* Course Content */}
       <div className="p-5">
         <h3 className="font-display font-bold text-lg mb-2 group-hover:text-accent1 transition-colors">
           {title}
@@ -103,7 +98,6 @@ export const CourseCard = ({
           {description}
         </p>
         
-        {/* Meta information */}
         <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-4">
           <div className="flex items-center">
             <Clock className="h-3.5 w-3.5 mr-1" />
@@ -119,7 +113,6 @@ export const CourseCard = ({
           </div>
         </div>
         
-        {/* Instructor & Price */}
         <div className="flex items-center justify-between pt-3 border-t border-metal/20">
           <div className="text-sm">
             By <span className="font-medium">{instructor}</span>
@@ -133,6 +126,6 @@ export const CourseCard = ({
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
