@@ -46,7 +46,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       icon: <LayoutDashboard size={20} />,
     },
     {
-      name: t('dashboard.myProfile') || 'Profile',
+      name: t('dashboard.profile.myprofile') || 'Profile',
       path: '/dashboard/profile',
       icon: <User size={20} />,
     },
