@@ -6,6 +6,7 @@
     "readMore": "Weiterlesen",
     "signIn": "Anmelden",
     "signUp": "Registrieren",
+    "sighOut": "Abmelden",
     "dashboard": "Dashboard",
     "profile": "Profil",
     "settings": "Einstellungen",
@@ -42,7 +43,8 @@
     "courses": "Kurse",
     "pricing": "Preise",
     "contact": "Kontakt",
-    "blog": "Blog"
+    "blog": "Blog",
+    "dashboard": "Mein Bereich"
   },
   "homepage": {
     "hero": {
