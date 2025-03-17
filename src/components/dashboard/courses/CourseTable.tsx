@@ -6,13 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
-
-interface Lecture {
-  id: string;
-  title: string;
-  duration: string;
-  completed: boolean;
-}
+import { Lecture } from '@/types/supabase';
 
 interface CourseProgressProps {
   course: {
@@ -27,6 +21,17 @@ interface CourseProgressProps {
 export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  
+  // Helper function to get lecture icon based on title
+  const getLectureIcon = (lecture: Lecture) => {
+    if (lecture.title.startsWith('Quiz:')) {
+      return <ListTodo className="h-4 w-4 text-muted-foreground" />;
+    } else if (!lecture.video_url) {
+      return <FileText className="h-4 w-4 text-muted-foreground" />;
+    } else {
+      return <Video className="h-4 w-4 text-muted-foreground" />;
+    }
+  };
   
   return (
     <div className="rounded-lg border bg-card">
@@ -55,7 +60,7 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
             {course.lectures.map((lecture) => (
               <TableRow key={lecture.id}>
                 <TableCell className="font-medium flex items-center gap-2">
-                  <Video className="h-4 w-4 text-muted-foreground" />
+                  {getLectureIcon(lecture)}
                   {lecture.title}
                 </TableCell>
                 <TableCell>{lecture.duration}</TableCell>

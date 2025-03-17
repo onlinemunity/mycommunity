@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CheckCircle, Video, FileText, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Lecture } from '@/types/supabase';
 
+// Simple quiz questions structure for quiz lectures
 interface QuizQuestion {
   id: string;
   question: string;
@@ -19,16 +21,50 @@ interface QuizQuestion {
   correctOptionId: string;
 }
 
+// Sample quiz questions generator
+const generateQuizQuestions = (lectureTitle: string): QuizQuestion[] => {
+  const baseTitle = lectureTitle.replace('Quiz: ', '');
+  
+  return [
+    {
+      id: '1',
+      question: `What is the main focus of "${baseTitle}"?`,
+      options: [
+        { id: 'a', text: 'Understanding core principles' },
+        { id: 'b', text: 'Learning practical applications' },
+        { id: 'c', text: 'Memorizing definitions' },
+        { id: 'd', text: 'All of the above' }
+      ],
+      correctOptionId: 'd'
+    },
+    {
+      id: '2',
+      question: 'Which of the following best describes the learning approach in this lecture?',
+      options: [
+        { id: 'a', text: 'Theoretical only' },
+        { id: 'b', text: 'Practical examples with theory' },
+        { id: 'c', text: 'Self-guided research' },
+        { id: 'd', text: 'None of the above' }
+      ],
+      correctOptionId: 'b'
+    },
+    {
+      id: '3',
+      question: 'What should you do after completing this lecture?',
+      options: [
+        { id: 'a', text: 'Take a break' },
+        { id: 'b', text: 'Review the material' },
+        { id: 'c', text: 'Move to the next lecture' },
+        { id: 'd', text: 'Practice the concepts learned' }
+      ],
+      correctOptionId: 'd'
+    }
+  ];
+};
+
 interface LectureProps {
-  lecture: {
-    id: string;
+  lecture: Lecture & {
     courseId: string;
-    title: string;
-    description: string;
-    videoUrl: string;
-    content: string;
-    completed: boolean;
-    quiz: QuizQuestion[];
   };
   onComplete: (lectureId: string) => void;
 }
@@ -36,11 +72,31 @@ interface LectureProps {
 export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('video');
+  const [activeTab, setActiveTab] = useState<string>('video');
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
-  const [taskCompleted, setTaskCompleted] = useState(lecture.completed);
+  const [taskCompleted, setTaskCompleted] = useState(lecture.completed || false);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  
+  // Check if lecture is a quiz based on title
+  const isQuiz = lecture.title.startsWith('Quiz:');
+  
+  useEffect(() => {
+    // Set active tab based on lecture type
+    if (isQuiz) {
+      setActiveTab('quiz');
+    } else if (lecture.video_url) {
+      setActiveTab('video');
+    } else if (lecture.content) {
+      setActiveTab('content');
+    }
+    
+    // Generate quiz questions for quiz lectures
+    if (isQuiz) {
+      setQuizQuestions(generateQuizQuestions(lecture.title));
+    }
+  }, [lecture, isQuiz]);
 
   const handleAnswerSelect = (questionId: string, optionId: string) => {
     setSelectedAnswers(prev => ({
@@ -50,11 +106,11 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
   };
 
   const handleSubmitQuiz = () => {
-    const correctAnswers = lecture.quiz.filter(
+    const correctAnswers = quizQuestions.filter(
       q => selectedAnswers[q.id] === q.correctOptionId
     ).length;
     
-    const passScore = Math.ceil(lecture.quiz.length * 0.7); // 70% to pass
+    const passScore = Math.ceil(quizQuestions.length * 0.7); // 70% to pass
     const passed = correctAnswers >= passScore;
     
     setQuizPassed(passed);
@@ -62,6 +118,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
     
     if (passed) {
       setTaskCompleted(true);
+      onComplete(lecture.id);
     }
   };
 
@@ -91,95 +148,107 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-4">
-              <TabsTrigger value="video">
-                <Video className="h-4 w-4 mr-2" />
-                {t('dashboard.courses.video')}
-              </TabsTrigger>
-              <TabsTrigger value="content">
-                <FileText className="h-4 w-4 mr-2" />
-                {t('dashboard.courses.notes')}
-              </TabsTrigger>
-              <TabsTrigger value="quiz">
-                <CheckCircle className="h-4 w-4 mr-2" />
-                {t('dashboard.courses.quiz')}
-              </TabsTrigger>
+              {lecture.video_url && (
+                <TabsTrigger value="video">
+                  <Video className="h-4 w-4 mr-2" />
+                  {t('dashboard.courses.video')}
+                </TabsTrigger>
+              )}
+              {lecture.content && (
+                <TabsTrigger value="content">
+                  <FileText className="h-4 w-4 mr-2" />
+                  {t('dashboard.courses.notes')}
+                </TabsTrigger>
+              )}
+              {isQuiz && (
+                <TabsTrigger value="quiz">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  {t('dashboard.courses.quiz')}
+                </TabsTrigger>
+              )}
             </TabsList>
             
-            <TabsContent value="video" className="space-y-4">
-              <div className="aspect-video relative rounded-md overflow-hidden">
-                <iframe 
-                  src={lecture.videoUrl} 
-                  className="absolute inset-0 w-full h-full"
-                  title={lecture.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  frameBorder="0"
-                  allowFullScreen
-                />
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="content" className="space-y-4">
-              <div className="prose max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: lecture.content }} />
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="quiz" className="space-y-6">
-              {quizSubmitted && (
-                <div className={`p-4 mb-4 rounded-md ${quizPassed ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                  {quizPassed ? (
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5" />
-                      <span>{t('dashboard.courses.quizPassed')}</span>
-                    </div>
-                  ) : (
-                    <div>{t('dashboard.courses.quizFailed')}</div>
-                  )}
+            {lecture.video_url && (
+              <TabsContent value="video" className="space-y-4">
+                <div className="aspect-video relative rounded-md overflow-hidden">
+                  <iframe 
+                    src={lecture.video_url} 
+                    className="absolute inset-0 w-full h-full"
+                    title={lecture.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    frameBorder="0"
+                    allowFullScreen
+                  />
                 </div>
-              )}
-              
-              {lecture.quiz.map((question, index) => (
-                <div key={question.id} className="space-y-3">
-                  <h3 className="font-medium">
-                    {index + 1}. {question.question}
-                  </h3>
-                  <RadioGroup 
-                    value={selectedAnswers[question.id]} 
-                    onValueChange={(value) => handleAnswerSelect(question.id, value)}
-                    disabled={quizSubmitted}
-                  >
-                    {question.options.map(option => (
-                      <div key={option.id} className="flex items-center space-x-2">
-                        <RadioGroupItem value={option.id} id={option.id} />
-                        <label htmlFor={option.id} className="text-sm">
-                          {option.text}
-                        </label>
-                        {quizSubmitted && option.id === question.correctOptionId && (
-                          <span className="text-green-600 text-xs ml-2">
-                            ({t('dashboard.courses.correctAnswer')})
-                          </span>
-                        )}
+              </TabsContent>
+            )}
+            
+            {lecture.content && (
+              <TabsContent value="content" className="space-y-4">
+                <div className="prose max-w-none">
+                  <div dangerouslySetInnerHTML={{ __html: lecture.content }} />
+                </div>
+              </TabsContent>
+            )}
+            
+            {isQuiz && (
+              <TabsContent value="quiz" className="space-y-6">
+                {quizSubmitted && (
+                  <div className={`p-4 mb-4 rounded-md ${quizPassed ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                    {quizPassed ? (
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-5 w-5" />
+                        <span>{t('dashboard.courses.quizPassed')}</span>
                       </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-              ))}
-              
-              {!quizSubmitted && (
-                <Button onClick={handleSubmitQuiz}>
-                  {t('dashboard.courses.submitQuiz')}
-                </Button>
-              )}
-              
-              {quizSubmitted && !quizPassed && (
-                <Button onClick={() => {
-                  setQuizSubmitted(false);
-                  setSelectedAnswers({});
-                }}>
-                  {t('dashboard.courses.tryAgain')}
-                </Button>
-              )}
-            </TabsContent>
+                    ) : (
+                      <div>{t('dashboard.courses.quizFailed')}</div>
+                    )}
+                  </div>
+                )}
+                
+                {quizQuestions.map((question, index) => (
+                  <div key={question.id} className="space-y-3">
+                    <h3 className="font-medium">
+                      {index + 1}. {question.question}
+                    </h3>
+                    <RadioGroup 
+                      value={selectedAnswers[question.id]} 
+                      onValueChange={(value) => handleAnswerSelect(question.id, value)}
+                      disabled={quizSubmitted}
+                    >
+                      {question.options.map(option => (
+                        <div key={option.id} className="flex items-center space-x-2">
+                          <RadioGroupItem value={option.id} id={`${question.id}-${option.id}`} />
+                          <label htmlFor={`${question.id}-${option.id}`} className="text-sm">
+                            {option.text}
+                          </label>
+                          {quizSubmitted && option.id === question.correctOptionId && (
+                            <span className="text-green-600 text-xs ml-2">
+                              ({t('dashboard.courses.correctAnswer')})
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                ))}
+                
+                {!quizSubmitted && (
+                  <Button onClick={handleSubmitQuiz}>
+                    {t('dashboard.courses.submitQuiz')}
+                  </Button>
+                )}
+                
+                {quizSubmitted && !quizPassed && (
+                  <Button onClick={() => {
+                    setQuizSubmitted(false);
+                    setSelectedAnswers({});
+                  }}>
+                    {t('dashboard.courses.tryAgain')}
+                  </Button>
+                )}
+              </TabsContent>
+            )}
           </Tabs>
         </CardContent>
         <CardFooter className="flex justify-between">

@@ -27,6 +27,31 @@ export type Course = {
   updated_at?: string;
 };
 
+export type Lecture = {
+  id: string;
+  course_id: string;
+  title: string;
+  description: string | null;
+  video_url: string | null;
+  content: string | null;
+  duration: string;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+  completed?: boolean; // Used when merging with lecture_progress
+};
+
+export type LectureProgress = {
+  id: string;
+  user_id: string;
+  lecture_id: string;
+  completed: boolean;
+  last_watched_at: string;
+  created_at?: string;
+  updated_at?: string;
+  lecture?: Lecture;
+};
+
 export type Enrollment = {
   id: string;
   user_id: string;
