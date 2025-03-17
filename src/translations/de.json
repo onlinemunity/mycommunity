@@ -269,7 +269,11 @@
       "title": "Deine Kurse",
       "inProgress": "In Bearbeitung",
       "completed": "Abgeschlossen",
-      "continued": "Fortsetzen"
+      "continued": "Fortsetzen",
+      "lecture": "Kapitel",
+      "duration": "Dauer",
+      "status": "Status",
+      "actions": "Aktion"
     },
     "profile": {
       "title": "Dein Profil",
