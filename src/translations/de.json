@@ -244,6 +244,7 @@
   "dashboard": {
     "overview": "Hauptmenü",
     "profile": "Mein Profil",
+    "myprofile": "Mein Profil",
     "memberArea": "Mein Bereich",
     "welcome": "Willkommen zurück",
     "upcomingEvents" : "Bevorstehende Events",
