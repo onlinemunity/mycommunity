@@ -278,6 +278,7 @@
       "actions": "Aktion"
     },
     "profile": {
+      "myprofile": "Mein Profil",
       "title": "Dein Profil",
       "edit": "Profil bearbeiten",
       "save": "Änderungen speichern",
