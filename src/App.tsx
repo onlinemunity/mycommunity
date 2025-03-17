@@ -1,27 +1,28 @@
+
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from '@/components/ui/toaster';
 
-import { Index } from '@/pages';
-import { About } from '@/pages/About';
-import { Community } from '@/pages/Community';
-import { Courses } from '@/pages/Courses';
-import { Contact } from '@/pages/Contact';
-import { Pricing } from '@/pages/Pricing';
-import { CourseDetail } from '@/pages/CourseDetail';
+import Index from '@/pages/Index';
+import About from '@/pages/About';
+import Community from '@/pages/Community';
+import Courses from '@/pages/Courses';
+import CourseDetail from '@/pages/CourseDetail';
+import Contact from '@/pages/Contact';
+import Pricing from '@/pages/Pricing';
 
-import { AuthPage } from '@/pages/Auth';
-import { AuthSuccess } from '@/pages/AuthSuccess';
-import { Dashboard } from '@/pages/Dashboard';
-import { Profile } from '@/pages/Dashboard/Profile';
-import { MemberArea } from '@/pages/Dashboard/MemberArea';
+import AuthPage from '@/pages/auth/AuthPage';
+import AuthSuccess from '@/pages/auth/AuthSuccess';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import Profile from '@/pages/dashboard/Profile';
+import MemberArea from '@/pages/dashboard/MemberArea';
 import MyCoursesPage from '@/pages/dashboard/MyCourses';
-import { AdminArea } from '@/pages/Dashboard/AdminArea';
-import { NotFound } from '@/pages/NotFound';
+import AdminArea from '@/pages/dashboard/AdminArea';
+import NotFound from '@/pages/NotFound';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { AdminRoute } from '@/components/AdminRoute';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { AdminRoute } from '@/components/auth/AdminRoute';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 
