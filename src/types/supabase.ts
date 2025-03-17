@@ -26,3 +26,12 @@ export type Course = {
   created_at?: string;
   updated_at?: string;
 };
+
+export type Enrollment = {
+  id: string;
+  user_id: string;
+  course_id: string;
+  enrolled_at: string;
+  progress: number;
+  course?: Course;
+};

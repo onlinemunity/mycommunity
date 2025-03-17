@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
@@ -10,134 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const MOCK_LECTURES = {
-  'react-fundamentals': [
-    {
-      id: 'lecture-1',
-      title: 'Introduction to React',
-      duration: '15 min',
-      completed: true,
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      content: '<p>React is a JavaScript library for building user interfaces.</p><p>It was developed by Facebook and is widely used in modern web development.</p>',
-      description: 'Learn the basics of React and its core concepts',
-      quiz: [
-        {
-          id: 'quiz-1-1',
-          question: 'Who developed React?',
-          options: [
-            { id: 'opt-1', text: 'Google' },
-            { id: 'opt-2', text: 'Facebook' },
-            { id: 'opt-3', text: 'Microsoft' },
-            { id: 'opt-4', text: 'Amazon' }
-          ],
-          correctOptionId: 'opt-2'
-        },
-        {
-          id: 'quiz-1-2',
-          question: 'React is a _____?',
-          options: [
-            { id: 'opt-1', text: 'Programming language' },
-            { id: 'opt-2', text: 'Framework' },
-            { id: 'opt-3', text: 'Library' },
-            { id: 'opt-4', text: 'Database' }
-          ],
-          correctOptionId: 'opt-3'
-        }
-      ]
-    },
-    {
-      id: 'lecture-2',
-      title: 'Components and Props',
-      duration: '25 min',
-      completed: false,
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      content: '<p>Components are the building blocks of React applications.</p><p>Props are how we pass data between components.</p>',
-      description: 'Understanding React components and how to use props',
-      quiz: [
-        {
-          id: 'quiz-2-1',
-          question: 'What are the building blocks of React applications?',
-          options: [
-            { id: 'opt-1', text: 'Functions' },
-            { id: 'opt-2', text: 'Components' },
-            { id: 'opt-3', text: 'Classes' },
-            { id: 'opt-4', text: 'Objects' }
-          ],
-          correctOptionId: 'opt-2'
-        }
-      ]
-    },
-    {
-      id: 'lecture-3',
-      title: 'State and Lifecycle',
-      duration: '30 min',
-      completed: false,
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      content: '<p>State is a way to store and manage component-specific data.</p><p>React components have lifecycle methods that let you run code at specific times.</p>',
-      description: 'Learn about React state and component lifecycle',
-      quiz: [
-        {
-          id: 'quiz-3-1',
-          question: 'What hook is used to add state to a functional component?',
-          options: [
-            { id: 'opt-1', text: 'useEffect' },
-            { id: 'opt-2', text: 'useState' },
-            { id: 'opt-3', text: 'useContext' },
-            { id: 'opt-4', text: 'useReducer' }
-          ],
-          correctOptionId: 'opt-2'
-        }
-      ]
-    }
-  ],
-  'advanced-css': [
-    {
-      id: 'lecture-1',
-      title: 'Flexbox Layout',
-      duration: '20 min',
-      completed: true,
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      content: '<p>Flexbox is a one-dimensional layout method for arranging items in rows or columns.</p>',
-      description: 'Learn how to use Flexbox for modern layouts',
-      quiz: [
-        {
-          id: 'quiz-1-1',
-          question: 'Flexbox is a _____-dimensional layout method',
-          options: [
-            { id: 'opt-1', text: 'One' },
-            { id: 'opt-2', text: 'Two' },
-            { id: 'opt-3', text: 'Three' },
-            { id: 'opt-4', text: 'Multi' }
-          ],
-          correctOptionId: 'opt-1'
-        }
-      ]
-    },
-    {
-      id: 'lecture-2',
-      title: 'CSS Grid',
-      duration: '25 min',
-      completed: true,
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      content: '<p>CSS Grid is a two-dimensional layout system designed for complex layouts.</p>',
-      description: 'Master CSS Grid for complex layouts',
-      quiz: [
-        {
-          id: 'quiz-2-1',
-          question: 'CSS Grid is a _____-dimensional layout method',
-          options: [
-            { id: 'opt-1', text: 'One' },
-            { id: 'opt-2', text: 'Two' },
-            { id: 'opt-3', text: 'Three' },
-            { id: 'opt-4', text: 'Multi' }
-          ],
-          correctOptionId: 'opt-2'
-        }
-      ]
-    }
-  ]
-};
+import mockLectures from '@/data/mockLectures';
 
 const MyCoursesPage = () => {
   const { t } = useTranslation();
@@ -156,7 +30,7 @@ const MyCoursesPage = () => {
           id,
           progress,
           course_id,
-          courses:course_id(*)
+          course:course_id(*)
         `)
         .eq('user_id', user.id);
       
@@ -165,12 +39,14 @@ const MyCoursesPage = () => {
         throw error;
       }
       
-      return enrollments.map(enrollment => ({
-        id: enrollment.courses.href,
-        title: enrollment.courses.title,
-        description: enrollment.courses.description,
+      return enrollments.map((enrollment: any) => ({
+        id: enrollment.course.href,
+        title: enrollment.course.title,
+        description: enrollment.course.description,
         progress: enrollment.progress,
-        lectures: MOCK_LECTURES[enrollment.courses.href as keyof typeof MOCK_LECTURES] || []
+        courseId: enrollment.course_id,
+        enrollmentId: enrollment.id,
+        lectures: mockLectures[enrollment.course.href as keyof typeof mockLectures] || []
       }));
     },
     enabled: !!user,
@@ -206,19 +82,12 @@ const MyCoursesPage = () => {
     setCourses(updatedCourses || []);
     
     try {
-      const { data: enrollment } = await supabase
+      // Update progress in the database
+      await supabase
         .from('enrollments')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('course_id', courseData.course_id)
-        .single();
+        .update({ progress: Math.round(newProgress) })
+        .eq('id', courseData.enrollmentId);
       
-      if (enrollment) {
-        await supabase
-          .from('enrollments')
-          .update({ progress: Math.round(newProgress) })
-          .eq('id', enrollment.id);
-      }
     } catch (error) {
       console.error('Error updating progress:', error);
     }
@@ -263,7 +132,16 @@ const MyCoursesPage = () => {
         <DashboardLayout>
           <h1 className="text-2xl font-bold mb-6">{t('dashboard.courses.title')}</h1>
           <div className="space-y-8">
-            <CourseOverview course={selectedCourse} />
+            <CourseOverview 
+              course={{
+                title: selectedCourse.title,
+                description: selectedCourse.description,
+                introVideo: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                duration: "4-6 weeks",
+                lectureCount: selectedCourse.lectures.length,
+                progress: selectedCourse.progress
+              }} 
+            />
             <div>
               <h2 className="text-xl font-semibold mb-4">{t('dashboard.courses.lecturesList')}</h2>
               <CourseTable course={selectedCourse} />

@@ -64,7 +64,7 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
         .from('enrollments')
         .insert({
           user_id: user.id,
-          course_id: course.id,
+          course_id: course.id
         });
       
       if (error) throw error;
