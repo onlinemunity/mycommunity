@@ -21,8 +21,9 @@ import MyCoursesPage from '@/pages/dashboard/MyCourses';
 import AdminArea from '@/pages/dashboard/AdminArea';
 import NotFound from '@/pages/NotFound';
 
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { AdminRoute } from '@/components/auth/AdminRoute';
+// Fix import statements to use default exports
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import AdminRoute from '@/components/auth/AdminRoute';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 

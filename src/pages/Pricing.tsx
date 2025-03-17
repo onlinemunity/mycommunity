@@ -98,18 +98,40 @@ const Pricing = () => {
     },
   ];
 
+  // Helper function to map our PricingPlan format to PricingCard props
+  const mapPlanToCardProps = (plan: PricingPlan, index: number) => {
+    // Convert our features to the format expected by PricingCard
+    const mappedFeatures = plan.features.map(feature => ({
+      text: feature.text,
+      included: feature.available
+    }));
+
+    return {
+      key: index,
+      title: plan.title,
+      description: plan.description,
+      price: plan.price,
+      period: "per month",
+      features: mappedFeatures,
+      ctaText: plan.cta,
+      ctaAction: () => console.log(`${plan.title} plan selected`),
+      highlighted: plan.popular,
+      delay: index * 100
+    };
+  };
+
   return (
     <Layout>
       <div className="page-transition container py-12 md:py-24">
         <SectionHeading
           title="Simple, Transparent Pricing"
           subtitle="Choose the plan that's right for you"
-          center
+          align="center"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {pricingPlans.map((plan, i) => (
-            <PricingCard key={i} plan={plan} />
+            <PricingCard {...mapPlanToCardProps(plan, i)} key={i} />
           ))}
         </div>
 
@@ -117,7 +139,7 @@ const Pricing = () => {
           <SectionHeading
             title="Everything You Need to Succeed"
             subtitle="All plans include these essential features"
-            center
+            align="center"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
