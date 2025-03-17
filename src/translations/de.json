@@ -266,6 +266,7 @@
       "viewAll": "Alle anzeigen"
     },
     "courses": {
+      "myCourses": "Meine Kurse",
       "title": "Deine Kurse",
       "inProgress": "In Bearbeitung",
       "completed": "Abgeschlossen",
