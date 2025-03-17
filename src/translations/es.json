@@ -1,4 +1,3 @@
-
 {
   "common": {
     "learnMore": "Saber más",
@@ -258,8 +257,28 @@
     "courses": {
       "title": "Tus Cursos",
       "inProgress": "En Progreso",
-      "completed": "Completados",
-      "continue": "Continuar"
+      "completed": "Completado",
+      "continue": "Continuar",
+      "review": "Revisar",
+      "lecture": "Lección",
+      "duration": "Duración",
+      "status": "Estado",
+      "actions": "Acciones",
+      "backToCourse": "Volver al Curso",
+      "video": "Video",
+      "notes": "Notas",
+      "quiz": "Cuestionario",
+      "quizPassed": "¡Felicidades! Has aprobado el cuestionario.",
+      "quizFailed": "Por favor intenta de nuevo. Necesitas 70% para aprobar.",
+      "correctAnswer": "Respuesta correcta",
+      "submitQuiz": "Enviar Respuestas",
+      "tryAgain": "Intentar de Nuevo",
+      "markComplete": "Marcar como completado",
+      "completeAndContinue": "Completar y Continuar",
+      "lessons": "lecciones",
+      "yourProgress": "Tu Progreso",
+      "lecturesList": "Contenido del Curso",
+      "myCourses": "Mis Cursos"
     },
     "profile": {
       "title": "Tu Perfil",

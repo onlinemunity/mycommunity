@@ -1,4 +1,3 @@
-
 import { ReactNode, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -14,6 +13,7 @@ import {
   Menu,
   X,
   Shield,
+  BookOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -51,13 +51,17 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       icon: <User size={20} />,
     },
     {
+      name: t('dashboard.courses.myCourses') || 'My Courses',
+      path: '/dashboard/courses',
+      icon: <BookOpen size={20} />,
+    },
+    {
       name: t('dashboard.memberArea') || 'Member Area',
       path: '/dashboard/member',
       icon: <Users size={20} />,
     },
   ];
 
-  // Admin items only shown to admin users
   const adminItems = [
     {
       name: t('dashboard.adminArea') || 'Admin Area',
