@@ -1,5 +1,5 @@
 
-import { Course } from '@/types/supabase';
+import { Course, Lecture } from '@/types/supabase';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { BookOpen, Video, FileText } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -26,7 +26,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
         .order('sort_order', { ascending: true });
       
       if (error) throw error;
-      return data;
+      return data as Lecture[];
     },
   });
 
@@ -35,7 +35,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
     if (!lectures || lectures.length === 0) return [];
     
     // Create sections based on sort_order ranges
-    const lecturesBySection = lectures.reduce((sections, lecture) => {
+    const lecturesBySection = lectures.reduce((sections: Record<string, any[]>, lecture) => {
       // Place in sections based on sort_order
       let sectionTitle;
       if (lecture.sort_order < 3) {

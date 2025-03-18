@@ -65,7 +65,9 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {course.lectures.map((lecture) => (
+              {course.lectures
+                .sort((a, b) => a.sort_order - b.sort_order)
+                .map((lecture) => (
                 <TableRow key={lecture.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleNavigateToLecture(lecture.id)}>
                   <TableCell className="font-medium flex items-center gap-2">
                     {getLectureIcon(lecture)}
