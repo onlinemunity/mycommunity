@@ -407,7 +407,7 @@
     "accountStatus": "Kontostatus",
     "accountType": "Kontotyp",
     "updateSuccess": "Daten geändert",
-    "updateSuccessDesc"; "Daten erfolgreich gespeichert"
+    "updateSuccessDesc": "Daten erfolgreich gespeichert"
   },
   "member": {
     "title": "Mein Bereich",
