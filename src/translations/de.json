@@ -182,6 +182,7 @@
       "subtitle": "Entdecke Kurse, die dir beim Wachsen helfen",
       "searchPlaceholder": "Kurse suchen...",
       "searchButton": "Suchen"
+      "loadMoreButton": "Weitere Kurse laden...";
     },
     "popular": {
       "title": "Beliebte Kurse",
@@ -204,7 +205,7 @@
       "popular": "Beliebteste",
       "rating": "Bestbewertet"
     },
-    "results": "{{count}} Ergebnisse gefunden",
+    "results": "Ergebnisse gefunden",
     "cta": {
       "title": "Nicht gefunden, wonach du suchst?",
       "subtitle": "Lass uns wissen, welche Kurse du sehen möchtest",
@@ -358,7 +359,11 @@
       "lectures": "Vorlesungen",
       "lessons": "Lektionen",
       "yourProgress": "Dein Fortschritt",
-      "lecturesList": "Kursinhalt"
+      "lecturesList": "Kursinhalt",
+      "quiz": "Quiz",
+      "submitQuiz": "Abschicken",
+      "tryAgain": "nochmal versuchen"
+      
     },
     "profile": {
       "myprofile": "Mein Profil",
@@ -388,6 +393,7 @@
     "username": "Benutzername",
     "fullName": "Vollständiger Name",
     "email": "E-Mail-Adresse",
+    "emailNote": "Dein Login E-Mail",
     "saveChanges": "Änderungen speichern",
     "usernamePlaceholder": "Gib deinen Benutzernamen ein",
     "fullNamePlaceholder": "Gib deinen vollständigen Namen ein",
