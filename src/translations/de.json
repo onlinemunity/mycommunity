@@ -177,6 +177,7 @@
   "courses": {
     "title": "Unsere Kurse",
     "subtitle": "Spezialisiertes Wissen für deine Entwicklung",
+    "loadMoreButton": "Weitere Kurse laden...",
     "hero": {
       "title": "Erweitere dein Wissen",
       "subtitle": "Entdecke Kurse, die dir beim Wachsen helfen",
