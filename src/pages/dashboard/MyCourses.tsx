@@ -133,7 +133,7 @@ const MyCoursesPage = () => {
             completed: false,
             sort_order: 2,
             course_id: enrollment.course_id,
-            video_url: null,
+            video_url: 'https://youtube.com/embed/bKP__MRJd_8',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             description: 'Learn the fundamental concepts of this course.',
