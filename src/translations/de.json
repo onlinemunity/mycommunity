@@ -362,7 +362,10 @@
       "lecturesList": "Kursinhalt",
       "quiz": "Quiz",
       "submitQuiz": "Abschicken",
-      "tryAgain": "nochmal versuchen"
+      "tryAgain": "nochmal versuchen",
+      "quizFailed": "Leiner nicht bestanden",
+      "correctAnswer": "richtig",
+      "quizPassed": "Alles richtig!"
       
     },
     "profile": {
