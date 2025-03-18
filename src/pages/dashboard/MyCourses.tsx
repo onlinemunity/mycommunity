@@ -120,7 +120,7 @@ const MyCoursesPage = () => {
             completed: false,
             sort_order: 1,
             course_id: enrollment.course_id,
-            video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            video_url: 'https://youtube.com/embed/LCytZwzxyrY',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             description: 'Welcome to the course! In this lecture, we will go over the course outline.',
