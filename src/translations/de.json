@@ -397,7 +397,7 @@
     "username": "Benutzername",
     "fullName": "Vollständiger Name",
     "email": "E-Mail-Adresse",
-    "emailNote": "Dein Login E-Mail",
+    "emailNote": "Deine Login E-Mail",
     "saveChanges": "Änderungen speichern",
     "usernamePlaceholder": "Gib deinen Benutzernamen ein",
     "fullNamePlaceholder": "Gib deinen vollständigen Namen ein",
@@ -405,7 +405,9 @@
     "accountDetailsDesc": "Sieh dir deine Kontoinformationen an",
     "memberSince": "Mitglied seit",
     "accountStatus": "Kontostatus",
-    "accountType": "Kontotyp"
+    "accountType": "Kontotyp",
+    "updateSuccess": "Daten geändert",
+    "updateSuccessDesc"; "Daten erfolgreich gespeichert"
   },
   "member": {
     "title": "Mein Bereich",
