@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { Lecture } from '@/types/supabase';
+import { toast } from '@/components/ui/use-toast';
 
 interface CourseProgressProps {
   course: {
@@ -33,10 +34,55 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
     }
   };
   
-  // Check if lectures exist
+  // Create default lectures if none exist
+  const defaultLectures = [
+    {
+      id: `${course.id}-lecture-1`,
+      title: 'Introduction to the Course',
+      duration: '15:30',
+      completed: false,
+      sort_order: 1,
+      course_id: course.id,
+      video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      description: 'Welcome to the course! In this lecture, we will go over the course outline.',
+      content: 'This is the content of the introduction lecture.'
+    },
+    {
+      id: `${course.id}-lecture-2`,
+      title: 'Core Concepts',
+      duration: '20:45',
+      completed: false,
+      sort_order: 2,
+      course_id: course.id,
+      video_url: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      description: 'Learn the fundamental concepts of this course.',
+      content: 'This is the content about core concepts.'
+    },
+    {
+      id: `${course.id}-lecture-3`,
+      title: 'Quiz: Check Your Knowledge',
+      duration: '10 mins',
+      completed: false,
+      sort_order: 3,
+      course_id: course.id,
+      video_url: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      description: 'Test your understanding of the core concepts.',
+      content: 'This is a quiz to test your knowledge.'
+    }
+  ];
+  
+  // Check if lectures exist, if not use the default lectures
   const hasLectures = course.lectures && course.lectures.length > 0;
+  const displayLectures = hasLectures ? course.lectures.sort((a, b) => a.sort_order - b.sort_order) : defaultLectures;
   
   const handleNavigateToLecture = (lectureId: string) => {
+    console.log(`Navigating to lecture: ${lectureId}`);
     navigate(`/dashboard/courses/${course.id}/lecture/${lectureId}`);
   };
   
@@ -54,64 +100,49 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
           </div>
         </div>
         
-        {hasLectures ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[40%]">{t('dashboard.courses.lecture')}</TableHead>
-                <TableHead>{t('dashboard.courses.duration')}</TableHead>
-                <TableHead>{t('dashboard.courses.status')}</TableHead>
-                <TableHead className="text-right">{t('dashboard.courses.actions')}</TableHead>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[40%]">{t('dashboard.courses.lecture')}</TableHead>
+              <TableHead>{t('dashboard.courses.duration')}</TableHead>
+              <TableHead>{t('dashboard.courses.status')}</TableHead>
+              <TableHead className="text-right">{t('dashboard.courses.actions')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {displayLectures.map((lecture) => (
+              <TableRow key={lecture.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleNavigateToLecture(lecture.id)}>
+                <TableCell className="font-medium flex items-center gap-2">
+                  {getLectureIcon(lecture)}
+                  {lecture.title}
+                </TableCell>
+                <TableCell>{lecture.duration}</TableCell>
+                <TableCell>
+                  {lecture.completed ? (
+                    <div className="flex items-center gap-1 text-green-600">
+                      <CheckCircle className="h-4 w-4" />
+                      <span className="text-xs">{t('dashboard.courses.completed')}</span>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">{t('dashboard.courses.inProgress')}</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNavigateToLecture(lecture.id);
+                    }}
+                  >
+                    {lecture.completed ? t('dashboard.courses.review') : t('dashboard.courses.continue')}
+                  </Button>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {course.lectures
-                .sort((a, b) => a.sort_order - b.sort_order)
-                .map((lecture) => (
-                <TableRow key={lecture.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleNavigateToLecture(lecture.id)}>
-                  <TableCell className="font-medium flex items-center gap-2">
-                    {getLectureIcon(lecture)}
-                    {lecture.title}
-                  </TableCell>
-                  <TableCell>{lecture.duration}</TableCell>
-                  <TableCell>
-                    {lecture.completed ? (
-                      <div className="flex items-center gap-1 text-green-600">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="text-xs">{t('dashboard.courses.completed')}</span>
-                      </div>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">{t('dashboard.courses.inProgress')}</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleNavigateToLecture(lecture.id);
-                      }}
-                    >
-                      {lecture.completed ? t('dashboard.courses.review') : t('dashboard.courses.continue')}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">No lectures available for this course yet.</p>
-            <Button 
-              variant="outline" 
-              className="mt-4" 
-              onClick={() => navigate(`/dashboard/courses/${course.id}`)}
-            >
-              View Course Details
-            </Button>
-          </div>
-        )}
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

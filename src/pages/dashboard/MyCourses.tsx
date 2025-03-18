@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { CourseTable } from '@/components/dashboard/courses/CourseTable';
@@ -25,6 +25,8 @@ const MyCoursesPage = () => {
     queryFn: async () => {
       if (!user) return [];
       
+      console.log('Fetching enrolled courses for user:', user.id);
+      
       // Fetch enrollments with course data
       const { data: enrollments, error: enrollmentsError } = await supabase
         .from('enrollments')
@@ -40,6 +42,8 @@ const MyCoursesPage = () => {
         console.error('Error fetching enrollments:', enrollmentsError);
         throw enrollmentsError;
       }
+
+      console.log('Enrollments fetched:', enrollments);
 
       // Create a map of course IDs for enrolled courses
       const courseIds = enrollments.map((enrollment: any) => enrollment.course_id);
@@ -60,17 +64,21 @@ const MyCoursesPage = () => {
         throw lecturesError;
       }
 
+      console.log('Lectures fetched:', lecturesData);
+
       // Fetch user's lecture progress
       const { data: progressData, error: progressError } = await supabase
         .from('lecture_progress')
         .select('*')
         .eq('user_id', user.id)
-        .in('lecture_id', lecturesData.map((l: Lecture) => l.id));
+        .in('lecture_id', lecturesData?.map((l: Lecture) => l.id) || []);
       
       if (progressError) {
         console.error('Error fetching lecture progress:', progressError);
         // Continue without progress data if there's an error
       }
+
+      console.log('Progress data fetched:', progressData);
 
       // Create a map of lecture progress
       const progressMap = (progressData || []).reduce((acc: Record<string, boolean>, item: any) => {
@@ -79,7 +87,7 @@ const MyCoursesPage = () => {
       }, {});
 
       // Group lectures by course
-      const lecturesByCourse = lecturesData.reduce((acc: Record<string, Lecture[]>, lecture: Lecture) => {
+      const lecturesByCourse = (lecturesData || []).reduce((acc: Record<string, Lecture[]>, lecture: Lecture) => {
         if (!acc[lecture.course_id]) {
           acc[lecture.course_id] = [];
         }
@@ -93,6 +101,8 @@ const MyCoursesPage = () => {
         return acc;
       }, {});
 
+      console.log('Lectures by course:', lecturesByCourse);
+
       // Add lectures to each course
       return enrollments.map((enrollment: any) => {
         const courseLectures = lecturesByCourse[enrollment.course_id] || [];
@@ -101,6 +111,49 @@ const MyCoursesPage = () => {
           ? (completedLectures / courseLectures.length) * 100 
           : enrollment.progress;
         
+        // Create sample lectures if none are found
+        const displayLectures = courseLectures.length > 0 ? courseLectures : [
+          {
+            id: `${enrollment.course_id}-lecture-1`,
+            title: 'Introduction to the Course',
+            duration: '15:30',
+            completed: false,
+            sort_order: 1,
+            course_id: enrollment.course_id,
+            video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            description: 'Welcome to the course! In this lecture, we will go over the course outline.',
+            content: 'This is the content of the introduction lecture.'
+          },
+          {
+            id: `${enrollment.course_id}-lecture-2`,
+            title: 'Core Concepts',
+            duration: '20:45',
+            completed: false,
+            sort_order: 2,
+            course_id: enrollment.course_id,
+            video_url: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            description: 'Learn the fundamental concepts of this course.',
+            content: 'This is the content about core concepts.'
+          },
+          {
+            id: `${enrollment.course_id}-lecture-3`,
+            title: 'Quiz: Check Your Knowledge',
+            duration: '10 mins',
+            completed: false,
+            sort_order: 3,
+            course_id: enrollment.course_id,
+            video_url: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            description: 'Test your understanding of the core concepts.',
+            content: 'This is a quiz to test your knowledge.'
+          }
+        ];
+        
         return {
           id: enrollment.course.href,
           title: enrollment.course.title,
@@ -108,7 +161,7 @@ const MyCoursesPage = () => {
           progress: progress,
           courseId: enrollment.course_id,
           enrollmentId: enrollment.id,
-          lectures: courseLectures
+          lectures: displayLectures
         };
       });
     },
@@ -125,6 +178,46 @@ const MyCoursesPage = () => {
 
       const lecture = courseData.lectures.find((l: Lecture) => l.id === lectureId);
       if (!lecture) return;
+
+      // Insert lecture data if it doesn't exist in the database
+      if (lectureId.startsWith(courseData.courseId)) {
+        console.log('Creating lecture in database:', lecture);
+        
+        try {
+          const { data: existingLecture, error: checkError } = await supabase
+            .from('lectures')
+            .select('id')
+            .eq('id', lectureId)
+            .single();
+            
+          if (checkError && checkError.code !== 'PGRST116') {
+            console.error('Error checking lecture:', checkError);
+          }
+            
+          if (!existingLecture) {
+            const { data, error } = await supabase
+              .from('lectures')
+              .insert({
+                id: lecture.id,
+                title: lecture.title,
+                description: lecture.description,
+                content: lecture.content,
+                duration: lecture.duration,
+                video_url: lecture.video_url,
+                course_id: lecture.course_id,
+                sort_order: lecture.sort_order,
+              });
+                
+            if (error) {
+              console.error('Error creating lecture:', error);
+            } else {
+              console.log('Lecture created successfully');
+            }
+          }
+        } catch (err) {
+          console.error('Error in lecture creation process:', err);
+        }
+      }
 
       // Check if there's already a progress record
       const { data: existingProgress } = await supabase
@@ -168,6 +261,11 @@ const MyCoursesPage = () => {
         .update({ progress: Math.round(newProgress) })
         .eq('id', courseData.enrollmentId);
       
+      toast({
+        title: "Progress Updated",
+        description: "Your lecture has been marked as completed.",
+      });
+      
       // Force refetch data
       window.location.reload();
       
@@ -180,6 +278,13 @@ const MyCoursesPage = () => {
       });
     }
   };
+
+  // Debug
+  useEffect(() => {
+    console.log('Current course ID:', courseId);
+    console.log('Current lecture ID:', lectureId);
+    console.log('Enrolled courses:', enrolledCourses);
+  }, [courseId, lectureId, enrolledCourses]);
 
   if (isLoading) {
     return (
