@@ -34,7 +34,7 @@
     "forgotPassword": "Passwort vergessen?",
     "resetPassword": "Passwort zurücksetzen",
     "alreadyHaveAccount": "Bereits ein Konto? Anmelden",
-    "dontHaveAccount": "Kein Konto? Registrieren",
+    "dontHaveAccount": "Kein Konto? Registrieren"
   },
   "auth": {
     "signIn": "Anmelden",
