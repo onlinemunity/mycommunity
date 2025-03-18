@@ -35,29 +35,26 @@
     "resetPassword": "Passwort zurücksetzen",
     "alreadyHaveAccount": "Bereits ein Konto? Anmelden",
     "dontHaveAccount": "Kein Konto? Registrieren",
-
-    "auth.signIn": "Anmelden",
-  "auth.signInDescription": "Melden Sie sich mit Ihren Zugangsdaten an, um fortzufahren.",
-  
-  "auth.forgotPassword": "Passwort vergessen?",
-  
-  "auth.signInButton": "Anmelden",
-  "auth.noAccount": "Kein Konto?",
-  "auth.createAccount": "Konto erstellen",
-  
-  "auth.signUp": "Registrieren",
-  "auth.signUpDescription": "Erstellen Sie ein neues Konto, um loszulegen.",
-  "auth.fullName": "Vollständiger Name",
-  "auth.fullNamePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
-  "auth.email": "E-Mail-Adresse",
-  "auth.emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
-  "auth.password": "Passwort",
-  "auth.passwordPlaceholder": "Geben Sie Ihr Passwort ein",
-  "auth.signUpButton": "Registrieren",
-  "auth.haveAccount": "Haben Sie bereits ein Konto?",
-  "auth.signInNow": "Jetzt anmelden"
-    
   },
+  "auth": {
+    "signIn": "Anmelden",
+    "signInDescription": "Melden Sie sich mit Ihren Zugangsdaten an, um fortzufahren.",
+    "forgotPassword": "Passwort vergessen?",
+    "signInButton": "Anmelden",
+    "noAccount": "Kein Konto?",
+    "createAccount": "Konto erstellen",
+    "signUp": "Registrieren",
+    "signUpDescription": "Erstellen Sie ein neues Konto, um loszulegen.",  
+    "fullName": "Vollständiger Name",
+    "fullNamePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "password": "Passwort",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "signUpButton": "Registrieren",
+    "haveAccount": "Haben Sie bereits ein Konto?",
+    "signInNow": "Jetzt anmelden"
+  },  
   "navigation": {
     "home": "Startseite",
     "about": "Über uns",
