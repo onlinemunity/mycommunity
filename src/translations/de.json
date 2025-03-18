@@ -108,8 +108,15 @@
   "community": {
     "title": "Unsere Community",
     "subtitle": "Ein Ort zum Lernen, Teilen und Wachsen",
+    "hero": {
+      "title": "Werde Teil unserer Community",
+      "subtitle": "Verbinde dich mit Gleichgesinnten, teile Wissen und wachse gemeinsam",
+      "joinButton": "Jetzt beitreten",
+      "learnMoreButton": "Mehr erfahren"
+    },
     "features": {
       "title": "Community-Funktionen",
+      "subtitle": "Alles was du brauchst, um dich zu vernetzen und zu wachsen",
       "forums": {
         "title": "Themenbasierte Foren",
         "description": "Diskutiere in organisierten Themenbereichen"
@@ -121,7 +128,40 @@
       "content": {
         "title": "Exklusive Inhalte",
         "description": "Zugang zu speziellen Ressourcen und Materialien"
+      },
+      "networking": {
+        "title": "Networking-Möglichkeiten",
+        "description": "Vernetze dich mit Fachleuten in deinem Bereich"
+      },
+      "discussions": {
+        "title": "Spannende Diskussionen",
+        "description": "Nimm an anregenden Gesprächen teil"
+      },
+      "events": {
+        "title": "Community-Events",
+        "description": "Nimm an Webinaren, Workshops und Treffen teil"
+      },
+      "exclusiveContent": {
+        "title": "Exklusive Inhalte",
+        "description": "Zugang zu Premium-Lernmaterialien"
+      },
+      "support": {
+        "title": "Community-Unterstützung",
+        "description": "Erhalte Hilfe von Peers und Experten"
+      },
+      "lifetime": {
+        "title": "Lebenslanger Zugang",
+        "description": "Lerne in deinem eigenen Tempo ohne Zeitbegrenzung"
       }
+    },
+    "testimonials": {
+      "title": "Was unsere Mitglieder sagen",
+      "subtitle": "Erfahrungen aus unserer Community"
+    },
+    "cta": {
+      "title": "Bereit, Teil unserer Community zu werden?",
+      "subtitle": "Mache den nächsten Schritt auf deiner Lernreise",
+      "button": "Jetzt beitreten"
     },
     "join": {
       "title": "Werde Teil unserer Community",
@@ -137,13 +177,39 @@
   "courses": {
     "title": "Unsere Kurse",
     "subtitle": "Spezialisiertes Wissen für deine Entwicklung",
-    "filter": {
+    "hero": {
+      "title": "Erweitere dein Wissen",
+      "subtitle": "Entdecke Kurse, die dir beim Wachsen helfen",
+      "searchPlaceholder": "Kurse suchen...",
+      "searchButton": "Suchen"
+    },
+    "popular": {
+      "title": "Beliebte Kurse",
+      "subtitle": "Unsere gefragtesten Lernerfahrungen"
+    },
+    "filters": {
+      "title": "Filter",
+      "categories": "Kategorien",
+      "level": "Schwierigkeit",
+      "duration": "Dauer",
+      "resetButton": "Filter zurücksetzen",
       "all": "Alle",
       "category": "Kategorie",
-      "level": "Schwierigkeit",
       "beginner": "Anfänger",
       "intermediate": "Fortgeschritten",
       "advanced": "Experte"
+    },
+    "sortby": {
+      "newest": "Neueste",
+      "popular": "Beliebteste",
+      "rating": "Bestbewertet"
+    },
+    "results": "{{count}} Ergebnisse gefunden",
+    "cta": {
+      "title": "Nicht gefunden, wonach du suchst?",
+      "subtitle": "Lass uns wissen, welche Kurse du sehen möchtest",
+      "button": "Kurs vorschlagen",
+      "secondaryButton": "Alle Kurse durchsuchen"
     },
     "search": {
       "placeholder": "Kurs suchen...",
@@ -255,14 +321,20 @@
       "courses": "Eingeschriebene Kurse",
       "completed": "Abgeschlossene Kurse",
       "posts": "Forum-Beiträge",
-      "connections": "Verbindungen"
+      "connections": "Verbindungen",
+      "members": "Community-Mitglieder",
+      "membersDesc": "Aktive Mitglieder in unserer Community",
+      "coursesDesc": "Kurse, die du derzeit belegst",
+      "events": "Kommende Events",
+      "eventsDesc": "Events in den nächsten 30 Tagen",
+      "activity": "Letzte Aktivitäten",
+      "activityDesc": "Deine neuesten Interaktionen"
     },
-
-      "member": {
-      "title": "Mein Bereich",
-      "subtitle": "Übersicht über alle Kurse, Events und Community-Beiträge"
-    },
-    
+    "recentActivity": "Letzte Aktivitäten",
+    "recentActivityDesc": "Deine neuesten Interaktionen mit der Community",
+    "activityItem": "Aktivität",
+    "upcomingEventsDesc": "Bald anstehende Events",
+    "eventTitle": "Event",
     "activity": {
       "title": "Neueste Aktivitäten",
       "empty": "Noch keine Aktivitäten",
@@ -273,11 +345,20 @@
       "title": "Deine Kurse",
       "inProgress": "In Bearbeitung",
       "completed": "Abgeschlossen",
-      "continued": "Fortsetzen",
+      "continue": "Fortsetzen",
       "lecture": "Kapitel",
       "duration": "Dauer",
       "status": "Status",
-      "actions": "Aktion"
+      "actions": "Aktion",
+      "backToCourse": "Zurück zum Kurs",
+      "video": "Video",
+      "notes": "Notizen",
+      "markComplete": "Als abgeschlossen markieren",
+      "completeAndContinue": "Abschließen & Fortfahren",
+      "lectures": "Vorlesungen",
+      "lessons": "Lektionen",
+      "yourProgress": "Dein Fortschritt",
+      "lecturesList": "Kursinhalt"
     },
     "profile": {
       "myprofile": "Mein Profil",
@@ -295,6 +376,39 @@
       "upload": "Hochladen",
       "remove": "Entfernen"
     }
+  },
+  "profile": {
+    "title": "Mein Profil",
+    "subtitle": "Verwalte deine persönlichen Informationen",
+    "personalInfo": "Persönliche Informationen",
+    "personalInfoDesc": "Aktualisiere deine grundlegenden Profildetails",
+    "avatar": "Profilbild",
+    "avatarDesc": "Lade ein Profilbild hoch (max. 2MB)",
+    "avatarUrl": "Bild-URL",
+    "username": "Benutzername",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail-Adresse",
+    "saveChanges": "Änderungen speichern",
+    "usernamePlaceholder": "Gib deinen Benutzernamen ein",
+    "fullNamePlaceholder": "Gib deinen vollständigen Namen ein",
+    "accountDetails": "Kontoinformationen",
+    "accountDetailsDesc": "Sieh dir deine Kontoinformationen an",
+    "memberSince": "Mitglied seit",
+    "accountStatus": "Kontostatus",
+    "accountType": "Kontotyp"
+  },
+  "member": {
+    "title": "Mein Bereich",
+    "subtitle": "Deine Community-Zentrale für Kurse, Events und Ressourcen",
+    "events": "Kommende Events",
+    "eventsDesc": "Events, die dich interessieren könnten",
+    "viewAllEvents": "Alle Events anzeigen",
+    "resources": "Lernressourcen",
+    "resourcesDesc": "Hilfreiche Materialien für deine Reise",
+    "viewAllResources": "Alle Ressourcen anzeigen",
+    "discussions": "Aktuelle Diskussionen",
+    "discussionsDesc": "Nimm an Gesprächen in deiner Community teil",
+    "viewAllDiscussions": "Alle Diskussionen anzeigen"
   },
   "auth": {
     "signIn": {

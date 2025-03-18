@@ -1,3 +1,4 @@
+
 {
   "common": {
     "learnMore": "Saber más",
@@ -105,8 +106,15 @@
   "community": {
     "title": "Nuestra Comunidad",
     "subtitle": "Un lugar para aprender, compartir y crecer",
+    "hero": {
+      "title": "Únete a Nuestra Próspera Comunidad",
+      "subtitle": "Conéctate con colegas, comparte conocimientos y crece juntos",
+      "joinButton": "Únete Ahora",
+      "learnMoreButton": "Saber Más"
+    },
     "features": {
       "title": "Características de la Comunidad",
+      "subtitle": "Todo lo que necesitas para conectarte y crecer",
       "forums": {
         "title": "Foros por Temas",
         "description": "Discute en áreas temáticas organizadas"
@@ -118,7 +126,40 @@
       "content": {
         "title": "Contenido Exclusivo",
         "description": "Acceso a recursos y materiales especiales"
+      },
+      "networking": {
+        "title": "Oportunidades de Networking",
+        "description": "Conéctate con profesionales en tu campo"
+      },
+      "discussions": {
+        "title": "Discusiones Interesantes",
+        "description": "Participa en conversaciones reflexivas"
+      },
+      "events": {
+        "title": "Eventos Comunitarios",
+        "description": "Únete a webinars, talleres y encuentros"
+      },
+      "exclusiveContent": {
+        "title": "Contenido Exclusivo",
+        "description": "Accede a materiales premium de aprendizaje"
+      },
+      "support": {
+        "title": "Soporte Comunitario",
+        "description": "Recibe ayuda de colegas y expertos"
+      },
+      "lifetime": {
+        "title": "Acceso de por Vida",
+        "description": "Aprende a tu propio ritmo sin límites de tiempo"
       }
+    },
+    "testimonials": {
+      "title": "Lo que Dicen los Miembros",
+      "subtitle": "Escucha a los miembros de nuestra comunidad"
+    },
+    "cta": {
+      "title": "¿Listo para Unirte a Nuestra Comunidad?",
+      "subtitle": "Da el siguiente paso en tu viaje de aprendizaje",
+      "button": "Únete Ahora"
     },
     "join": {
       "title": "Únete a Nuestra Comunidad",
@@ -134,13 +175,39 @@
   "courses": {
     "title": "Nuestros Cursos",
     "subtitle": "Conocimiento especializado para tu desarrollo",
-    "filter": {
+    "hero": {
+      "title": "Expande Tu Conocimiento",
+      "subtitle": "Descubre cursos diseñados para ayudarte a crecer",
+      "searchPlaceholder": "Buscar cursos...",
+      "searchButton": "Buscar"
+    },
+    "popular": {
+      "title": "Cursos Populares",
+      "subtitle": "Nuestras experiencias de aprendizaje más solicitadas"
+    },
+    "filters": {
+      "title": "Filtros",
+      "categories": "Categorías",
+      "level": "Dificultad",
+      "duration": "Duración",
+      "resetButton": "Restablecer Filtros",
       "all": "Todos",
       "category": "Categoría",
-      "level": "Dificultad",
       "beginner": "Principiante",
       "intermediate": "Intermedio",
       "advanced": "Avanzado"
+    },
+    "sortby": {
+      "newest": "Más Recientes",
+      "popular": "Más Populares",
+      "rating": "Mejor Calificados"
+    },
+    "results": "Mostrando {{count}} resultados",
+    "cta": {
+      "title": "¿No encuentras lo que buscas?",
+      "subtitle": "Déjanos saber qué cursos te gustaría ver",
+      "button": "Solicitar un Curso",
+      "secondaryButton": "Explorar Todos los Cursos"
     },
     "search": {
       "placeholder": "Buscar cursos...",
@@ -247,8 +314,20 @@
       "courses": "Cursos Inscritos",
       "completed": "Cursos Completados",
       "posts": "Publicaciones en el Foro",
-      "connections": "Conexiones"
+      "connections": "Conexiones",
+      "members": "Miembros de la Comunidad",
+      "membersDesc": "Miembros activos en nuestra comunidad",
+      "coursesDesc": "Cursos que estás tomando actualmente",
+      "events": "Próximos Eventos",
+      "eventsDesc": "Eventos programados en los próximos 30 días",
+      "activity": "Actividad Reciente",
+      "activityDesc": "Tus últimas interacciones"
     },
+    "recentActivity": "Actividad Reciente",
+    "recentActivityDesc": "Tus últimas interacciones con la comunidad",
+    "activityItem": "Actividad",
+    "upcomingEventsDesc": "Eventos próximos",
+    "eventTitle": "Evento",
     "activity": {
       "title": "Actividad Reciente",
       "empty": "Aún no hay actividad",
@@ -295,6 +374,39 @@
       "upload": "Subir",
       "remove": "Eliminar"
     }
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "subtitle": "Gestiona tu información personal",
+    "personalInfo": "Información Personal",
+    "personalInfoDesc": "Actualiza los detalles básicos de tu perfil",
+    "avatar": "Foto de Perfil",
+    "avatarDesc": "Sube una imagen de perfil (máx. 2MB)",
+    "avatarUrl": "URL de la imagen",
+    "username": "Nombre de Usuario",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "saveChanges": "Guardar Cambios",
+    "usernamePlaceholder": "Ingresa tu nombre de usuario",
+    "fullNamePlaceholder": "Ingresa tu nombre completo",
+    "accountDetails": "Detalles de la Cuenta",
+    "accountDetailsDesc": "Consulta la información de tu cuenta",
+    "memberSince": "Miembro Desde",
+    "accountStatus": "Estado de la Cuenta",
+    "accountType": "Tipo de Cuenta"
+  },
+  "member": {
+    "title": "Área de Miembros",
+    "subtitle": "Tu centro comunitario para cursos, eventos y recursos",
+    "events": "Próximos Eventos",
+    "eventsDesc": "Eventos que podrían interesarte",
+    "viewAllEvents": "Ver Todos los Eventos",
+    "resources": "Recursos de Aprendizaje",
+    "resourcesDesc": "Materiales útiles para tu viaje",
+    "viewAllResources": "Ver Todos los Recursos",
+    "discussions": "Discusiones Recientes",
+    "discussionsDesc": "Únete a conversaciones en tu comunidad",
+    "viewAllDiscussions": "Ver Todas las Discusiones"
   },
   "auth": {
     "signIn": {

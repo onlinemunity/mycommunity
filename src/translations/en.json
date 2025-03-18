@@ -1,3 +1,4 @@
+
 {
   "common": {
     "learnMore": "Learn more",
@@ -105,8 +106,15 @@
   "community": {
     "title": "Our Community",
     "subtitle": "A place to learn, share, and grow",
+    "hero": {
+      "title": "Join Our Thriving Community",
+      "subtitle": "Connect with peers, share knowledge, and grow together",
+      "joinButton": "Join Now",
+      "learnMoreButton": "Learn More"
+    },
     "features": {
       "title": "Community Features",
+      "subtitle": "Everything you need to connect and grow",
       "forums": {
         "title": "Topic-Based Forums",
         "description": "Discuss in organized topic areas"
@@ -118,7 +126,40 @@
       "content": {
         "title": "Exclusive Content",
         "description": "Access to special resources and materials"
+      },
+      "networking": {
+        "title": "Networking Opportunities",
+        "description": "Connect with professionals in your field"
+      },
+      "discussions": {
+        "title": "Engaging Discussions",
+        "description": "Participate in thoughtful conversations"
+      },
+      "events": {
+        "title": "Community Events",
+        "description": "Join webinars, workshops and meetups"
+      },
+      "exclusiveContent": {
+        "title": "Exclusive Content",
+        "description": "Access premium learning materials"
+      },
+      "support": {
+        "title": "Community Support",
+        "description": "Get help from peers and experts"
+      },
+      "lifetime": {
+        "title": "Lifetime Access",
+        "description": "Learn at your own pace with no time limits"
       }
+    },
+    "testimonials": {
+      "title": "What Members Say",
+      "subtitle": "Hear from our community members"
+    },
+    "cta": {
+      "title": "Ready to Join Our Community?",
+      "subtitle": "Take the next step in your learning journey",
+      "button": "Join Now"
     },
     "join": {
       "title": "Join Our Community",
@@ -134,13 +175,39 @@
   "courses": {
     "title": "Our Courses",
     "subtitle": "Specialized knowledge for your development",
-    "filter": {
+    "hero": {
+      "title": "Expand Your Knowledge",
+      "subtitle": "Discover courses designed to help you grow",
+      "searchPlaceholder": "Search for courses...",
+      "searchButton": "Search"
+    },
+    "popular": {
+      "title": "Popular Courses",
+      "subtitle": "Our most sought-after learning experiences"
+    },
+    "filters": {
+      "title": "Filters",
+      "categories": "Categories",
+      "level": "Difficulty",
+      "duration": "Duration",
+      "resetButton": "Reset Filters",
       "all": "All",
       "category": "Category",
-      "level": "Difficulty",
       "beginner": "Beginner",
       "intermediate": "Intermediate",
       "advanced": "Advanced"
+    },
+    "sortby": {
+      "newest": "Newest",
+      "popular": "Most Popular",
+      "rating": "Highest Rated"
+    },
+    "results": "Showing {{count}} results",
+    "cta": {
+      "title": "Can't find what you're looking for?",
+      "subtitle": "Let us know what courses you'd like to see",
+      "button": "Request a Course",
+      "secondaryButton": "Browse All Courses"
     },
     "search": {
       "placeholder": "Search courses...",
@@ -247,8 +314,20 @@
       "courses": "Enrolled Courses",
       "completed": "Completed Courses",
       "posts": "Forum Posts",
-      "connections": "Connections"
+      "connections": "Connections",
+      "members": "Community Members",
+      "membersDesc": "Active members in our community",
+      "coursesDesc": "Courses you're currently taking",
+      "events": "Upcoming Events",
+      "eventsDesc": "Events scheduled in the next 30 days",
+      "activity": "Recent Activity",
+      "activityDesc": "Your latest interactions"
     },
+    "recentActivity": "Recent Activity",
+    "recentActivityDesc": "Your latest interactions with the community",
+    "activityItem": "Activity",
+    "upcomingEventsDesc": "Events coming up soon",
+    "eventTitle": "Event",
     "activity": {
       "title": "Recent Activity",
       "empty": "No activity yet",
@@ -295,6 +374,39 @@
       "upload": "Upload",
       "remove": "Remove"
     }
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information",
+    "personalInfo": "Personal Information",
+    "personalInfoDesc": "Update your basic profile details",
+    "avatar": "Profile Picture",
+    "avatarDesc": "Upload a profile image (max 2MB)",
+    "avatarUrl": "Image URL",
+    "username": "Username",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "saveChanges": "Save Changes",
+    "usernamePlaceholder": "Enter your username",
+    "fullNamePlaceholder": "Enter your full name",
+    "accountDetails": "Account Details",
+    "accountDetailsDesc": "View your account information",
+    "memberSince": "Member Since",
+    "accountStatus": "Account Status",
+    "accountType": "Account Type"
+  },
+  "member": {
+    "title": "Member Area",
+    "subtitle": "Your community hub for courses, events and resources",
+    "events": "Upcoming Events",
+    "eventsDesc": "Events you might be interested in",
+    "viewAllEvents": "View All Events",
+    "resources": "Learning Resources",
+    "resourcesDesc": "Helpful materials for your journey",
+    "viewAllResources": "View All Resources",
+    "discussions": "Recent Discussions",
+    "discussionsDesc": "Join conversations in your community",
+    "viewAllDiscussions": "View All Discussions"
   },
   "auth": {
     "signIn": {
