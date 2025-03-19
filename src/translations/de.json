@@ -385,7 +385,8 @@
       "tryAgain": "nochmal versuchen",
       "quizFailed": "Leiner nicht bestanden",
       "correctAnswer": "richtig",
-      "quizPassed": "Alles richtig!"
+      "quizPassed": "Alles richtig!",
+      "review": "Zur Lektion"
       
     },
     "profile": {
