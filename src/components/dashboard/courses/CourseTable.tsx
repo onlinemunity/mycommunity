@@ -5,7 +5,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Lecture } from '@/types/supabase';
 
 interface CourseProgressProps {
@@ -48,7 +48,11 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold">{course.title}</h3>
+            <h3 className="text-lg font-semibold">
+              <Link to={`/courses/${course.id}`} className="hover:underline hover:text-accent1">
+                {course.title}
+              </Link>
+            </h3>
             <p className="text-sm text-muted-foreground">{course.description}</p>
           </div>
           <div className="flex items-center gap-2">

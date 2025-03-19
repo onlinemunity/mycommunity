@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { PlayCircle, Clock, BookOpen } from 'lucide-react';
@@ -13,6 +14,7 @@ interface CourseOverviewProps {
     duration: string;
     lectureCount: number;
     progress: number;
+    id?: string;
   };
 }
 
@@ -23,7 +25,15 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>{course.title}</CardTitle>
+          <CardTitle>
+            {course.id ? (
+              <Link to={`/courses/${course.id}`} className="hover:underline hover:text-accent1">
+                {course.title}
+              </Link>
+            ) : (
+              course.title
+            )}
+          </CardTitle>
           <CardDescription>{course.description}</CardDescription>
         </CardHeader>
         <CardContent>

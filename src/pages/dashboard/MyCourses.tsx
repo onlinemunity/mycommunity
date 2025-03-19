@@ -346,7 +346,8 @@ const MyCoursesPage = () => {
                 introVideo: selectedCourse.video_url || "https://www.youtube.com/embed/dQw4w9WgXcQ",
                 duration: selectedCourse.duration || "4-6 weeks",
                 lectureCount: selectedCourse.lectures.length,
-                progress: selectedCourse.progress
+                progress: selectedCourse.progress,
+                id: selectedCourse.id
               }} 
             />
             <div>
