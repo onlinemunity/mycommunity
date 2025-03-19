@@ -24,7 +24,7 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
   
   // Helper function to get lecture icon based on title/content
   const getLectureIcon = (lecture: Lecture) => {
-    if (lecture.title?.startsWith('Quiz:')) {
+    if (lecture.title?.toLowerCase().includes('quiz')) {
       return <ListTodo className="h-4 w-4 text-muted-foreground" />;
     } else if (!lecture.video_url) {
       return <FileText className="h-4 w-4 text-muted-foreground" />;
@@ -34,7 +34,9 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
   };
   
   // Make sure lectures are sorted by sort_order
-  const displayLectures = course.lectures.sort((a, b) => a.sort_order - b.sort_order);
+  const displayLectures = course.lectures.sort((a, b) => 
+    (a.sort_order || 0) - (b.sort_order || 0)
+  );
   
   const handleNavigateToLecture = (lectureId: string) => {
     console.log(`Navigating to lecture: ${lectureId}`);
@@ -65,37 +67,45 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {displayLectures.map((lecture) => (
-              <TableRow key={lecture.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleNavigateToLecture(lecture.id)}>
-                <TableCell className="font-medium flex items-center gap-2">
-                  {getLectureIcon(lecture)}
-                  {lecture.title}
-                </TableCell>
-                <TableCell>{lecture.duration}</TableCell>
-                <TableCell>
-                  {lecture.completed ? (
-                    <div className="flex items-center gap-1 text-green-600">
-                      <CheckCircle className="h-4 w-4" />
-                      <span className="text-xs">{t('dashboard.courses.completed')}</span>
-                    </div>
-                  ) : (
-                    <span className="text-xs text-muted-foreground">{t('dashboard.courses.inProgress')}</span>
-                  )}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleNavigateToLecture(lecture.id);
-                    }}
-                  >
-                    {lecture.completed ? t('dashboard.courses.review') : t('dashboard.courses.continue')}
-                  </Button>
+            {displayLectures.length > 0 ? (
+              displayLectures.map((lecture) => (
+                <TableRow key={lecture.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleNavigateToLecture(lecture.id)}>
+                  <TableCell className="font-medium flex items-center gap-2">
+                    {getLectureIcon(lecture)}
+                    {lecture.title}
+                  </TableCell>
+                  <TableCell>{lecture.duration}</TableCell>
+                  <TableCell>
+                    {lecture.completed ? (
+                      <div className="flex items-center gap-1 text-green-600">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="text-xs">{t('dashboard.courses.completed')}</span>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">{t('dashboard.courses.inProgress')}</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNavigateToLecture(lecture.id);
+                      }}
+                    >
+                      {lecture.completed ? t('dashboard.courses.review') : t('dashboard.courses.continue')}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center py-6 text-muted-foreground">
+                  No lectures found for this course
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </div>

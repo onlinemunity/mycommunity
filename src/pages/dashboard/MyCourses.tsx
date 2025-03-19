@@ -106,13 +106,15 @@ const MyCoursesPage = () => {
       // Add lectures to each course
       return enrollments.map((enrollment: any) => {
         // Get lectures for this course
-        let courseLectures = lecturesByCourse[enrollment.course_id] || [];
+        const courseLectures = lecturesByCourse[enrollment.course_id] || [];
         
-        // Create sample lectures if none are found in database
-        if (courseLectures.length === 0) {
+        // If there are no database lectures, only then create sample lectures
+        let finalLectures = courseLectures;
+        
+        if (finalLectures.length === 0) {
           // Generate sample lectures based on course name and content
           const courseName = enrollment.course.title;
-          courseLectures = [
+          finalLectures = [
             {
               id: `${enrollment.course_id}-lecture-1`,
               title: `Introduction to ${courseName}`,
@@ -156,13 +158,13 @@ const MyCoursesPage = () => {
         }
         
         // Calculate the actual progress based on completed lectures
-        const completedLectures = courseLectures.filter((l: Lecture) => l.completed).length;
-        const calculatedProgress = courseLectures.length > 0 
-          ? (completedLectures / courseLectures.length) * 100 
+        const completedLectures = finalLectures.filter((l: Lecture) => l.completed).length;
+        const calculatedProgress = finalLectures.length > 0 
+          ? (completedLectures / finalLectures.length) * 100 
           : 0;
         
         // Use the calculated progress if there are lectures, otherwise use the saved progress
-        const finalProgress = courseLectures.length > 0 
+        const finalProgress = finalLectures.length > 0 
           ? calculatedProgress 
           : enrollment.progress;
         
@@ -173,7 +175,7 @@ const MyCoursesPage = () => {
           progress: finalProgress,
           courseId: enrollment.course_id,
           enrollmentId: enrollment.id,
-          lectures: courseLectures
+          lectures: finalLectures
         };
       });
     },
@@ -192,7 +194,7 @@ const MyCoursesPage = () => {
       if (!lecture) return;
 
       // If lecture is a sample lecture (generated on frontend), create it in database
-      const isSampleLecture = lectureId.startsWith(courseData.courseId);
+      const isSampleLecture = typeof lectureId === 'string' && lectureId.startsWith(courseData.courseId);
       
       if (isSampleLecture) {
         console.log('Creating sample lecture in database:', lecture);
@@ -209,10 +211,13 @@ const MyCoursesPage = () => {
           }
             
           if (!existingLecture) {
+            // Create a proper UUID for the new lecture
+            const newLectureId = crypto.randomUUID();
+            
             const { data, error } = await supabase
               .from('lectures')
               .insert({
-                id: lecture.id,
+                id: newLectureId,
                 title: lecture.title,
                 description: lecture.description,
                 content: lecture.content,
@@ -231,7 +236,9 @@ const MyCoursesPage = () => {
               });
               return;
             } else {
-              console.log('Lecture created successfully');
+              console.log('Lecture created successfully with ID:', newLectureId);
+              // Update the lectureId to the new UUID
+              lectureId = newLectureId;
             }
           }
         } catch (err) {
@@ -288,7 +295,7 @@ const MyCoursesPage = () => {
         description: "Your lecture has been marked as completed.",
       });
       
-      // Refetch data instead of forcing a page reload
+      // Refetch data to update UI
       refetch();
       
     } catch (error: any) {
