@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { CheckCircle, Video, FileText, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Lecture } from '@/types/supabase';
+import { toast } from '@/components/ui/use-toast';
 
 // Simple quiz questions structure for quiz lectures
 interface QuizQuestion {
@@ -83,6 +84,8 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
   const isQuiz = lecture.title.startsWith('Quiz:');
   
   useEffect(() => {
+    console.log('Lecture details:', lecture);
+    
     // Set active tab based on lecture type
     if (isQuiz) {
       setActiveTab('quiz');
@@ -96,6 +99,12 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
     if (isQuiz) {
       setQuizQuestions(generateQuizQuestions(lecture.title));
     }
+    
+    // Reset component state when lecture changes
+    setTaskCompleted(lecture.completed || false);
+    setQuizSubmitted(false);
+    setQuizPassed(false);
+    setSelectedAnswers({});
   }, [lecture, isQuiz]);
 
   const handleAnswerSelect = (questionId: string, optionId: string) => {
@@ -119,12 +128,28 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
     if (passed) {
       setTaskCompleted(true);
       onComplete(lecture.id);
+      
+      toast({
+        title: t('dashboard.courses.quizPassed'),
+        description: t('dashboard.courses.progressUpdated'),
+      });
+    } else {
+      toast({
+        title: t('dashboard.courses.quizFailed'),
+        description: t('dashboard.courses.tryAgain'),
+        variant: "destructive"
+      });
     }
   };
 
   const handleMarkAsComplete = () => {
     setTaskCompleted(true);
     onComplete(lecture.id);
+    
+    toast({
+      title: t('dashboard.courses.lectureCompleted'),
+      description: t('dashboard.courses.progressUpdated'),
+    });
   };
 
   return (

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { Lecture } from '@/types/supabase';
-import { toast } from '@/components/ui/use-toast';
 
 interface CourseProgressProps {
   course: {
@@ -23,7 +22,7 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   
-  // Helper function to get lecture icon based on title
+  // Helper function to get lecture icon based on title/content
   const getLectureIcon = (lecture: Lecture) => {
     if (lecture.title?.startsWith('Quiz:')) {
       return <ListTodo className="h-4 w-4 text-muted-foreground" />;
@@ -34,52 +33,8 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
     }
   };
   
-  // Create default lectures if none exist
-  const defaultLectures = [
-    {
-      id: `${course.id}-lecture-1`,
-      title: 'Introduction to the Course',
-      duration: '15:30',
-      completed: false,
-      sort_order: 1,
-      course_id: course.id,
-      video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      description: 'Welcome to the course! In this lecture, we will go over the course outline.',
-      content: 'This is the content of the introduction lecture.'
-    },
-    {
-      id: `${course.id}-lecture-2`,
-      title: 'Core Concepts',
-      duration: '20:45',
-      completed: false,
-      sort_order: 2,
-      course_id: course.id,
-      video_url: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      description: 'Learn the fundamental concepts of this course.',
-      content: 'This is the content about core concepts.'
-    },
-    {
-      id: `${course.id}-lecture-3`,
-      title: 'Quiz: Check Your Knowledge',
-      duration: '10 mins',
-      completed: false,
-      sort_order: 3,
-      course_id: course.id,
-      video_url: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      description: 'Test your understanding of the core concepts.',
-      content: 'This is a quiz to test your knowledge.'
-    }
-  ];
-  
-  // Check if lectures exist, if not use the default lectures
-  const hasLectures = course.lectures && course.lectures.length > 0;
-  const displayLectures = hasLectures ? course.lectures.sort((a, b) => a.sort_order - b.sort_order) : defaultLectures;
+  // Make sure lectures are sorted by sort_order
+  const displayLectures = course.lectures.sort((a, b) => a.sort_order - b.sort_order);
   
   const handleNavigateToLecture = (lectureId: string) => {
     console.log(`Navigating to lecture: ${lectureId}`);

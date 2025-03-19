@@ -20,7 +20,7 @@ const MyCoursesPage = () => {
   const { user } = useAuth();
 
   // Fetch enrolled courses with lectures
-  const { data: enrolledCourses, isLoading } = useQuery({
+  const { data: enrolledCourses, isLoading, refetch } = useQuery({
     queryKey: ['enrolledCourses', user?.id],
     queryFn: async () => {
       if (!user) return [];
@@ -105,63 +105,75 @@ const MyCoursesPage = () => {
 
       // Add lectures to each course
       return enrollments.map((enrollment: any) => {
-        const courseLectures = lecturesByCourse[enrollment.course_id] || [];
-        const completedLectures = courseLectures.filter((l: Lecture) => l.completed).length;
-        const progress = courseLectures.length > 0 
-          ? (completedLectures / courseLectures.length) * 100 
-          : enrollment.progress;
+        // Get lectures for this course
+        let courseLectures = lecturesByCourse[enrollment.course_id] || [];
         
-        // Create sample lectures if none are found
-        const displayLectures = courseLectures.length > 0 ? courseLectures : [
-          {
-            id: `${enrollment.course_id}-lecture-1`,
-            title: 'Introduction to the Course',
-            duration: '15:30',
-            completed: false,
-            sort_order: 1,
-            course_id: enrollment.course_id,
-            video_url: 'https://youtube.com/embed/LCytZwzxyrY',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            description: 'Welcome to the course! In this lecture, we will go over the course outline.',
-            content: 'This is the content of the introduction lecture.'
-          },
-          {
-            id: `${enrollment.course_id}-lecture-2`,
-            title: 'Core Concepts',
-            duration: '20:45',
-            completed: false,
-            sort_order: 2,
-            course_id: enrollment.course_id,
-            video_url: 'https://youtube.com/embed/bKP__MRJd_8',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            description: 'Learn the fundamental concepts of this course.',
-            content: 'This is the content about core concepts.'
-          },
-          {
-            id: `${enrollment.course_id}-lecture-3`,
-            title: 'Quiz: Check Your Knowledge',
-            duration: '10 mins',
-            completed: false,
-            sort_order: 3,
-            course_id: enrollment.course_id,
-            video_url: null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            description: 'Test your understanding of the core concepts.',
-            content: 'This is a quiz to test your knowledge.'
-          }
-        ];
+        // Create sample lectures if none are found in database
+        if (courseLectures.length === 0) {
+          // Generate sample lectures based on course name and content
+          const courseName = enrollment.course.title;
+          courseLectures = [
+            {
+              id: `${enrollment.course_id}-lecture-1`,
+              title: `Introduction to ${courseName}`,
+              duration: '15:30',
+              completed: false,
+              sort_order: 1,
+              course_id: enrollment.course_id,
+              video_url: 'https://youtube.com/embed/LCytZwzxyrY',
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              description: `Welcome to ${courseName}! In this lecture, we will go over the course outline.`,
+              content: `<h1>Welcome to ${courseName}</h1><p>This is an introduction to the course. You'll learn about key concepts and how to apply them.</p>`
+            },
+            {
+              id: `${enrollment.course_id}-lecture-2`,
+              title: `${courseName} - Core Concepts`,
+              duration: '20:45',
+              completed: false,
+              sort_order: 2,
+              course_id: enrollment.course_id,
+              video_url: 'https://youtube.com/embed/bKP__MRJd_8',
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              description: `Learn the fundamental concepts of ${courseName}.`,
+              content: `<h1>Core Concepts in ${courseName}</h1><p>This lecture covers fundamental principles and important techniques.</p>`
+            },
+            {
+              id: `${enrollment.course_id}-lecture-3`,
+              title: `Quiz: ${courseName} Fundamentals`,
+              duration: '10 mins',
+              completed: false,
+              sort_order: 3,
+              course_id: enrollment.course_id,
+              video_url: null,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              description: `Test your understanding of ${courseName} core concepts.`,
+              content: `This is a quiz to test your knowledge of ${courseName}.`
+            }
+          ];
+        }
+        
+        // Calculate the actual progress based on completed lectures
+        const completedLectures = courseLectures.filter((l: Lecture) => l.completed).length;
+        const calculatedProgress = courseLectures.length > 0 
+          ? (completedLectures / courseLectures.length) * 100 
+          : 0;
+        
+        // Use the calculated progress if there are lectures, otherwise use the saved progress
+        const finalProgress = courseLectures.length > 0 
+          ? calculatedProgress 
+          : enrollment.progress;
         
         return {
           id: enrollment.course.href,
           title: enrollment.course.title,
           description: enrollment.course.description,
-          progress: progress,
+          progress: finalProgress,
           courseId: enrollment.course_id,
           enrollmentId: enrollment.id,
-          lectures: displayLectures
+          lectures: courseLectures
         };
       });
     },
@@ -179,16 +191,18 @@ const MyCoursesPage = () => {
       const lecture = courseData.lectures.find((l: Lecture) => l.id === lectureId);
       if (!lecture) return;
 
-      // Insert lecture data if it doesn't exist in the database
-      if (lectureId.startsWith(courseData.courseId)) {
-        console.log('Creating lecture in database:', lecture);
+      // If lecture is a sample lecture (generated on frontend), create it in database
+      const isSampleLecture = lectureId.startsWith(courseData.courseId);
+      
+      if (isSampleLecture) {
+        console.log('Creating sample lecture in database:', lecture);
         
         try {
           const { data: existingLecture, error: checkError } = await supabase
             .from('lectures')
             .select('id')
             .eq('id', lectureId)
-            .single();
+            .maybeSingle();
             
           if (checkError && checkError.code !== 'PGRST116') {
             console.error('Error checking lecture:', checkError);
@@ -210,12 +224,19 @@ const MyCoursesPage = () => {
                 
             if (error) {
               console.error('Error creating lecture:', error);
+              toast({
+                title: "Error creating lecture",
+                description: error.message,
+                variant: "destructive",
+              });
+              return;
             } else {
               console.log('Lecture created successfully');
             }
           }
         } catch (err) {
           console.error('Error in lecture creation process:', err);
+          return;
         }
       }
 
@@ -240,7 +261,8 @@ const MyCoursesPage = () => {
           .insert({
             user_id: user.id,
             lecture_id: lectureId,
-            completed: true
+            completed: true,
+            last_watched_at: new Date().toISOString()
           });
       }
 
@@ -266,8 +288,8 @@ const MyCoursesPage = () => {
         description: "Your lecture has been marked as completed.",
       });
       
-      // Force refetch data
-      window.location.reload();
+      // Refetch data instead of forcing a page reload
+      refetch();
       
     } catch (error: any) {
       console.error('Error updating progress:', error);
