@@ -10,8 +10,20 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Lecture } from '@/types/supabase';
+import { Lecture, Course } from '@/types/supabase';
 import { toast } from '@/components/ui/use-toast';
+
+interface CourseData {
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  courseId: string;
+  enrollmentId: string;
+  lectures: Lecture[];
+  video_url?: string | null;
+  duration?: string;
+}
 
 const MyCoursesPage = () => {
   const { t } = useTranslation();
@@ -158,8 +170,10 @@ const MyCoursesPage = () => {
           progress: finalProgress,
           courseId: enrollment.course_id,
           enrollmentId: enrollment.id,
-          lectures: finalLectures
-        };
+          lectures: finalLectures,
+          video_url: enrollment.course.video_url,
+          duration: enrollment.course.duration
+        } as CourseData;
       });
     },
     enabled: !!user,
