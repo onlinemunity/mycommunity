@@ -27,7 +27,7 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {
         <CardHeader>
           <CardTitle>
             {course.id ? (
-              <Link to={`/courses/${course.id}`} className="hover:underline hover:text-accent1">
+              <Link to={`/dashboard/courses/${course.id}`} className="hover:underline hover:text-accent1">
                 {course.title}
               </Link>
             ) : (
