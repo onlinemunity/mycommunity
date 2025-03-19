@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
@@ -19,7 +18,6 @@ const MyCoursesPage = () => {
   const { courseId, lectureId } = useParams();
   const { user } = useAuth();
 
-  // Fetch enrolled courses with lectures
   const { data: enrolledCourses, isLoading, refetch } = useQuery({
     queryKey: ['enrolledCourses', user?.id],
     queryFn: async () => {
@@ -27,7 +25,6 @@ const MyCoursesPage = () => {
       
       console.log('Fetching enrolled courses for user:', user.id);
       
-      // Fetch enrollments with course data
       const { data: enrollments, error: enrollmentsError } = await supabase
         .from('enrollments')
         .select(`
@@ -45,14 +42,12 @@ const MyCoursesPage = () => {
 
       console.log('Enrollments fetched:', enrollments);
 
-      // Create a map of course IDs for enrolled courses
       const courseIds = enrollments.map((enrollment: any) => enrollment.course_id);
       
       if (courseIds.length === 0) {
         return [];
       }
 
-      // Fetch lectures for all enrolled courses
       const { data: lecturesData, error: lecturesError } = await supabase
         .from('lectures')
         .select('*')
@@ -66,7 +61,6 @@ const MyCoursesPage = () => {
 
       console.log('Lectures fetched:', lecturesData);
 
-      // Fetch user's lecture progress
       const { data: progressData, error: progressError } = await supabase
         .from('lecture_progress')
         .select('*')
@@ -80,19 +74,16 @@ const MyCoursesPage = () => {
 
       console.log('Progress data fetched:', progressData);
 
-      // Create a map of lecture progress
       const progressMap = (progressData || []).reduce((acc: Record<string, boolean>, item: any) => {
         acc[item.lecture_id] = item.completed;
         return acc;
       }, {});
 
-      // Group lectures by course
       const lecturesByCourse = (lecturesData || []).reduce((acc: Record<string, Lecture[]>, lecture: Lecture) => {
         if (!acc[lecture.course_id]) {
           acc[lecture.course_id] = [];
         }
         
-        // Add completed status to each lecture based on progress data
         acc[lecture.course_id].push({
           ...lecture,
           completed: progressMap[lecture.id] || false
@@ -101,18 +92,12 @@ const MyCoursesPage = () => {
         return acc;
       }, {});
 
-      console.log('Lectures by course:', lecturesByCourse);
-
-      // Add lectures to each course
       return enrollments.map((enrollment: any) => {
-        // Get lectures for this course
         const courseLectures = lecturesByCourse[enrollment.course_id] || [];
         
-        // If there are no database lectures, only then create sample lectures
         let finalLectures = courseLectures;
         
         if (finalLectures.length === 0) {
-          // Generate sample lectures based on course name and content
           const courseName = enrollment.course.title;
           finalLectures = [
             {
@@ -157,13 +142,11 @@ const MyCoursesPage = () => {
           ];
         }
         
-        // Calculate the actual progress based on completed lectures
         const completedLectures = finalLectures.filter((l: Lecture) => l.completed).length;
         const calculatedProgress = finalLectures.length > 0 
           ? (completedLectures / finalLectures.length) * 100 
           : 0;
         
-        // Use the calculated progress if there are lectures, otherwise use the saved progress
         const finalProgress = finalLectures.length > 0 
           ? calculatedProgress 
           : enrollment.progress;
@@ -186,14 +169,12 @@ const MyCoursesPage = () => {
     if (!courseId || !user) return;
 
     try {
-      // Find the current course and lecture
       const courseData = enrolledCourses?.find(c => c.id === courseId);
       if (!courseData) return;
 
       const lecture = courseData.lectures.find((l: Lecture) => l.id === lectureId);
       if (!lecture) return;
 
-      // If lecture is a sample lecture (generated on frontend), create it in database
       const isSampleLecture = typeof lectureId === 'string' && lectureId.startsWith(courseData.courseId);
       
       if (isSampleLecture) {
@@ -211,7 +192,6 @@ const MyCoursesPage = () => {
           }
             
           if (!existingLecture) {
-            // Create a proper UUID for the new lecture
             const newLectureId = crypto.randomUUID();
             
             const { data, error } = await supabase
@@ -237,7 +217,6 @@ const MyCoursesPage = () => {
               return;
             } else {
               console.log('Lecture created successfully with ID:', newLectureId);
-              // Update the lectureId to the new UUID
               lectureId = newLectureId;
             }
           }
@@ -247,7 +226,6 @@ const MyCoursesPage = () => {
         }
       }
 
-      // Check if there's already a progress record
       const { data: existingProgress } = await supabase
         .from('lecture_progress')
         .select('id')
@@ -256,13 +234,11 @@ const MyCoursesPage = () => {
         .maybeSingle();
 
       if (existingProgress) {
-        // Update existing progress
         await supabase
           .from('lecture_progress')
           .update({ completed: true, last_watched_at: new Date().toISOString() })
           .eq('id', existingProgress.id);
       } else {
-        // Create new progress record
         await supabase
           .from('lecture_progress')
           .insert({
@@ -273,7 +249,6 @@ const MyCoursesPage = () => {
           });
       }
 
-      // Calculate new course progress
       const updatedLectures = courseData.lectures.map((l: Lecture) => {
         if (l.id === lectureId) {
           return { ...l, completed: true };
@@ -284,7 +259,6 @@ const MyCoursesPage = () => {
       const completedCount = updatedLectures.filter((l: Lecture) => l.completed).length;
       const newProgress = (completedCount / updatedLectures.length) * 100;
       
-      // Update enrollment progress
       await supabase
         .from('enrollments')
         .update({ progress: Math.round(newProgress) })
@@ -295,9 +269,7 @@ const MyCoursesPage = () => {
         description: "Your lecture has been marked as completed.",
       });
       
-      // Refetch data to update UI
       refetch();
-      
     } catch (error: any) {
       console.error('Error updating progress:', error);
       toast({
@@ -308,7 +280,6 @@ const MyCoursesPage = () => {
     }
   };
 
-  // Debug
   useEffect(() => {
     console.log('Current course ID:', courseId);
     console.log('Current lecture ID:', lectureId);
@@ -358,8 +329,8 @@ const MyCoursesPage = () => {
               course={{
                 title: selectedCourse.title,
                 description: selectedCourse.description,
-                introVideo: selectedCourse.lectures[0]?.video_url || "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                duration: "4-6 weeks",
+                introVideo: selectedCourse.video_url || "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                duration: selectedCourse.duration || "4-6 weeks",
                 lectureCount: selectedCourse.lectures.length,
                 progress: selectedCourse.progress
               }} 
