@@ -19,7 +19,6 @@ import Profile from '@/pages/dashboard/Profile';
 import MemberArea from '@/pages/dashboard/MemberArea';
 import MyCoursesPage from '@/pages/dashboard/MyCourses';
 import AdminArea from '@/pages/dashboard/AdminArea';
-import AdminDashboard from '@/pages/dashboard/admin/AdminDashboard';
 import NotFound from '@/pages/NotFound';
 
 // Fix import statements to use default exports
@@ -59,7 +58,6 @@ function App() {
               
               <Route element={<AdminRoute />}>
                 <Route path="/dashboard/admin" element={<AdminArea />} />
-                <Route path="/dashboard/admin/manage" element={<AdminDashboard />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
