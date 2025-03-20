@@ -58,7 +58,7 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
               {course.description}
             </p>
 
-             <Link to={`/dashboard/courses/${course.id}`} className="button-primary">
+             <Link to={`/dashboard/courses/${course.id}`} className="button-primary mt-4 mb-4">
                   Zum Kurs
              </Link>
             
