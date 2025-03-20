@@ -84,7 +84,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
         {
           title: 'Core Concepts',
           items: [
-            { title: course.zielgruppe, type: 'doc', duration: '20 mins read' },
+            { title: course.inhalte, type: 'doc', duration: '20 mins read' },
             { title: course.kursdauer, type: 'exercise', duration: '30 mins' },
             { title: course.zertifikat, type: 'video', duration: '15:30' },
           ],
