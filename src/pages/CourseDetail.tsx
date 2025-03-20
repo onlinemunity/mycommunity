@@ -61,7 +61,7 @@ const CourseDetail = () => {
               {course.video_url && (
                <div className="aspect-video relative rounded-md overflow-hidden">
                 <iframe
-                  src=(course.video_url)
+                  src={course.video_url}
                   className="absolute inset-0 w-full h-full"
                   title={course.title}   
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
