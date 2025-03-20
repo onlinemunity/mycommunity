@@ -60,7 +60,7 @@ const CourseDetail = () => {
             <div className="lg:col-span-2 mb-8">
 
               {course.video_url && (
-               <div className="aspect-video relative rounded-md overflow-hidden">
+               <div className="aspect-video relative rounded-md overflow-hidden mb-8">
                 <iframe
                   src={course.video_url}
                   className="absolute inset-0 w-full h-full"
