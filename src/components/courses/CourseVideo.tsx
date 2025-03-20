@@ -30,7 +30,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
         <div className="flex items-center gap-4">
             {course.inhalte}
           
-            {course.video_url}
+            <a href="{course.video_url}" target="_blank">{course.video_url}</a>
           
           {course.video_url && (
             <div className="aspect-video relative rounded-md overflow-hidden dangerouslySetInnerHTML={{ __html: embedHtml }}">
