@@ -93,6 +93,10 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
       setActiveTab('video');
     } else if (lecture.full_description) {
       setActiveTab('description');  
+    } else if (lecture.material) {
+      setActiveTab('material');  
+    } else if (lecture.links) {
+      setActiveTab('links');    
     } else if (lecture.content) {
       setActiveTab('content');
     }
@@ -193,6 +197,21 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
                   {t('dashboard.courses.notes')}
                 </TabsTrigger>
               )}
+
+              {lecture.material && (
+                <TabsTrigger value="material">
+                  <FileText className="h-4 w-4 mr-2" />
+                  {t('dashboard.courses.material')}
+                </TabsTrigger>
+              )}
+
+              {lecture.links && (
+                <TabsTrigger value="links">
+                  <FileText className="h-4 w-4 mr-2" />
+                  {t('dashboard.courses.links')}
+                </TabsTrigger>
+              )}
+              
               {isQuiz && (
                 <TabsTrigger value="quiz">
                   <CheckCircle className="h-4 w-4 mr-2" />
