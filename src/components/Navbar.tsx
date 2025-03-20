@@ -20,6 +20,7 @@ export const Navbar = () => {
   const navItems = [
     { name: t("navigation.home"), path: "/" },
     { name: t("navigation.about"), path: "/about" },
+    { name: t("navigation.academy"), path: "/academy" },
     { name: t("navigation.community"), path: "/community" },
     { name: t("navigation.courses"), path: "/courses" },
   ];
