@@ -18,9 +18,9 @@ export const CourseHeader = ({ course }: CourseHeaderProps) => {
               <Badge variant="outline">{course.level}</Badge>
             </div>
             <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
-            <p className="text-sm text-muted-foreground mb-6">{course.description}</p>
+            <p className="text-lg text-muted-foreground mb-6">{course.description}</p>
             
-            <p className="text-lg text-muted-foreground mb-6" style={{ whiteSpace: 'pre-line' }}>{course.details}</p>
+            <p className="text-sm text-muted-foreground mb-6" style={{ whiteSpace: 'pre-line' }}>{course.details}</p>
             <div className="flex flex-wrap gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
