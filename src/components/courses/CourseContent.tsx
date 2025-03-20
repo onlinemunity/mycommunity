@@ -123,7 +123,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
                           {item.type === 'video' && <Video className="h-4 w-4" />}
                           {item.type === 'doc' && <FileText className="h-4 w-4" />}
                           {(item.type === 'exercise' || item.type === 'quiz') && <BookOpen className="h-4 w-4" />}
-                          <span style="{{ whiteSpace: 'pre-line' }}">{item.title}</span>
+                          <span className= "style={{ whiteSpace: 'pre-line' }}">{item.title}</span>
                         </div>
                        
                       </Link>
