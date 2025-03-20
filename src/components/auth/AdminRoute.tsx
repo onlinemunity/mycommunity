@@ -4,7 +4,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
-const AdminRoute = () => {
+type AdminRouteProps = {
+  redirectPath?: string;
+}
+
+const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
   const { isAdmin, isLoading } = useAuth();
 
   if (isLoading) {
@@ -16,7 +20,7 @@ const AdminRoute = () => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={redirectPath} replace />;
   }
 
   return <Outlet />;

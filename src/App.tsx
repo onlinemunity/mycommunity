@@ -21,6 +21,13 @@ import MyCoursesPage from '@/pages/dashboard/MyCourses';
 import AdminArea from '@/pages/dashboard/AdminArea';
 import NotFound from '@/pages/NotFound';
 
+// Admin section
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import CoursesManagement from '@/pages/admin/CoursesManagement';
+import LecturesManagement from '@/pages/admin/LecturesManagement';
+import UsersManagement from '@/pages/admin/UsersManagement';
+import Settings from '@/pages/admin/Settings';
+
 // Fix import statements to use default exports
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import AdminRoute from '@/components/auth/AdminRoute';
@@ -58,6 +65,15 @@ function App() {
               
               <Route element={<AdminRoute />}>
                 <Route path="/dashboard/admin" element={<AdminArea />} />
+              </Route>
+              
+              {/* New Admin Section Routes */}
+              <Route element={<AdminRoute redirectPath="/" />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/courses" element={<CoursesManagement />} />
+                <Route path="/admin/lectures" element={<LecturesManagement />} />
+                <Route path="/admin/users" element={<UsersManagement />} />
+                <Route path="/admin/settings" element={<Settings />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
