@@ -159,18 +159,37 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
   };
 
 
-  
-  function Linkify({ text }) {
+  // links aus links extrahieren
+ function Linkify({ text }) {
   // Regulärer Ausdruck zum Finden von URLs
   const urlRegex = /(https?:\/\/[^\s]+)/g;
+  
+  // Alle gefundenen URLs in ein Array extrahieren
+  const urls = text.match(urlRegex);
 
-  // Text ersetzen und URLs durch <a> Tags umwandeln
-  const linkedText = text.replace(urlRegex, (url) => {
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-  });
+  // Falls es URLs gibt, rendere sie als einzelne Links
+  if (urls) {
+    return (
+      <div>
+        {urls.map((url, index) => (
+          <div key={index}>
+            <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-  return <div dangerouslySetInnerHTML={{ __html: linkedText }} />;
+  // Falls keine URLs gefunden wurden, gib den Originaltext aus
+  return <div>{text}</div>;
 }
+
+function MyComponent() {
+  // Beispiel für lecture-Objekt mit mehreren Links
+  const lecture = {
+    links: "Hier ist ein Link: https://www.example.com und noch einer: http://www.test.com"
+  };
+
 
   return (
     <div className="space-y-6">
