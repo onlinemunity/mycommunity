@@ -179,6 +179,12 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
                   {t('dashboard.courses.video')}
                 </TabsTrigger>
               )}
+              {lecture.description && (
+                <TabsTrigger value="description">
+                  <FileText className="h-4 w-4 mr-2" />
+                  {t('dashboard.courses.description')}
+                </TabsTrigger>
+              )}
               {lecture.content && (
                 <TabsTrigger value="content">
                   <FileText className="h-4 w-4 mr-2" />
@@ -204,6 +210,14 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
                     frameBorder="0"
                     allowFullScreen
                   />
+                </div>
+              </TabsContent>
+            )}
+
+            {lecture.description && (
+              <TabsContent value="description" className="space-y-4">
+                <div className="prose max-w-none">
+                  <div dangerouslySetInnerHTML={{ __html: lecture.description }} />
                 </div>
               </TabsContent>
             )}
