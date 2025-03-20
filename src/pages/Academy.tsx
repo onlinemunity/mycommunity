@@ -81,18 +81,18 @@ const Academy = () => {
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="heading-xl mb-6">
                 <span className="text-gradient">
-                  {t('community.hero.title')}
+                  {t('academy.hero.title')}
                 </span>
               </h1>
               <p className="body-lg mb-8 text-muted-foreground">
-                {t('community.hero.subtitle')}
+                {t('academy.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <button className="button-primary">
-                  {t('community.hero.joinButton')}
+                  {t('academy.hero.joinButton')}
                 </button>
                 <button className="button-secondary">
-                  {t('community.hero.learnMoreButton')}
+                  {t('academy.hero.learnMoreButton')}
                 </button>
               </div>
             </div>
