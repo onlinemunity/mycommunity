@@ -119,11 +119,11 @@ export const CourseContent = ({ course }: CourseContentProps) => {
                         to={linkPath}
                         className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors group block"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 text-sm style={{ whiteSpace: 'pre-line' }}">
                           {item.type === 'video' && <Video className="h-4 w-4" />}
                           {item.type === 'doc' && <FileText className="h-4 w-4" />}
                           {(item.type === 'exercise' || item.type === 'quiz') && <BookOpen className="h-4 w-4" />}
-                          <span class="text-sm style={{ whiteSpace: 'pre-line' }}">{item.title}</span>
+                          <span>{item.title}</span>
                         </div>
                        
                       </Link>
