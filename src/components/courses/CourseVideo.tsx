@@ -8,13 +8,7 @@ interface CourseVideoProps {
 }
 
 export const CourseVideo = ({ course }: CourseVideoProps) => {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase();
-  };
+  
 
   return (
     <Card className="mt-8">
@@ -25,7 +19,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
         <div className="flex items-center gap-4">
           {course.inhalte}
          {course.video_url && (
-  <div className="mb-10">
+  
     <div className="aspect-video relative rounded-md overflow-hidden">
       <iframe
         src={course.video_url}  // Ohne `{}` um den String zu interpolieren
@@ -36,7 +30,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
         allowFullScreen
       />
     </div>
-  </div>
+ 
 )}
         </div>
       </CardContent>
