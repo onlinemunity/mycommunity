@@ -5,7 +5,7 @@ import { Layout } from '@/components/Layout';
 import { supabase } from '@/integrations/supabase/client';
 import { CourseContent } from '@/components/courses/CourseContent';
 import { CourseHeader } from '@/components/courses/CourseHeader';
-import { CourseVideo } from '@/components/courses/CourseVideo';
+
 import { CourseInstructor } from '@/components/courses/CourseInstructor';
 import { CourseSidebar } from '@/components/courses/CourseSidebar';
 import { Course } from '@/types/supabase';
