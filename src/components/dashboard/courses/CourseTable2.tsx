@@ -18,7 +18,7 @@ interface CourseProgressProps {
   };
 }
 
-export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
+export const CourseTable2: React.FC<CourseProgressProps> = ({ course }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   
