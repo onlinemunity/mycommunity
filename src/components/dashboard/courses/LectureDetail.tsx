@@ -276,8 +276,9 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
             {lecture.links && (
               <TabsContent value="links" className="space-y-4">
                 <div className="prose max-w-none">
+                  <CheckCircle className="h-5 w-5" />
                   <Linkify text={lecture.links} />
-                  <div dangerouslySetInnerHTML={{ __html: lecture.links }} />
+                  
                 </div>
               </TabsContent>
             )}
