@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle, Video, FileText, ArrowLeft } from 'lucide-react';
+import { CheckCircle, Video, FileText, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Lecture } from '@/types/supabase';
 import { toast } from '@/components/ui/use-toast';
@@ -173,7 +173,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
       <div>
         {urls.map((url, index) => (
           <div key={index}>
-           
+           <ArrowRight className="h-4 w-4 mr-2" />
             <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
           </div>
         ))}
@@ -292,6 +292,8 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
             {lecture.links && (
               <TabsContent value="links" className="space-y-4">
                  <div className="prose max-w-none">
+                   <p><Hier eine Übersicht mit aktuellen Links:</p>
+                   <br>
                    <Linkify text={lecture.links} />
                   </div>
               </TabsContent>
