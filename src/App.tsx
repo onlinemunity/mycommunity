@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 
 import Index from '@/pages/Index';
 import About from '@/pages/About';
+import Academy from '@/pages/Academy';
 import Community from '@/pages/Community';
 import Courses from '@/pages/Courses';
 import CourseDetail from '@/pages/CourseDetail';
@@ -45,6 +46,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
+              <Route path="/academy" element={<Academy />} />
               <Route path="/community" element={<Community />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:courseId" element={<CourseDetail />} />
