@@ -33,6 +33,7 @@ export type Lecture = {
   course_id: string;
   title: string;
   description: string | null;
+  full_description: string | null;
   video_url: string | null;
   content: string | null;
   duration: string;
