@@ -1,37 +1,29 @@
 
-import { Course, Lecture } from '@/types/supabase';
+import { Course } from '@/types/supabase';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { BookOpen, Video, FileText } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { Loader2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface CourseVideoProps {
   course: Course;
 }
 
 export const CourseVideo = ({ course }: CourseVideoProps) => {
-  const { user } = useAuth();
-  
-
-
- 
-      
-   
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase();
   };
 
- 
-
   return (
-    <Card>
+    <Card className="mt-8">
       <CardHeader>
         <CardTitle>Video</CardTitle>
       </CardHeader>
       <CardContent>
-
-         {course.video_url && (
+        <div className="flex items-center gap-4">
+          {course.video_url && (
             <div className="mb-10">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <iframe
@@ -45,8 +37,11 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
               </div>
             </div>
           )}
-        
+        </div>
       </CardContent>
     </Card>
   );
 };
+
+         
+   
