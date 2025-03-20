@@ -105,7 +105,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
           <div className="space-y-6">
             {displaySections.map((section, i) => (
               <div key={i}>
-                <h3 className="font-medium mb-3">{section.title}</h3>
+                <h3 className="font-sm mb-3">{section.title}</h3>
                 <div className="space-y-2">
                   {section.items.map((item, j) => {
                     // Determine the path to use for linking
