@@ -26,6 +26,11 @@ export type Database = {
           title: string
           updated_at: string | null
           video_url: string | null
+          kursdauer: string | null
+          zielgruppe: string | null
+          material: string | null
+          zertifikat: string | null
+          allgemein: string | null
         }
         Insert: {
           category: string
@@ -43,6 +48,11 @@ export type Database = {
           title: string
           updated_at?: string | null
           video_url?: string | null
+          kursdauer?: string | null
+          zielgruppe?: string | null
+          material?: string | null
+          zertifikat?: string | null
+          allgemein?: string | null
         }
         Update: {
           category?: string
@@ -60,6 +70,11 @@ export type Database = {
           title?: string
           updated_at?: string | null
           video_url?: string | null
+          kursdauer?: string | null
+          zielgruppe?: string | null
+          material?: string | null
+          zertifikat?: string | null
+          allgemein?: string | null
         }
         Relationships: []
       }
