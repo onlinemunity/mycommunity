@@ -185,11 +185,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
   return <div>{text}</div>;
 }
 
-function MyComponent() {
-  // Beispiel für lecture-Objekt mit mehreren Links
-  const lecture = {
-    links: "Hier ist ein Link: https://www.example.com und noch einer: http://www.test.com"
-  };
+
 
 
   return (
