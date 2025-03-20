@@ -110,7 +110,7 @@ export const Layout = ({
               <div className="h-8 w-8 rounded-md bg-gradient-to-br from-accent1 to-accent1-light flex items-center justify-center shadow-sm">
                 <span className="font-display text-white text-sm font-bold">YOU!</span>
               </div>
-              <span className="ml-2 font-display font-bold">YOU!cademy</span>
+              <span className="ml-2 font-display font-bold">Y!cademy</span>
             </div>
             
             <div className="text-sm text-foreground/60">
