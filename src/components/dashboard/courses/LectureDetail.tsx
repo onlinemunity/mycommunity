@@ -158,6 +158,20 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
     });
   };
 
+
+  
+  function Linkify({ text }) {
+  // Regulärer Ausdruck zum Finden von URLs
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  // Text ersetzen und URLs durch <a> Tags umwandeln
+  const linkedText = text.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+  });
+
+  return <div dangerouslySetInnerHTML={{ __html: linkedText }} />;
+}
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
