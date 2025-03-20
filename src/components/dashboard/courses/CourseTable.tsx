@@ -50,14 +50,18 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
           <div>
             <h3 className="text-lg font-semibold">
               <Link to={`/dashboard/courses/${course.id}`} className="hover:underline hover:text-accent1">
-                <ChevronRight>
+                
                 {course.title}
               </Link>
             </h3>
             <p className="text-sm font-normal">
               {course.description}
             </p>
-          
+
+            <button className="button-secondary">
+                  Zum Kurs
+                </button>
+            
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">{Math.round(course.progress)}% {t('dashboard.courses.completed')}</span>
