@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { CourseTable } from '@/components/dashboard/courses/CourseTable2';
+import { CourseTable } from '@/components/dashboard/courses/CourseTable';
+import { CourseTable2 } from '@/components/dashboard/courses/CourseTable2';
 import { CourseOverview } from '@/components/dashboard/courses/CourseOverview';
 import { LectureDetail } from '@/components/dashboard/courses/LectureDetail';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -375,7 +376,7 @@ const MyCoursesPage = () => {
       ) : (
         <div className="grid grid-cols-1 gap-6">
           {displayCourses.map(course => (
-            <CourseTable key={course.id} course={course} />
+            <CourseTable2 key={course.id} course={course} />
           ))}
         </div>
       )}
