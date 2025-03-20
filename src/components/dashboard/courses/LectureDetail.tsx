@@ -250,6 +250,22 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
                 </div>
               </TabsContent>
             )}
+
+            {lecture.material && (
+              <TabsContent value="material" className="space-y-4">
+                <div className="prose max-w-none">
+                  <div dangerouslySetInnerHTML={{ __html: lecture.material }} />
+                </div>
+              </TabsContent>
+            )}
+
+            {lecture.links && (
+              <TabsContent value="links" className="space-y-4">
+                <div className="prose max-w-none">
+                  <div dangerouslySetInnerHTML={{ __html: lecture.links }} />
+                </div>
+              </TabsContent>
+            )}
             
             {isQuiz && (
               <TabsContent value="quiz" className="space-y-6">
