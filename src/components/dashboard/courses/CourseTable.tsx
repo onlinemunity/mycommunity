@@ -50,13 +50,12 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
           <div>
             <h3 className="text-lg font-semibold">
               <Link to={`/dashboard/courses/${course.id}`} className="hover:underline hover:text-accent1">
+                <ChevronRight>
                 {course.title}
               </Link>
             </h3>
             <p className="text-sm font-normal">
-              
-                {course.description}
-              
+              {course.description}
             </p>
           
           </div>
