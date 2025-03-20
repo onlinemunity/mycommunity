@@ -8,7 +8,13 @@ interface CourseVideoProps {
 }
 
 export const CourseVideo = ({ course }: CourseVideoProps) => {
-  
+  const getEmbedUrl = (url: string) => {
+    if (url.includes('youtube.com')) {
+      // Wenn es sich um eine YouTube-URL handelt, konvertiere sie
+      return embedYouTubeUrl(url);
+    }
+    return url; // Andernfalls, nehme die URL wie sie ist (z.B. für Vimeo)
+  };
 
   return (
     <Card className="mt-8">
@@ -18,25 +24,20 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
       <CardContent>
         <div className="flex items-center gap-4">
           {course.inhalte}
-         {course.video_url && (
-  
-    <div className="aspect-video relative rounded-md overflow-hidden">
-      <iframe
-  src={course.video_url}
-  className="absolute inset-0 w-full h-64" // Setze eine feste Höhe
-  title={`${course.title} preview video`}
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  frameBorder="0"
-  allowFullScreen
-/>
-    </div>
- 
-)}
+          {course.video_url && (
+            <div className="aspect-video relative rounded-md overflow-hidden">
+              <iframe
+                src={getEmbedUrl(course.video_url)}  // Die umgewandelte URL wird verwendet
+                className="absolute inset-0 w-full h-64"
+                title={`${course.title} preview video`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                frameBorder="0"
+                allowFullScreen
+              />
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
   );
 };
-
-         
-   
