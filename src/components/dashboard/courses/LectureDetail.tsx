@@ -173,7 +173,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
       <div>
         {urls.map((url, index) => (
           <div key={index}>
-            <CheckCircle className="h-5 w-5" />
+           
             <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
           </div>
         ))}
