@@ -58,9 +58,9 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
               {course.description}
             </p>
 
-            <button className="button-secondary">
+             <Link to={`/dashboard/courses/${course.id}`} className="button-primary">
                   Zum Kurs
-                </button>
+             </Link>
             
           </div>
           <div className="flex items-center gap-2">
