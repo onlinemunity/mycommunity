@@ -13,8 +13,9 @@ export type Database = {
         Row: {
           category: string
           created_at: string | null
-          description: string
-          duration: string
+          description: string | null
+          details: string | null
+          duration: string | null
           href: string
           id: string
           image: string
