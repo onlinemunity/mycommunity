@@ -173,6 +173,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
       <div>
         {urls.map((url, index) => (
           <div key={index}>
+            <CheckCircle className="h-5 w-5" />
             <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
           </div>
         ))}
@@ -295,11 +296,8 @@ function MyComponent() {
             {lecture.links && (
               <TabsContent value="links" className="space-y-4">
                  <div className="prose max-w-none">
-                  <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
-                  <Linkify text={lecture.links} />
+                   <Linkify text={lecture.links} />
                   </div>
-                </div>
               </TabsContent>
             )}
             
