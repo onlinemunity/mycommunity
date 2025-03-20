@@ -58,6 +58,18 @@ const CourseDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
 
+              {course.video_url && (
+            <div className="aspect-video relative rounded-md overflow-hidden">
+              <iframe
+                src={course.video_url}  // Die URL wird korrekt als src verwendet
+                className="absolute inset-0 w-full h-64"
+                title={`${course.title} preview video`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                frameBorder="0"
+                allowFullScreen
+              />
+            </div>
+
               <CourseVideo course={course} /> 
               
               <CourseContent course={course} />
