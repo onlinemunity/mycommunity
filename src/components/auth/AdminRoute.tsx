@@ -38,6 +38,10 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
 
   if (!isAdmin) {
     console.log('Redirecting from admin route because user is not an admin');
+    // If trying to access a sub-route, redirect to the main admin dashboard
+    if (location.pathname.startsWith('/admin/')) {
+      return <Navigate to="/admin" replace />;
+    }
     return <Navigate to={redirectPath} replace />;
   }
 

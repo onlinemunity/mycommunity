@@ -12,10 +12,22 @@ import {
   LogOut,
   Menu,
   X,
-  Shield
+  Shield,
+  Home,
+  GraduationCap,
+  Server
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -53,6 +65,13 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       path: '/admin/settings',
       icon: <Settings size={20} />,
     },
+  ];
+
+  const quickLinks = [
+    { name: 'Main Site', path: '/', icon: <Home size={16} /> },
+    { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={16} /> },
+    { name: 'Courses', path: '/courses', icon: <GraduationCap size={16} /> },
+    { name: 'Admin Area', path: '/dashboard/admin', icon: <Server size={16} /> },
   ];
 
   const handleSignOut = async () => {
@@ -93,6 +112,30 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         <div className="p-4 border-t border-border">
           <div className="flex flex-col gap-2">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Quick Links</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-1 p-2 w-[200px]">
+                      {quickLinks.map((link) => (
+                        <li key={link.path}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={link.path}
+                              className="flex items-center gap-2 p-2 hover:bg-accent rounded-md"
+                            >
+                              {link.icon}
+                              <span>{link.name}</span>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             <Button variant="outline" size="sm" asChild>
               <Link to="/dashboard">
                 <LayoutDashboard size={18} className="mr-2" />
@@ -162,6 +205,31 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border">
           <div className="flex flex-col gap-2">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Quick Links</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-1 p-2 w-[200px]">
+                      {quickLinks.map((link) => (
+                        <li key={link.path}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={link.path}
+                              className="flex items-center gap-2 p-2 hover:bg-accent rounded-md"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {link.icon}
+                              <span>{link.name}</span>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             <Button variant="outline" size="sm" asChild>
               <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
                 <LayoutDashboard size={18} className="mr-2" />
