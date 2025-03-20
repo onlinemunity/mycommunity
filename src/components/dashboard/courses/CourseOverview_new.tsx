@@ -38,20 +38,21 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {
         </CardHeader>
         
        <CardContent>
-  <div className="flex gap-6 mb-6">
-    {/* Video Section */}
-     <div className="aspect-video relative rounded-md overflow-hidden mb-6">
-            <iframe 
-              src={course.introVideo} 
-              className="absolute inset-0 w-full h-full"
-              title={`${course.title} intro video`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              frameBorder="0"
-              allowFullScreen
-            />
-          </div>
 
-    {/* Details Section */}
+   <div className="flex gap-6 mb-6">
+  {/* Video Section */}
+  <div className="flex-1 aspect-video relative rounded-md overflow-hidden mb-6">
+    <iframe 
+      src={course.introVideo} 
+      className="absolute inset-0 w-full h-full"
+      title={`${course.title} intro video`}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      frameBorder="0"
+      allowFullScreen
+    />
+  </div>
+         
+  {/* Details Section */}
     <div className="w-3/10 flex flex-col justify-between">
       <div className="grid grid-cols-1 gap-4">
         <div className="flex items-center gap-2">
