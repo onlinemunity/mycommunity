@@ -67,7 +67,7 @@ function App() {
                 <Route path="/dashboard/admin" element={<AdminArea />} />
               </Route>
               
-              {/* New Admin Section Routes */}
+              {/* Admin Section Routes - Make sure they're correctly wrapped with AdminRoute */}
               <Route element={<AdminRoute redirectPath="/" />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/courses" element={<CoursesManagement />} />

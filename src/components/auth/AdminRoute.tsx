@@ -19,6 +19,9 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
     );
   }
 
+  // Add console log to help with debugging
+  console.log('AdminRoute - isAdmin:', isAdmin);
+
   if (!isAdmin) {
     return <Navigate to={redirectPath} replace />;
   }
