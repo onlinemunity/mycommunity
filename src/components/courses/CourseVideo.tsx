@@ -31,6 +31,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
             {course.inhalte}
           
             <a href="{course.video_url}" target="_blank">{course.video_url}</a>
+          Text zum checken: 1
           
           {course.video_url && (
             <div className="aspect-video relative rounded-md overflow-hidden dangerouslySetInnerHTML={{ __html: embedHtml }}">
