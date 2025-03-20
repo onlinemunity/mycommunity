@@ -253,7 +253,6 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
               <TabsContent value="description" className="space-y-4">
                 <div className="prose max-w-none">
                   <div dangerouslySetInnerHTML={{ __html: lecture.full_description }} />
-                  </div>
                 </div>
               </TabsContent>
             )}
