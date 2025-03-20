@@ -7,6 +7,11 @@ interface CourseVideoProps {
   course: Course;
 }
 
+const embedYouTubeUrl = (url: string) => {
+  const videoId = url.split('v=')[1]?.split('&')[0]; // Extrahiere die Video-ID
+  return `https://www.youtube.com/embed/${videoId}`;
+};
+
 export const CourseVideo = ({ course }: CourseVideoProps) => {
   const getEmbedUrl = (url: string) => {
     if (url.includes('youtube.com')) {
