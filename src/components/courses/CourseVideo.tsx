@@ -3,11 +3,11 @@ import { Course } from '@/types/supabase';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-interface CourseInstructorProps {
+interface CourseHeaderProps {
   course: Course;
 }
 
-export const CourseInstructor = ({ course }: CourseInstructorProps) => {
+export const CourseVideoPage = ({ course }: CourseInstructorProps) => {
   const getInitials = (name: string) => {
     return name
       .split(' ')
