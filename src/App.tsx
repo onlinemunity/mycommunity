@@ -70,11 +70,11 @@ function App() {
               
               {/* Admin Section Routes - Using AdminRoute for protection */}
               <Route element={<AdminRoute />}>
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/courses" element={<CoursesManagement />} />
-                <Route path="/admin/lectures" element={<LecturesManagement />} />
-                <Route path="/admin/users" element={<UsersManagement />} />
-                <Route path="/admin/settings" element={<Settings />} />
+                <Route path="/dashboard/admin" element={<AdminDashboard />} />
+                <Route path="/dashboard/admin/courses" element={<CoursesManagement />} />
+                <Route path="/dashboard/admin/lectures" element={<LecturesManagement />} />
+                <Route path="/dashboard/admin/users" element={<UsersManagement />} />
+                <Route path="/dashboard/admin/settings" element={<Settings />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
