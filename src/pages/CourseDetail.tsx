@@ -63,7 +63,7 @@ const CourseDetail = () => {
                 <iframe
                   src=(course.video_url)
                   className="absolute inset-0 w-full h-full"
-                  title={${course.title} preview video}  
+                  title={course.title}   
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   frameBorder="0"
                 allowFullScreen
