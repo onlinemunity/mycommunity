@@ -91,6 +91,8 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
       setActiveTab('quiz');
     } else if (lecture.video_url) {
       setActiveTab('video');
+    } else if (lecture.full_description) {
+      setActiveTab('description');  
     } else if (lecture.content) {
       setActiveTab('content');
     }
@@ -182,7 +184,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
               {lecture.description && (
                 <TabsTrigger value="description">
                   <FileText className="h-4 w-4 mr-2" />
-                  {t('dashboard.courses.description')}
+                  {t('dashboard.courses.full_description')}
                 </TabsTrigger>
               )}
               {lecture.content && (
@@ -217,7 +219,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
             {lecture.description && (
               <TabsContent value="description" className="space-y-4">
                 <div className="prose max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: lecture.description }} />
+                  <div dangerouslySetInnerHTML={{ __html: lecture.full_description }} />
                 </div>
               </TabsContent>
             )}
