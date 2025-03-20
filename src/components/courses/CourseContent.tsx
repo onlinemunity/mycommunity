@@ -76,9 +76,9 @@ export const CourseContent = ({ course }: CourseContentProps) => {
         {
           title: 'Introduction',
           items: [
-            { title: courses.allgemein, type: 'video', duration: '5:20' },
-            { title: 'Course overview', type: 'video', duration: '10:15' },
-            { title: 'Getting started', type: 'doc', duration: '15 mins read' },
+            { title: course.allgemein, type: 'video', duration: '5:20' },
+            { title: course.zielgruppe, type: 'video', duration: '10:15' },
+            { title: course.material, type: 'doc', duration: '15 mins read' },
           ],
         },
         {
