@@ -74,7 +74,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
     ? getSections() 
     : [
         {
-          title: 'Introduction',
+          title: 'Beschreibung',
           items: [
             { title: course.allgemein, type: 'video', duration: '5:20' },
             { title: course.zielgruppe, type: 'video', duration: '10:15' },
@@ -82,7 +82,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
           ],
         },
         {
-          title: 'Core Concepts',
+          title: 'Inhalt',
           items: [
             { title: course.inhalte, type: 'doc', duration: '20 mins read' },
             { title: course.kursdauer, type: 'exercise', duration: '30 mins' },
@@ -94,7 +94,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Course Content</CardTitle>
+        <CardTitle>Kurs-Übersicht</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
