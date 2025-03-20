@@ -1,6 +1,6 @@
 
 import { ReactNode, useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
@@ -10,6 +10,7 @@ type AdminRouteProps = {
 
 const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
   const { isAdmin, isLoading, refreshProfile, profile, user } = useAuth();
+  const location = useLocation();
 
   // Refresh profile when component mounts to ensure we have the latest roles
   useEffect(() => {
@@ -31,7 +32,8 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
     isAdmin, 
     profileRole: profile?.role,
     userId: user?.id,
-    isLoading
+    isLoading,
+    currentPath: location.pathname
   });
 
   if (!isAdmin) {

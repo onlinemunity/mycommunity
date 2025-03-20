@@ -69,7 +69,7 @@ function App() {
               </Route>
               
               {/* Admin Section Routes - Using AdminRoute for protection */}
-              <Route element={<AdminRoute redirectPath="/" />}>
+              <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/courses" element={<CoursesManagement />} />
                 <Route path="/admin/lectures" element={<LecturesManagement />} />
