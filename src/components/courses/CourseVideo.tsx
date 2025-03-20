@@ -19,7 +19,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
   return (
     <Card className="mt-8">
       <CardHeader>
-        <CardTitle>Video</CardTitle>
+        <CardTitle>${course.title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
@@ -27,7 +27,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
             <div className="mb-10">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <iframe
-                  src={course.video_url}
+                  src=${course.video_url}
                   className="absolute inset-0 w-full h-full"
                   title={`${course.title} preview video`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
