@@ -86,7 +86,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-accent1 to-accent1-light flex items-center justify-center shadow-sm">
               <span className="font-display text-white text-lg font-bold">Y!</span>
             </div>
-            <span className="font-display font-bold text-xl">YOU!munity</span>
+            <span className="font-display font-bold text-xl">YOU!cademy</span>
           </Link>
         </div>
 
