@@ -172,10 +172,26 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
     return (
       <div>
         {urls.map((url, index) => (
-          <div key={index}>
-           <ArrowRight className="h-4 w-4 mr-2" />
-            <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+         // Falls es URLs gibt, rendere sie als Links mit Pfeil
+  if (urls) {
+    return (
+      <div>
+        {urls.map((url, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <a 
+              href={url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ textDecoration: 'none', color: 'blue', marginRight: '8px' }}
+            >
+              {url}
+            </a>
+            <span style={{ fontSize: '18px', color: 'gray' }}>→</span> {/* Pfeilsymbol */}
           </div>
+        ))}
+      </div>
+    );
+  }
         ))}
       </div>
     );
