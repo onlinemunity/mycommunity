@@ -19,7 +19,7 @@ export const CourseInstructor = ({ course }: CourseInstructorProps) => {
   return (
     <Card className="mt-8">
       <CardHeader>
-        <CardTitle>Your Instructor</CardTitle>
+        <CardTitle>Kursleiter | Trainer</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
