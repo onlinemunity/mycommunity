@@ -36,7 +36,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
           {course.video_url && (
             <div className="aspect-video relative rounded-md overflow-hidden dangerouslySetInnerHTML={{ __html: embedHtml }}">
               <iframe
-                src=(course.video_url)  // Die umgewandelte URL wird verwendet
+                src=(course.video_url)  
                 className="absolute inset-0 w-full h-64"
                 title={`${course.title} preview video`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
