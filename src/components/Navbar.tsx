@@ -62,7 +62,7 @@ export const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-accent1 to-accent1-light flex items-center justify-center shadow-sm">
-            <span className="font-display text-white text-lg font-bold">YOU!</span>
+            <span className="font-display text-white text-lg font-bold">Y!</span>
           </div>
           <span className="font-display font-bold text-xl hidden sm:block">YOU!cademy</span>
         </Link>
