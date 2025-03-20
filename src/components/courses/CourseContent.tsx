@@ -125,7 +125,7 @@ export const CourseContent = ({ course }: CourseContentProps) => {
                           {(item.type === 'exercise' || item.type === 'quiz') && <BookOpen className="h-4 w-4" />}
                           <span>{item.title}</span>
                         </div>
-                        <span className="text-sm text-muted-foreground">{item.duration}</span>
+                       
                       </Link>
                     );
                   })}
