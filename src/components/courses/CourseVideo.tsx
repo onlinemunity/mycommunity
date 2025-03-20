@@ -7,20 +7,9 @@ interface CourseVideoProps {
   course: Course;
 }
 
-const embedYouTubeUrl = (url: string) => {
-  const videoId = url.split('v=')[1]?.split('&')[0]; // Extrahiere die Video-ID
-  return `https://www.youtube.com/embed/${videoId}`;
-};
 
 export const CourseVideo = ({ course }: CourseVideoProps) => {
-  const getEmbedUrl = (url: string) => {
-    if (url.includes('youtube.com')) {
-      // Wenn es sich um eine YouTube-URL handelt, konvertiere sie
-      return embedYouTubeUrl(url);
-    }
-    return url; // Andernfalls, nehme die URL wie sie ist (z.B. für Vimeo)
-  };
-
+ 
   return (
     <Card className="mt-8">
       <CardHeader>
