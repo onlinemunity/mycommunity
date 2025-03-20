@@ -19,6 +19,8 @@ export const CourseHeader = ({ course }: CourseHeaderProps) => {
             </div>
             <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
             <p className="text-lg text-muted-foreground mb-6">{course.description}</p>
+            <br />
+            <p className="text-lg text-muted-foreground mb-6">{course.details}</p>
             <div className="flex flex-wrap gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
