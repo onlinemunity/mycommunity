@@ -70,6 +70,7 @@ const CourseDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <CourseContent course={course} />
+              <CourseVideo course={course} />
               <CourseInstructor course={course} />
             </div>
             <div className="lg:col-span-1">
