@@ -53,6 +53,11 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
                 {course.title}
               </Link>
             </h3>
+            <p className="text-lg font-normal">
+              
+                {course.description}
+              
+            </p>
           
           </div>
           <div className="flex items-center gap-2">
