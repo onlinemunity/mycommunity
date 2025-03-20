@@ -16,15 +16,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
         <CardTitle>{course.title}</CardTitle>
       </CardHeader>
       <CardContent>
-         <div className="space-y-6">
-        <div className="flex items-center gap-4">
-            {course.inhalte}
-          
-            {course.video_url}
-          Text zum checken: 1
-          
-          </div>
-        </div>
+        
       </CardContent>
     </Card>
   );
