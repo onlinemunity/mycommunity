@@ -292,8 +292,7 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
             {lecture.links && (
               <TabsContent value="links" className="space-y-4">
                  <div className="prose max-w-none">
-                   <p><Hier eine Übersicht mit aktuellen Links:</p>
-                   <br>
+                   
                    <Linkify text={lecture.links} />
                   </div>
               </TabsContent>
