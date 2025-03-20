@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { CourseTable } from '@/components/dashboard/courses/CourseTable';
+import { CourseTable } from '@/components/dashboard/courses/CourseTable2';
 import { CourseOverview } from '@/components/dashboard/courses/CourseOverview';
 import { LectureDetail } from '@/components/dashboard/courses/LectureDetail';
 import { useTranslation } from '@/hooks/useTranslation';
