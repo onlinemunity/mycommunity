@@ -173,15 +173,16 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
       <div>
         {urls.map((url, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <span style={{ fontSize: '18px', color: 'gray' }}>→</span> {/* Pfeilsymbol */}
             <a 
               href={url} 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ textDecoration: 'none', color: 'blue', marginRight: '8px' }}
+              style={{ textDecoration: 'none', color: 'gray', marginRight: '8px', marginleft: '12px' }}
             >
               {url}
             </a>
-            <span style={{ fontSize: '18px', color: 'gray' }}>→</span> {/* Pfeilsymbol */}
+           
           </div>
         ))}
       </div>
