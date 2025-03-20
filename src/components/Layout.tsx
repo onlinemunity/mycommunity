@@ -108,13 +108,13 @@ export const Layout = ({
           <div className="mt-12 pt-6 border-t border-metal/30 flex flex-col sm:flex-row justify-between items-center">
             <div className="flex items-center mb-4 sm:mb-0">
               <div className="h-8 w-8 rounded-md bg-gradient-to-br from-accent1 to-accent1-light flex items-center justify-center shadow-sm">
-                <span className="font-display text-white text-sm font-bold">C</span>
+                <span className="font-display text-white text-sm font-bold">YOU!</span>
               </div>
-              <span className="ml-2 font-display font-bold">Community</span>
+              <span className="ml-2 font-display font-bold">YOU!cademy</span>
             </div>
             
             <div className="text-sm text-foreground/60">
-              &copy; {currentYear} Community Platform. All rights reserved.
+              &copy; {currentYear} YOU!cademy Platform. All rights reserved.
             </div>
           </div>
         </div>
