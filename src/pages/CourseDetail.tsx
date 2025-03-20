@@ -53,6 +53,7 @@ const CourseDetail = () => {
     <Layout>
       <div className="page-transition">
         <CourseHeader course={course} />
+       
         <div className="container-wide py-12">
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -70,12 +71,7 @@ const CourseDetail = () => {
                 />
                 </div>
               )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
+       
               <CourseVideo course={course} /> 
               
               <CourseContent course={course} />
