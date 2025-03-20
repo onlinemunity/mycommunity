@@ -34,6 +34,8 @@ export type Lecture = {
   title: string;
   description: string | null;
   full_description: string | null;
+  material: string | null;
+  links: string | null;
   video_url: string | null;
   content: string | null;
   duration: string;
