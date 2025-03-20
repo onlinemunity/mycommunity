@@ -65,7 +65,7 @@ function App() {
               
               {/* Make the admin area in dashboard accessible to admins */}
               <Route element={<AdminRoute />}>
-                <Route path="/admin" element={<AdminArea />} />
+                <Route path="/dashboard/admin" element={<AdminArea />} />
               </Route>
               
               {/* Admin Section Routes - Using AdminRoute for protection */}
