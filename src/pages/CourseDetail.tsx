@@ -71,9 +71,8 @@ const CourseDetail = () => {
                 />
                 </div>
               )}
-       
-              <CourseVideo course={course} /> 
-              
+      
+             
               <CourseContent course={course} />
              
               <CourseInstructor course={course} />
