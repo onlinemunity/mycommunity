@@ -23,15 +23,20 @@ export const CourseInstructor = ({ course }: CourseInstructorProps) => {
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
-          <Avatar className="h-16 w-16">
-            <AvatarFallback>{getInitials(course.instructor)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <h3 className="text-lg font-medium">{course.instructor}</h3>
-            <p className="text-sm text-muted-foreground">
-              Expert instructor with years of industry experience
-            </p>
-          </div>
+           {course.video_url && (
+            <div className="mb-10">
+              <div className="aspect-video relative rounded-md overflow-hidden">
+                <iframe
+                  src={course.video_url}
+                  className="absolute inset-0 w-full h-full"
+                  title={`${course.title} preview video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  frameBorder="0"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
