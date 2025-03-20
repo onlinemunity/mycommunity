@@ -54,20 +54,7 @@ const CourseDetail = () => {
       <div className="page-transition">
         <CourseHeader course={course} />
         <div className="container-wide py-12">
-          {course.video_url && (
-            <div className="mb-10">
-              <div className="aspect-video relative rounded-md overflow-hidden">
-                <iframe
-                  src={course.video_url}
-                  className="absolute inset-0 w-full h-full"
-                  title={`${course.title} preview video`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  frameBorder="0"
-                  allowFullScreen
-                />
-              </div>
-            </div>
-          )}
+          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
 
