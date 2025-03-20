@@ -69,7 +69,7 @@ const CourseDetail = () => {
                   frameBorder="0"
                 allowFullScreen
                 />
-               </iframe>
+               
                 </div>
               )}
       
