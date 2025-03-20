@@ -23,7 +23,7 @@ export const CourseVideo = ({ course }: CourseVideoProps) => {
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
-          {course.content}
+          {course.inhalte}
           {course.video_url && (
             <div className="mb-10">
               <div className="aspect-video relative rounded-md overflow-hidden">
