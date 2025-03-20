@@ -163,16 +163,11 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
  function Linkify({ text }) {
   // Regulärer Ausdruck zum Finden von URLs
   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  
+
   // Alle gefundenen URLs in ein Array extrahieren
   const urls = text.match(urlRegex);
 
-  // Falls es URLs gibt, rendere sie als einzelne Links
-  if (urls) {
-    return (
-      <div>
-        {urls.map((url, index) => (
-         // Falls es URLs gibt, rendere sie als Links mit Pfeil
+  // Falls es URLs gibt, rendere sie als Links mit Pfeil
   if (urls) {
     return (
       <div>
@@ -188,10 +183,6 @@ export const LectureDetail: React.FC<LectureProps> = ({ lecture, onComplete }) =
             </a>
             <span style={{ fontSize: '18px', color: 'gray' }}>→</span> {/* Pfeilsymbol */}
           </div>
-        ))}
-      </div>
-    );
-  }
         ))}
       </div>
     );
