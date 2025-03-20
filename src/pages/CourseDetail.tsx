@@ -59,16 +59,22 @@ const CourseDetail = () => {
             <div className="lg:col-span-2">
 
               {course.video_url && (
-            <div className="aspect-video relative rounded-md overflow-hidden">
-              <iframe
-                src={course.video_url}  // Die URL wird korrekt als src verwendet
-                className="absolute inset-0 w-full h-64"
-                title={`${course.title} preview video`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                frameBorder="0"
+               <div className="aspect-video relative rounded-md overflow-hidden">
+                <iframe
+                  src={course.video_url}  // Ohne {} um den String zu interpolieren
+                  className="absolute inset-0 w-full h-full"
+                  title={${course.title} preview video}  // Template-String verwendet
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  frameBorder="0"
                 allowFullScreen
-              />
-            </div>
+                />
+                </div>
+              )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
               <CourseVideo course={course} /> 
               
