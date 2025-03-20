@@ -53,7 +53,7 @@ export const CourseTable: React.FC<CourseProgressProps> = ({ course }) => {
                 {course.title}
               </Link>
             </h3>
-            <p className="text-sm text-muted-foreground">{course.description}</p>
+          
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">{Math.round(course.progress)}% {t('dashboard.courses.completed')}</span>
