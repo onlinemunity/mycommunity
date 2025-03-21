@@ -13,6 +13,7 @@ const CourseDiscussions = () => {
   const { data: course, isLoading } = useQuery({
     queryKey: ['course', courseId],
     queryFn: async () => {
+      // First get the course by href
       const { data, error } = await supabase
         .from('courses')
         .select('*')
@@ -53,7 +54,7 @@ const CourseDiscussions = () => {
         </div>
         
         <DiscussionBoard 
-          courseId={course.id}
+          courseId={course.id} // Use course UUID instead of href
           title="Course Discussions"
         />
       </div>

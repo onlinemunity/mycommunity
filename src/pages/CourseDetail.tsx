@@ -88,7 +88,7 @@ const CourseDetail = () => {
             <TabsContent value="discussions">
               <div className="max-w-4xl mx-auto">
                 <DiscussionBoard 
-                  courseId={course.id}
+                  courseId={course.id} // Use course UUID instead of href
                   title="Course Discussions"
                 />
               </div>

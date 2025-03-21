@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useDiscussion } from '@/hooks/useDiscussion';
 import { TopicForm } from './TopicForm';
@@ -9,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface DiscussionBoardProps {
   courseId: string;
@@ -26,6 +25,11 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
   const navigate = useNavigate();
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [showNewForm, setShowNewForm] = useState(false);
+  
+  const routeParams = useParams();
+  const routeLectureId = routeParams.lectureId;
+  
+  const effectiveLectureId = lectureId || routeLectureId;
   
   const {
     topics,
@@ -55,7 +59,7 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     isUpdatingTopic,
     isCreatingComment,
     isUpdatingComment
-  } = useDiscussion(courseId, lectureId);
+  } = useDiscussion(courseId, effectiveLectureId);
   
   const selectedTopic = selectedTopicId ? topics.find(t => t.id === selectedTopicId) : null;
   
@@ -106,7 +110,6 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     navigate('/auth', { state: { redirectTo: window.location.pathname } });
   };
 
-  // Wrapper functions for voteTopic and markTopicSolved to match expected signature
   const handleVoteTopic = (topicId: string, voteType: number) => {
     voteTopic({ topicId, voteType });
   };

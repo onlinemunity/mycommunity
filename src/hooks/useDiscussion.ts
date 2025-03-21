@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,6 +23,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         return [];
       }
       
+      console.log('Fetching topics with courseId:', courseId, 'lectureId:', lectureId);
+      
       let query = supabase
         .from('discussion_topics')
         .select(`
@@ -42,7 +45,12 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       const { data, error } = await query;
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching topics:', error);
+        throw error;
+      }
+      
+      console.log('Fetched topics:', data);
       
       // Process the returned data to calculate vote counts
       return data.map((topic: any) => {
@@ -115,8 +123,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       if (!user || !courseId) throw new Error('User must be logged in and course must be specified');
       
       const topicData = {
-        course_id: courseId,
-        lecture_id: lectureId || null,
+        course_id: courseId, // This should be the UUID of the course
+        lecture_id: lectureId || null, // This should be the UUID of the lecture if present
         user_id: user.id,
         title,
         content,
@@ -136,6 +144,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         console.error('Error creating topic:', error);
         throw error;
       }
+      
+      console.log('Created topic:', data);
       return data;
     },
     onSuccess: () => {

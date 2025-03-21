@@ -333,7 +333,7 @@ const MyCoursesPage = () => {
           <LectureDetail 
             lecture={{
               ...selectedLecture,
-              courseId
+              courseId: selectedCourse.courseId
             }}
             onComplete={handleCompleteLecture}
           />
