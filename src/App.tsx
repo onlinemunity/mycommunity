@@ -10,6 +10,7 @@ import Academy from '@/pages/Academy';
 import Community from '@/pages/Community';
 import Courses from '@/pages/Courses';
 import CourseDetail from '@/pages/CourseDetail';
+import CourseDiscussions from '@/pages/CourseDiscussions';
 import Contact from '@/pages/Contact';
 import Pricing from '@/pages/Pricing';
 
@@ -50,6 +51,7 @@ function App() {
               <Route path="/community" element={<Community />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:courseId" element={<CourseDetail />} />
+              <Route path="/courses/:courseId/discussions" element={<CourseDiscussions />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/pricing" element={<Pricing />} />
               

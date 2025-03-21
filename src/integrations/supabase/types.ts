@@ -11,50 +11,53 @@ export type Database = {
     Tables: {
       courses: {
         Row: {
+          allgemein: string | null
           category: string
           created_at: string | null
-          description: string | null
+          description: string
           details: string | null
-          duration: string | null
+          duration: string
           href: string
           id: string
           image: string
+          inhalte: string | null
           instructor: string
+          kursdauer: string | null
           level: string
+          material: string | null
           rating: number
           students: number
           title: string
           updated_at: string | null
           video_url: string | null
-          kursdauer: string | null
-          zielgruppe: string | null
-          material: string | null
           zertifikat: string | null
-          allgemein: string | null
+          zielgruppe: string | null
         }
         Insert: {
+          allgemein?: string | null
           category: string
           created_at?: string | null
           description: string
-          details: string | null
+          details?: string | null
           duration: string
           href: string
           id?: string
           image?: string
+          inhalte?: string | null
           instructor: string
+          kursdauer?: string | null
           level: string
+          material?: string | null
           rating?: number
           students?: number
           title: string
           updated_at?: string | null
           video_url?: string | null
-          kursdauer?: string | null
-          zielgruppe?: string | null
-          material?: string | null
           zertifikat?: string | null
-          allgemein?: string | null
+          zielgruppe?: string | null
         }
         Update: {
+          allgemein?: string | null
           category?: string
           created_at?: string | null
           description?: string
@@ -63,20 +66,154 @@ export type Database = {
           href?: string
           id?: string
           image?: string
+          inhalte?: string | null
           instructor?: string
+          kursdauer?: string | null
           level?: string
+          material?: string | null
           rating?: number
           students?: number
           title?: string
           updated_at?: string | null
           video_url?: string | null
-          kursdauer?: string | null
-          zielgruppe?: string | null
-          material?: string | null
           zertifikat?: string | null
-          allgemein?: string | null
+          zielgruppe?: string | null
         }
         Relationships: []
+      }
+      discussion_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_solution: boolean
+          topic_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_solution?: boolean
+          topic_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_solution?: boolean
+          topic_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_comments_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "discussion_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discussion_topics: {
+        Row: {
+          content: string
+          course_id: string | null
+          created_at: string
+          id: string
+          lecture_id: string | null
+          pinned: boolean
+          solved: boolean
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          lecture_id?: string | null
+          pinned?: boolean
+          solved?: boolean
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          lecture_id?: string | null
+          pinned?: boolean
+          solved?: boolean
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_topics_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discussion_topics_lecture_id_fkey"
+            columns: ["lecture_id"]
+            isOneToOne: false
+            referencedRelation: "lectures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discussion_votes: {
+        Row: {
+          comment_id: string | null
+          created_at: string
+          id: string
+          topic_id: string | null
+          user_id: string
+          vote_type: number
+        }
+        Insert: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          topic_id?: string | null
+          user_id: string
+          vote_type: number
+        }
+        Update: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          topic_id?: string | null
+          user_id?: string
+          vote_type?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_votes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "discussion_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discussion_votes_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "discussion_topics"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       enrollments: {
         Row: {
@@ -155,7 +292,10 @@ export type Database = {
           created_at: string
           description: string | null
           duration: string
+          full_description: string | null
           id: string
+          links: string | null
+          material: string | null
           sort_order: number
           title: string
           updated_at: string
@@ -167,7 +307,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration: string
+          full_description?: string | null
           id?: string
+          links?: string | null
+          material?: string | null
           sort_order?: number
           title: string
           updated_at?: string
@@ -179,7 +322,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration?: string
+          full_description?: string | null
           id?: string
+          links?: string | null
+          material?: string | null
           sort_order?: number
           title?: string
           updated_at?: string
