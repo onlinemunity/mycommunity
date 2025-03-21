@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,6 +18,10 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
   const { data: topics = [], isLoading: isTopicsLoading } = useQuery({
     queryKey: ['discussionTopics', courseId, lectureId],
     queryFn: async () => {
+      if (!courseId) {
+        return [];
+      }
+      
       let query = supabase
         .from('discussion_topics')
         .select(`
@@ -30,7 +33,7 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
 
       if (lectureId) {
         query = query.eq('lecture_id', lectureId);
-      } else if (courseId) {
+      } else {
         query = query.is('lecture_id', null);
       }
 
@@ -121,13 +124,18 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         solved: false
       };
       
+      console.log('Creating topic with data:', topicData);
+      
       const { data, error } = await supabase
         .from('discussion_topics')
         .insert(topicData)
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error creating topic:', error);
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {

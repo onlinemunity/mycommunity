@@ -1,50 +1,72 @@
-import { Course } from '@/types/supabase';
-import { Badge } from '@/components/ui/badge';
-import { Star, Users, Clock } from 'lucide-react';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Layout } from '@/components/Layout';
+import { supabase } from '@/integrations/supabase/client';
+import { CourseContent } from '@/components/courses/CourseContent';
+import { CourseHeader } from '@/components/courses/CourseHeader';
+import { CourseInstructor } from '@/components/courses/CourseInstructor';
+import { CourseSidebar } from '@/components/courses/CourseSidebar';
+import { DiscussionBoard } from '@/components/discussion/DiscussionBoard';
+import { Course, Lecture } from '@/types/supabase';
+import { Loader2 } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 interface CourseVideoProps {
   course: Course;
+  lecture: Lecture;
 }
 
-export const CourseVideo = ({ course }: Course>VideoProps) => {
+const CourseVideo = ({ course, lecture }: CourseVideoProps) => {
   return (
-    <div className="bg-gradient-to-b from-white to-blue-50 py-12">
-      <div className="container-wide">
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-4">
-              <Badge>{course.category}</Badge>
-              <Badge variant="outline">{course.level}</Badge>
-            </div>
-            <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
-            <p className="text-lg text-muted-foreground mb-6">{course.description}</p>
-            
-            <p className="text-sm text-muted-foreground mb-6" style={{ whiteSpace: 'pre-line' }}>{course.details}</p>
-            <div className="flex flex-wrap gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
-                <span>{course.rating} rating</span>
+    <Layout>
+      <div className="page-transition">
+        <CourseHeader course={course} />
+        
+        <div className="container-wide py-12">
+          <Tabs defaultValue="content" className="mb-8">
+            <TabsList>
+              <TabsTrigger value="content">Lecture Content</TabsTrigger>
+              <TabsTrigger value="discussions">Discussions</TabsTrigger>
+            </TabsList>
+            <TabsContent value="content">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <div className="lg:col-span-2 mb-8">
+                  {lecture.video_url && (
+                  <div className="aspect-video relative rounded-md overflow-hidden mb-8">
+                    <iframe
+                      src={lecture.video_url}
+                      className="absolute inset-0 w-full h-full"
+                      title={lecture.title}   
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      frameBorder="0"
+                      allowFullScreen
+                    />
+                  </div>
+                  )}
+                
+                  <CourseContent course={course} />
+                  <CourseInstructor course={course} />
+                </div>
+                <div className="lg:col-span-1">
+                  <CourseSidebar course={course} />
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-muted-foreground" />
-                <span>{course.students} students</span>
+            </TabsContent>
+            <TabsContent value="discussions">
+              <div className="max-w-4xl mx-auto">
+                <DiscussionBoard 
+                  courseId={course.id}
+                  lectureId={lecture.id}
+                  title="Lecture Discussions"
+                />
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-muted-foreground" />
-                <span>{course.duration}</span>
-              </div>
-            </div>
-          </div>
-          <div className="w-full md:w-1/3">
-            <img 
-              src={course.image} 
-              alt={course.title}
-              className="w-full rounded-lg shadow-lg object-cover aspect
-              -video"
-            />
-          </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
+
+export default CourseVideo;
