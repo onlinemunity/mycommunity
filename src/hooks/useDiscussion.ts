@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DiscussionTopic, DiscussionComment } from '@/types/discussion';
@@ -15,11 +15,16 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
   const [editingComment, setEditingComment] = useState<DiscussionComment | null>(null);
   const [replyingToTopic, setReplyingToTopic] = useState<string | null>(null);
 
+  useEffect(() => {
+    console.log('useDiscussion hook initialized with courseId:', courseId, 'lectureId:', lectureId);
+  }, [courseId, lectureId]);
+
   // Get topics based on course or lecture
   const { data: topics = [], isLoading: isTopicsLoading } = useQuery({
     queryKey: ['discussionTopics', courseId, lectureId],
     queryFn: async () => {
       if (!courseId) {
+        console.log('No courseId provided, returning empty topics array');
         return [];
       }
       
@@ -35,8 +40,10 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         .eq('course_id', courseId);
 
       if (lectureId) {
+        console.log('Adding lecture filter with lectureId:', lectureId);
         query = query.eq('lecture_id', lectureId);
       } else {
+        console.log('No lectureId, fetching course-level topics only');
         query = query.is('lecture_id', null);
       }
 

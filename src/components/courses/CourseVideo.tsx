@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -18,6 +19,8 @@ interface CourseVideoProps {
 }
 
 const CourseVideo = ({ course, lecture }: CourseVideoProps) => {
+  console.log('CourseVideo rendering with course ID:', course.id, 'and lecture ID:', lecture.id);
+  
   return (
     <Layout>
       <div className="page-transition">

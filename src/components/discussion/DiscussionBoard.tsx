@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useDiscussion } from '@/hooks/useDiscussion';
 import { TopicForm } from './TopicForm';
 import { TopicItem } from './TopicItem';
 import { TopicDetail } from './TopicDetail';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Loader2 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,6 +31,11 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
   const routeLectureId = routeParams.lectureId;
   
   const effectiveLectureId = lectureId || routeLectureId;
+  
+  useEffect(() => {
+    console.log('DiscussionBoard: courseId =', courseId);
+    console.log('DiscussionBoard: effectiveLectureId =', effectiveLectureId);
+  }, [courseId, effectiveLectureId]);
   
   const {
     topics,
@@ -60,6 +66,10 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     isCreatingComment,
     isUpdatingComment
   } = useDiscussion(courseId, effectiveLectureId);
+  
+  useEffect(() => {
+    console.log('Topics loaded:', topics);
+  }, [topics]);
   
   const selectedTopic = selectedTopicId ? topics.find(t => t.id === selectedTopicId) : null;
   
@@ -200,7 +210,10 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
           
           <TabsContent value="all">
             {isTopicsLoading ? (
-              <div className="text-center py-10">Loading topics...</div>
+              <div className="text-center py-10">
+                <Loader2 className="h-8 w-8 animate-spin text-accent1 mx-auto mb-4" />
+                <p>Loading topics...</p>
+              </div>
             ) : topics.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-10">
