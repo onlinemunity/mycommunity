@@ -26,6 +26,14 @@ export type Course = {
   video_url: string | null;
   created_at?: string;
   updated_at?: string;
+  // Adding missing properties from the database schema
+  details?: string | null;
+  allgemein?: string | null;
+  zielgruppe?: string | null;
+  material?: string | null;
+  inhalte?: string | null;
+  kursdauer?: string | null;
+  zertifikat?: string | null;
 };
 
 export type Lecture = {

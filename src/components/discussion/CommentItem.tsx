@@ -63,7 +63,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
             </Avatar>
             <span className="text-sm font-medium">{comment.user_profile?.username || 'Unknown'}</span>
             <span className="text-xs text-muted-foreground">{timeAgo}</span>
-            {comment.is_solution && <Badge variant="success">Solution</Badge>}
+            {comment.is_solution && <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Solution</Badge>}
           </div>
           
           <div className="prose prose-sm max-w-none">

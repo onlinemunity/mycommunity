@@ -90,7 +90,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
             <div className="flex items-center gap-2">
               <CardTitle className="text-xl">{topic.title}</CardTitle>
               {topic.pinned && <Pin className="h-4 w-4 text-primary" />}
-              {topic.solved && <Badge variant="success">Solved</Badge>}
+              {topic.solved && <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Solved</Badge>}
             </div>
             <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">

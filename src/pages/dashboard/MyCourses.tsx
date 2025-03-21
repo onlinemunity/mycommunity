@@ -124,7 +124,10 @@ const MyCoursesPage = () => {
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
               description: `Welcome to ${courseName}! In this lecture, we will go over the course outline.`,
-              content: `<h1>Welcome to ${courseName}</h1><p>This is an introduction to the course. You'll learn about key concepts and how to apply them.</p>`
+              content: `<h1>Welcome to ${courseName}</h1><p>This is an introduction to the course. You'll learn about key concepts and how to apply them.</p>`,
+              full_description: null,
+              material: null,
+              links: null
             },
             {
               id: `${enrollment.course_id}-lecture-2`,
@@ -137,7 +140,10 @@ const MyCoursesPage = () => {
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
               description: `Learn the fundamental concepts of ${courseName}.`,
-              content: `<h1>Core Concepts in ${courseName}</h1><p>This lecture covers fundamental principles and important techniques.</p>`
+              content: `<h1>Core Concepts in ${courseName}</h1><p>This lecture covers fundamental principles and important techniques.</p>`,
+              full_description: null,
+              material: null,
+              links: null
             },
             {
               id: `${enrollment.course_id}-lecture-3`,
@@ -150,7 +156,10 @@ const MyCoursesPage = () => {
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
               description: `Test your understanding of ${courseName} core concepts.`,
-              content: `This is a quiz to test your knowledge of ${courseName}.`
+              content: `This is a quiz to test your knowledge of ${courseName}.`,
+              full_description: null,
+              material: null,
+              links: null
             }
           ];
         }

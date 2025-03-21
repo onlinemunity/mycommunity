@@ -106,6 +106,15 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     navigate('/auth', { state: { redirectTo: window.location.pathname } });
   };
 
+  // Wrapper functions for voteTopic and markTopicSolved to match expected signature
+  const handleVoteTopic = (topicId: string, voteType: number) => {
+    voteTopic({ topicId, voteType });
+  };
+
+  const handleSolveToggle = (topicId: string, solved: boolean) => {
+    markTopicSolved({ topicId, solved });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -162,8 +171,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
             topic={selectedTopic}
             onEditTopic={handleEditTopic}
             onDeleteTopic={handleDeleteTopic}
-            onVoteTopic={voteTopic}
-            onSolveToggle={markTopicSolved}
+            onVoteTopic={handleVoteTopic}
+            onSolveToggle={handleSolveToggle}
             getComments={getComments}
             newCommentForm={newCommentForm}
             setNewCommentForm={setNewCommentForm}
@@ -213,8 +222,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
                     onEdit={handleEditTopic}
                     onDelete={handleDeleteTopic}
                     onReply={handleReply}
-                    onVote={voteTopic}
-                    onSolveToggle={markTopicSolved}
+                    onVote={handleVoteTopic}
+                    onSolveToggle={handleSolveToggle}
                   />
                 ))}
               </div>
@@ -239,8 +248,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
                     onEdit={handleEditTopic}
                     onDelete={handleDeleteTopic}
                     onReply={handleReply}
-                    onVote={voteTopic}
-                    onSolveToggle={markTopicSolved}
+                    onVote={handleVoteTopic}
+                    onSolveToggle={handleSolveToggle}
                   />
                 ))}
               </div>
@@ -265,8 +274,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
                     onEdit={handleEditTopic}
                     onDelete={handleDeleteTopic}
                     onReply={handleReply}
-                    onVote={voteTopic}
-                    onSolveToggle={markTopicSolved}
+                    onVote={handleVoteTopic}
+                    onSolveToggle={handleSolveToggle}
                   />
                 ))}
               </div>
