@@ -64,7 +64,7 @@ export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
   const nextLecture = siblingLectures && currentIndex < siblingLectures.length - 1 ? siblingLectures[currentIndex + 1] : null;
   
   const handleNavigate = (lectureId: string) => {
-    navigate(`/dashboard/courses/${lecture.courseID}/lecture/${lectureId}`);
+    navigate(`/dashboard/courses/${lecture.courseId}/lecture/${lectureId}`);
   };
   
   const renderVideoOrContent = () => {
