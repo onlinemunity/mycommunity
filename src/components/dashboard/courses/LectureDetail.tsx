@@ -17,6 +17,7 @@ type LectureDetailProps = {
     content?: string;
     links?: string;
     courseId: string;
+    href: string;
     completed?: boolean;
   };
   onComplete: (lectureId: string) => void;
@@ -63,7 +64,7 @@ export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
   const nextLecture = siblingLectures && currentIndex < siblingLectures.length - 1 ? siblingLectures[currentIndex + 1] : null;
   
   const handleNavigate = (lectureId: string) => {
-    navigate(`/dashboard/courses/${lecture.courseId}/lecture/${lectureId}`);
+    navigate(`/dashboard/courses/${lecture.href}/lecture/${lectureId}`);
   };
   
   const renderVideoOrContent = () => {
