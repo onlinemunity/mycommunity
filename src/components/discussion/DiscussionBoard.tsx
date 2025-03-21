@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useDiscussion } from '@/hooks/useDiscussion';
 import { TopicForm } from './TopicForm';
@@ -120,11 +119,11 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     navigate('/auth', { state: { redirectTo: window.location.pathname } });
   };
 
-  const handleVoteTopic = (topicId: string, voteType: number) => {
+  const wrapVoteTopic = (topicId: string, voteType: number) => {
     voteTopic({ topicId, voteType });
   };
 
-  const handleSolveToggle = (topicId: string, solved: boolean) => {
+  const wrapSolveToggle = (topicId: string, solved: boolean) => {
     markTopicSolved({ topicId, solved });
   };
 
@@ -184,8 +183,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
             topic={selectedTopic}
             onEditTopic={handleEditTopic}
             onDeleteTopic={handleDeleteTopic}
-            onVoteTopic={handleVoteTopic}
-            onSolveToggle={handleSolveToggle}
+            onVoteTopic={wrapVoteTopic}
+            onSolveToggle={wrapSolveToggle}
             getComments={getComments}
             newCommentForm={newCommentForm}
             setNewCommentForm={setNewCommentForm}
@@ -238,8 +237,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
                     onEdit={handleEditTopic}
                     onDelete={handleDeleteTopic}
                     onReply={handleReply}
-                    onVote={handleVoteTopic}
-                    onSolveToggle={handleSolveToggle}
+                    onVote={wrapVoteTopic}
+                    onSolveToggle={wrapSolveToggle}
                   />
                 ))}
               </div>
@@ -264,8 +263,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
                     onEdit={handleEditTopic}
                     onDelete={handleDeleteTopic}
                     onReply={handleReply}
-                    onVote={handleVoteTopic}
-                    onSolveToggle={handleSolveToggle}
+                    onVote={wrapVoteTopic}
+                    onSolveToggle={wrapSolveToggle}
                   />
                 ))}
               </div>
@@ -290,8 +289,8 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
                     onEdit={handleEditTopic}
                     onDelete={handleDeleteTopic}
                     onReply={handleReply}
-                    onVote={handleVoteTopic}
-                    onSolveToggle={handleSolveToggle}
+                    onVote={wrapVoteTopic}
+                    onSolveToggle={wrapSolveToggle}
                   />
                 ))}
               </div>

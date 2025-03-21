@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -32,11 +31,7 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       let query = supabase
         .from('discussion_topics')
-        .select(`
-          *,
-          user_profile:profiles!discussion_topics_user_id_fkey(username, avatar_url),
-          vote_count:discussion_votes(vote_type)
-        `)
+        .select('*')
         .eq('course_id', courseId);
 
       if (lectureId) {
@@ -59,23 +54,12 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       console.log('Fetched topics:', data);
       
-      // Process the returned data to calculate vote counts
       return data.map((topic: any) => {
-        const votes = topic.vote_count || [];
-        const voteSum = votes.reduce((sum: number, vote: any) => sum + vote.vote_type, 0);
-        
-        // Get user's vote if they are logged in
-        let userVote = 0;
-        if (user) {
-          const userVoteObj = votes.find((vote: any) => vote.user_id === user.id);
-          userVote = userVoteObj ? userVoteObj.vote_type : 0;
-        }
-        
         return {
           ...topic,
-          vote_count: voteSum,
-          user_vote: userVote,
-          user_profile: topic.user_profile[0] || { username: 'Unknown', avatar_url: null }
+          vote_count: 0,
+          user_vote: 0,
+          user_profile: { username: 'Anonymous', avatar_url: null }
         };
       });
     },
@@ -89,34 +73,19 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       queryFn: async () => {
         const { data, error } = await supabase
           .from('discussion_comments')
-          .select(`
-            *,
-            user_profile:profiles!discussion_comments_user_id_fkey(username, avatar_url),
-            vote_count:discussion_votes(vote_type)
-          `)
+          .select('*')
           .eq('topic_id', topicId)
           .order('is_solution', { ascending: false })
           .order('created_at', { ascending: true });
         
         if (error) throw error;
         
-        // Process the returned data
         return data.map((comment: any) => {
-          const votes = comment.vote_count || [];
-          const voteSum = votes.reduce((sum: number, vote: any) => sum + vote.vote_type, 0);
-          
-          // Get user's vote if they are logged in
-          let userVote = 0;
-          if (user) {
-            const userVoteObj = votes.find((vote: any) => vote.user_id === user.id);
-            userVote = userVoteObj ? userVoteObj.vote_type : 0;
-          }
-          
           return {
             ...comment,
-            vote_count: voteSum,
-            user_vote: userVote,
-            user_profile: comment.user_profile[0] || { username: 'Unknown', avatar_url: null }
+            vote_count: 0,
+            user_vote: 0,
+            user_profile: { username: 'Anonymous', avatar_url: null }
           };
         });
       },
@@ -130,8 +99,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       if (!user || !courseId) throw new Error('User must be logged in and course must be specified');
       
       const topicData = {
-        course_id: courseId, // This should be the UUID of the course
-        lecture_id: lectureId || null, // This should be the UUID of the lecture if present
+        course_id: courseId,
+        lecture_id: lectureId || null,
         user_id: user.id,
         title,
         content,
@@ -383,7 +352,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       if (error) throw error;
       
-      // If marking as solution, also mark the topic as solved
       if (isSolution) {
         await supabase
           .from('discussion_topics')
@@ -415,7 +383,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
     mutationFn: async ({ topicId, voteType }: { topicId: string; voteType: number }) => {
       if (!user) throw new Error('User must be logged in');
       
-      // Check if the user has already voted
       const { data: existingVote, error: checkError } = await supabase
         .from('discussion_votes')
         .select('id, vote_type')
@@ -425,7 +392,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       if (checkError) throw checkError;
       
-      // If the user clicked the same vote type, remove their vote
       if (existingVote && existingVote.vote_type === voteType) {
         const { error: deleteError } = await supabase
           .from('discussion_votes')
@@ -433,11 +399,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
           .eq('id', existingVote.id);
         
         if (deleteError) throw deleteError;
-      } 
-      // If the user is changing their vote or voting for the first time
-      else {
+      } else {
         if (existingVote) {
-          // Update existing vote
           const { error: updateError } = await supabase
             .from('discussion_votes')
             .update({ vote_type: voteType })
@@ -445,7 +408,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
           
           if (updateError) throw updateError;
         } else {
-          // Create new vote
           const { error: insertError } = await supabase
             .from('discussion_votes')
             .insert({
@@ -477,7 +439,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
     mutationFn: async ({ commentId, topicId, voteType }: { commentId: string; topicId: string; voteType: number }) => {
       if (!user) throw new Error('User must be logged in');
       
-      // Check if the user has already voted
       const { data: existingVote, error: checkError } = await supabase
         .from('discussion_votes')
         .select('id, vote_type')
@@ -487,7 +448,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       if (checkError) throw checkError;
       
-      // If the user clicked the same vote type, remove their vote
       if (existingVote && existingVote.vote_type === voteType) {
         const { error: deleteError } = await supabase
           .from('discussion_votes')
@@ -495,11 +455,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
           .eq('id', existingVote.id);
         
         if (deleteError) throw deleteError;
-      } 
-      // If the user is changing their vote or voting for the first time
-      else {
+      } else {
         if (existingVote) {
-          // Update existing vote
           const { error: updateError } = await supabase
             .from('discussion_votes')
             .update({ vote_type: voteType })
@@ -507,7 +464,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
           
           if (updateError) throw updateError;
         } else {
-          // Create new vote
           const { error: insertError } = await supabase
             .from('discussion_votes')
             .insert({
