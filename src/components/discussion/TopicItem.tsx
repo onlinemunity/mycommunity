@@ -31,6 +31,11 @@ export const TopicItem: React.FC<TopicItemProps> = ({
   const { user } = useAuth();
   const isOwner = user && user.id === topic.user_id;
   const timeAgo = formatDistanceToNow(new Date(topic.created_at), { addSuffix: true });
+  
+  // Safely get the username and avatar from the user_profile
+  const username = topic.user_profile?.username || 'Anonymous';
+  const avatarUrl = topic.user_profile?.avatar_url || '';
+  const userInitial = username[0]?.toUpperCase() || 'A';
 
   return (
     <div className="border rounded-lg p-4 mb-4 hover:shadow-sm transition-shadow">
@@ -71,10 +76,10 @@ export const TopicItem: React.FC<TopicItemProps> = ({
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
               <Avatar className="h-6 w-6">
-                <AvatarImage src={topic.user_profile?.avatar_url || ''} alt={topic.user_profile?.username || 'User'} />
-                <AvatarFallback>{topic.user_profile?.username?.[0]?.toUpperCase() || 'U'}</AvatarFallback>
+                <AvatarImage src={avatarUrl} alt={username} />
+                <AvatarFallback>{userInitial}</AvatarFallback>
               </Avatar>
-              <span>{topic.user_profile?.username || 'Unknown'}</span>
+              <span>{username}</span>
             </div>
             <span>{timeAgo}</span>
             {showCommentCount && (

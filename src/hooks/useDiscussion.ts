@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -31,7 +32,10 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       let query = supabase
         .from('discussion_topics')
-        .select('*')
+        .select(`
+          *,
+          user_profile:user_id(username, avatar_url)
+        `)
         .eq('course_id', courseId);
 
       if (lectureId) {
@@ -54,14 +58,50 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       
       console.log('Fetched topics:', data);
       
-      return data.map((topic: any) => {
+      // Get vote counts and user votes for each topic
+      const topicsWithVotes = await Promise.all(data.map(async (topic: any) => {
+        // Get vote count
+        const { data: votesData, error: votesError } = await supabase
+          .from('discussion_votes')
+          .select('vote_type')
+          .eq('topic_id', topic.id);
+          
+        if (votesError) throw votesError;
+        
+        const voteCount = votesData.reduce((acc: number, vote: any) => acc + vote.vote_type, 0);
+        
+        // Get user vote if logged in
+        let userVote = 0;
+        if (user) {
+          const { data: userVoteData, error: userVoteError } = await supabase
+            .from('discussion_votes')
+            .select('vote_type')
+            .eq('topic_id', topic.id)
+            .eq('user_id', user.id)
+            .maybeSingle();
+            
+          if (!userVoteError && userVoteData) {
+            userVote = userVoteData.vote_type;
+          }
+        }
+        
+        // Get comment count
+        const { count, error: commentCountError } = await supabase
+          .from('discussion_comments')
+          .select('id', { count: 'exact', head: true })
+          .eq('topic_id', topic.id);
+          
+        if (commentCountError) throw commentCountError;
+        
         return {
           ...topic,
-          vote_count: 0,
-          user_vote: 0,
-          user_profile: { username: 'Anonymous', avatar_url: null }
+          vote_count: voteCount,
+          user_vote: userVote,
+          comment_count: count || 0
         };
-      });
+      }));
+      
+      return topicsWithVotes;
     },
     enabled: !!courseId,
   });
@@ -73,21 +113,51 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
       queryFn: async () => {
         const { data, error } = await supabase
           .from('discussion_comments')
-          .select('*')
+          .select(`
+            *,
+            user_profile:user_id(username, avatar_url)
+          `)
           .eq('topic_id', topicId)
           .order('is_solution', { ascending: false })
           .order('created_at', { ascending: true });
         
         if (error) throw error;
         
-        return data.map((comment: any) => {
+        // Get vote counts and user votes for each comment
+        const commentsWithVotes = await Promise.all(data.map(async (comment: any) => {
+          // Get vote count
+          const { data: votesData, error: votesError } = await supabase
+            .from('discussion_votes')
+            .select('vote_type')
+            .eq('comment_id', comment.id);
+            
+          if (votesError) throw votesError;
+          
+          const voteCount = votesData.reduce((acc: number, vote: any) => acc + vote.vote_type, 0);
+          
+          // Get user vote if logged in
+          let userVote = 0;
+          if (user) {
+            const { data: userVoteData, error: userVoteError } = await supabase
+              .from('discussion_votes')
+              .select('vote_type')
+              .eq('comment_id', comment.id)
+              .eq('user_id', user.id)
+              .maybeSingle();
+              
+            if (!userVoteError && userVoteData) {
+              userVote = userVoteData.vote_type;
+            }
+          }
+          
           return {
             ...comment,
-            vote_count: 0,
-            user_vote: 0,
-            user_profile: { username: 'Anonymous', avatar_url: null }
+            vote_count: voteCount,
+            user_vote: userVote
           };
-        });
+        }));
+        
+        return commentsWithVotes;
       },
       enabled: !!topicId,
     });

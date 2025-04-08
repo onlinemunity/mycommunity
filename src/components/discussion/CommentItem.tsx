@@ -29,6 +29,11 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   const isOwner = user && user.id === comment.user_id;
   const isTopicOwner = user && user.id === topicUserId;
   const timeAgo = formatDistanceToNow(new Date(comment.created_at), { addSuffix: true });
+  
+  // Safely get the username and avatar from the user_profile
+  const username = comment.user_profile?.username || 'Anonymous';
+  const avatarUrl = comment.user_profile?.avatar_url || '';
+  const userInitial = username[0]?.toUpperCase() || 'A';
 
   return (
     <div className={`border rounded-lg p-4 mb-4 ${comment.is_solution ? 'border-green-500 bg-green-50 dark:bg-green-950/20' : ''}`}>
@@ -58,10 +63,10 @@ export const CommentItem: React.FC<CommentItemProps> = ({
         <div className="flex-1 overflow-hidden">
           <div className="flex items-center gap-2 mb-2">
             <Avatar className="h-6 w-6">
-              <AvatarImage src={comment.user_profile?.avatar_url || ''} alt={comment.user_profile?.username || 'User'} />
-              <AvatarFallback>{comment.user_profile?.username?.[0]?.toUpperCase() || 'U'}</AvatarFallback>
+              <AvatarImage src={avatarUrl} alt={username} />
+              <AvatarFallback>{userInitial}</AvatarFallback>
             </Avatar>
-            <span className="text-sm font-medium">{comment.user_profile?.username || 'Unknown'}</span>
+            <span className="text-sm font-medium">{username}</span>
             <span className="text-xs text-muted-foreground">{timeAgo}</span>
             {comment.is_solution && <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Solution</Badge>}
           </div>

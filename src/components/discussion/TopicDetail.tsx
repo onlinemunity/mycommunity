@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+
+import React from 'react';
 import { format } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, ArrowDown, Edit, Trash, CheckCircle, Pin, Reply } from 'lucide-react';
+import { ArrowUp, ArrowDown, Edit, Trash, CheckCircle, Pin } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { DiscussionTopic, DiscussionComment } from '@/types/discussion';
 import { CommentItem } from './CommentItem';
@@ -60,6 +59,11 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   
   const { data: comments = [], isLoading: isCommentsLoading } = getComments(topic.id);
   
+  // Safely get the username and avatar from the user_profile
+  const username = topic.user_profile?.username || 'Anonymous';
+  const avatarUrl = topic.user_profile?.avatar_url || '';
+  const userInitial = username[0]?.toUpperCase() || 'A';
+  
   const handleCreateComment = () => {
     createComment({
       topicId: topic.id,
@@ -94,10 +98,10 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
             <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Avatar className="h-5 w-5">
-                  <AvatarImage src={topic.user_profile?.avatar_url || ''} alt={topic.user_profile?.username || 'User'} />
-                  <AvatarFallback>{topic.user_profile?.username?.[0]?.toUpperCase() || 'U'}</AvatarFallback>
+                  <AvatarImage src={avatarUrl} alt={username} />
+                  <AvatarFallback>{userInitial}</AvatarFallback>
                 </Avatar>
-                <span>{topic.user_profile?.username || 'Unknown'}</span>
+                <span>{username}</span>
               </div>
               <span>•</span>
               <span>{formattedDate}</span>
