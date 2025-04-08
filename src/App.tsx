@@ -65,14 +65,10 @@ function App() {
                 <Route path="/dashboard/courses" element={<MyCoursesPage />} />
                 <Route path="/dashboard/courses/:courseId" element={<MyCoursesPage />} />
                 <Route path="/dashboard/courses/:courseId/lecture/:lectureId" element={<MyCoursesPage />} />
-              </Route>
-              
-              {/* Make the admin area in dashboard accessible to admins */}
-              <Route element={<AdminRoute />}>
                 <Route path="/dashboard/admin" element={<AdminArea />} />
               </Route>
               
-              {/* Admin Section Routes - Using AdminRoute for protection */}
+              {/* Admin Section Routes - Properly configured with AdminRoute for protection */}
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/courses" element={<CoursesManagement />} />

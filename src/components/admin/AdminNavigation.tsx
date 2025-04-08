@@ -40,6 +40,8 @@ const navItems = [
 
 export const AdminNavigation = () => {
   const location = useLocation();
+  
+  console.log('AdminNavigation - Current path:', location.pathname);
 
   return (
     <nav className="flex overflow-x-auto pb-2 mb-6 border-b">
