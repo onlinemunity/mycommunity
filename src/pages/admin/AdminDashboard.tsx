@@ -1,84 +1,40 @@
 
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { BarChart, UsersRound, BookOpen, Video } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { BookOpen, Users, VideoIcon, Settings, Layers } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    totalCourses: 0,
-    totalLectures: 0,
-    totalEnrollments: 0
-  });
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        // Get total users
-        const { count: usersCount } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true });
-
-        // Get total courses
-        const { count: coursesCount } = await supabase
-          .from('courses')
-          .select('*', { count: 'exact', head: true });
-
-        // Get total lectures
-        const { count: lecturesCount } = await supabase
-          .from('lectures')
-          .select('*', { count: 'exact', head: true });
-
-        // Get total enrollments
-        const { count: enrollmentsCount } = await supabase
-          .from('enrollments')
-          .select('*', { count: 'exact', head: true });
-
-        setStats({
-          totalUsers: usersCount || 0,
-          totalCourses: coursesCount || 0,
-          totalLectures: lecturesCount || 0,
-          totalEnrollments: enrollmentsCount || 0
-        });
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-      }
-    };
-
-    fetchStats();
-  }, []);
-
-  const statCards = [
+  const adminCards = [
     {
-      title: 'Total Users',
-      value: stats.totalUsers,
-      icon: <UsersRound className="h-6 w-6 text-blue-500" />,
-      description: 'Registered users',
-      color: 'bg-blue-50'
+      title: 'Courses',
+      description: 'Manage all courses',
+      icon: <BookOpen className="h-8 w-8 text-primary" />,
+      path: '/admin/courses',
+      color: 'bg-blue-50 dark:bg-blue-950',
     },
     {
-      title: 'Total Courses',
-      value: stats.totalCourses,
-      icon: <BookOpen className="h-6 w-6 text-green-500" />,
-      description: 'Available courses',
-      color: 'bg-green-50'
+      title: 'Lectures',
+      description: 'Manage all lectures',
+      icon: <VideoIcon className="h-8 w-8 text-accent1" />,
+      path: '/admin/lectures',
+      color: 'bg-purple-50 dark:bg-purple-950',
     },
     {
-      title: 'Total Lectures',
-      value: stats.totalLectures,
-      icon: <Video className="h-6 w-6 text-purple-500" />,
-      description: 'All lectures',
-      color: 'bg-purple-50'
+      title: 'Users',
+      description: 'Manage all users',
+      icon: <Users className="h-8 w-8 text-green-600" />,
+      path: '/admin/users',
+      color: 'bg-green-50 dark:bg-green-950',
     },
     {
-      title: 'Total Enrollments',
-      value: stats.totalEnrollments,
-      icon: <BarChart className="h-6 w-6 text-orange-500" />,
-      description: 'Course enrollments',
-      color: 'bg-orange-50'
-    }
+      title: 'Settings',
+      description: 'System settings',
+      icon: <Settings className="h-8 w-8 text-gray-600" />,
+      path: '/admin/settings',
+      color: 'bg-gray-50 dark:bg-gray-950',
+    },
   ];
 
   return (
@@ -86,26 +42,77 @@ const AdminDashboard = () => {
       <div className="space-y-6">
         <div>
           <h2 className="text-3xl font-bold">Admin Dashboard</h2>
-          <p className="text-muted-foreground">
-            Overview of your platform's key metrics
-          </p>
+          <p className="text-muted-foreground">Welcome to the administration area</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statCards.map((card) => (
-            <Card key={card.title} className="overflow-hidden">
-              <CardHeader className={`${card.color} p-4`}>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-medium">{card.title}</CardTitle>
-                  {card.icon}
-                </div>
-              </CardHeader>
-              <CardContent className="p-4">
-                <div className="text-3xl font-bold">{card.value}</div>
-                <p className="text-sm text-muted-foreground mt-1">{card.description}</p>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {adminCards.map((card) => (
+            <Link key={card.path} to={card.path}>
+              <Card className="h-full hover:shadow-md transition-shadow">
+                <CardContent className="p-6">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${card.color}`}>
+                    {card.icon}
+                  </div>
+                  <CardTitle className="text-xl mb-1">{card.title}</CardTitle>
+                  <CardDescription>{card.description}</CardDescription>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Layers className="h-5 w-5" />
+                <span>System Overview</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                From here you can manage all aspects of your learning platform. Use the cards above
+                to navigate to specific management areas, or use the sidebar for navigation.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
+                <span>Quick Actions</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-2">
+                <Link 
+                  to="/admin/courses" 
+                  className="bg-primary/5 hover:bg-primary/10 rounded-md p-3 text-center transition-colors"
+                >
+                  Add New Course
+                </Link>
+                <Link 
+                  to="/admin/lectures" 
+                  className="bg-accent1/5 hover:bg-accent1/10 rounded-md p-3 text-center transition-colors"
+                >
+                  Add New Lecture
+                </Link>
+                <Link 
+                  to="/admin/users" 
+                  className="bg-green-500/5 hover:bg-green-500/10 rounded-md p-3 text-center transition-colors"
+                >
+                  Manage Users
+                </Link>
+                <Link 
+                  to="/admin/settings" 
+                  className="bg-gray-500/5 hover:bg-gray-500/10 rounded-md p-3 text-center transition-colors"
+                >
+                  System Settings
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AdminLayout>
