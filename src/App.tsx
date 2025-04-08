@@ -68,7 +68,7 @@ function App() {
                 <Route path="/dashboard/admin" element={<AdminArea />} />
               </Route>
               
-              {/* Admin Section Routes - Properly configured with AdminRoute for protection */}
+              {/* Admin Section Routes - Make sure these are OUTSIDE the ProtectedRoute */}
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/courses" element={<CoursesManagement />} />

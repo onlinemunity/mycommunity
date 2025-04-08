@@ -9,12 +9,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Search, UserCog, Users, Shield, RefreshCw } from 'lucide-react';
+import { Search, UserCog, Users, Shield, RefreshCw, ExternalLink } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const AdminArea = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
+  const { isAdmin } = useAuth();
 
   // Fetch user profiles
   const { data: profiles, isLoading, refetch } = useQuery({
@@ -87,11 +91,31 @@ const AdminArea = () => {
               {t('admin.subtitle') || 'Manage your community users, content, and settings'}
             </p>
           </div>
-          <Button onClick={() => refetch()} className="self-start md:self-auto">
-            <RefreshCw className="mr-2 h-4 w-4" />
-            {t('admin.refresh') || 'Refresh Data'}
-          </Button>
+          {isAdmin && (
+            <div className="flex gap-2">
+              <Button variant="outline" asChild>
+                <Link to="/admin">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Go to Main Admin Area
+                </Link>
+              </Button>
+              <Button onClick={() => refetch()}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                {t('admin.refresh') || 'Refresh Data'}
+              </Button>
+            </div>
+          )}
         </div>
+
+        {isAdmin && (
+          <Alert className="bg-primary/10 border-primary/20">
+            <Shield className="h-4 w-4" />
+            <AlertTitle>Admin Access Detected</AlertTitle>
+            <AlertDescription>
+              You have admin privileges. Please use the dedicated admin area at <Link to="/admin" className="font-medium underline">/admin</Link> for full management capabilities.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <Tabs defaultValue="users">
           <TabsList className="grid w-full grid-cols-2 md:w-auto md:inline-flex">
