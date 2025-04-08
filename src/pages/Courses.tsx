@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { CourseCard } from '@/components/ui-components/CourseCard';
@@ -348,13 +347,14 @@ const Courses = () => {
                     {coursesQuery.data?.map((course) => (
                       <CourseCard
                         key={course.id}
+                        id={course.id} // Pass the UUID explicitly
                         title={course.title}
                         description={course.description}
                         image={course.image}
                         rating={course.rating}
                         instructor={course.instructor}
                         duration={course.duration}
-                        level={course.level}
+                        level={course.level as "beginner" | "intermediate" | "advanced"}
                         students={course.students}
                         category={course.category}
                         href={course.href}

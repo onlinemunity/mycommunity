@@ -45,6 +45,8 @@ const CourseDiscussions = () => {
     );
   }
 
+  console.log('CourseDiscussions - Using course ID:', course.id, 'from href:', courseId);
+
   return (
     <Layout>
       <div className="container py-12">
@@ -54,7 +56,7 @@ const CourseDiscussions = () => {
         </div>
         
         <DiscussionBoard 
-          courseId={course.id} // Use course UUID instead of href
+          courseId={course.id}
           title="Course Discussions"
         />
       </div>

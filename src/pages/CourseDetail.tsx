@@ -50,6 +50,8 @@ const CourseDetail = () => {
     );
   }
 
+  console.log('CourseDetail - Using course ID:', course.id, 'from href:', courseId);
+
   return (
     <Layout>
       <div className="page-transition">
@@ -88,7 +90,7 @@ const CourseDetail = () => {
             <TabsContent value="discussions">
               <div className="max-w-4xl mx-auto">
                 <DiscussionBoard 
-                  courseId={course.id} // Use course UUID instead of href
+                  courseId={course.id}
                   title="Course Discussions"
                 />
               </div>

@@ -1,4 +1,3 @@
-
 import { ReactNode, useEffect, useState } from "react";
 import { Clock, Users, Star, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,6 +20,7 @@ interface CourseCardProps {
   free?: boolean;
   price?: string;
   href: string;
+  id?: string;
   className?: string;
   animated?: boolean;
   delay?: number;
@@ -39,6 +39,7 @@ export const CourseCard = ({
   free = false,
   price,
   href,
+  id,
   className,
   animated = true,
   delay = 0,
@@ -46,30 +47,35 @@ export const CourseCard = ({
   const { user } = useAuth();
   const [enrollmentProgress, setEnrollmentProgress] = useState<number | null>(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [courseId, setCourseId] = useState<string | undefined>(id);
 
   useEffect(() => {
     const fetchEnrollmentStatus = async () => {
       if (!user) return;
       
       try {
-        // First, get the course id from the href
-        const { data: courseData, error: courseError } = await supabase
-          .from('courses')
-          .select('id')
-          .eq('href', href)
-          .maybeSingle();
-        
-        if (courseError || !courseData) {
-          console.error('Error fetching course id:', courseError);
-          return;
+        let finalCourseId = courseId;
+        if (!finalCourseId) {
+          const { data: courseData, error: courseError } = await supabase
+            .from('courses')
+            .select('id')
+            .eq('href', href)
+            .maybeSingle();
+          
+          if (courseError || !courseData) {
+            console.error('Error fetching course id:', courseError);
+            return;
+          }
+          
+          finalCourseId = courseData.id;
+          setCourseId(finalCourseId);
         }
         
-        // Then check if the user is enrolled
         const { data: enrollmentData, error: enrollmentError } = await supabase
           .from('enrollments')
           .select('progress')
           .eq('user_id', user.id)
-          .eq('course_id', courseData.id)
+          .eq('course_id', finalCourseId)
           .maybeSingle();
           
         if (enrollmentError) {
@@ -87,7 +93,7 @@ export const CourseCard = ({
     };
     
     fetchEnrollmentStatus();
-  }, [user, href]);
+  }, [user, href, courseId]);
 
   const levelColors = {
     beginner: "bg-green-100 text-green-800",
