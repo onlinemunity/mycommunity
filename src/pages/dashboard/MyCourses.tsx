@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
@@ -333,7 +334,8 @@ const MyCoursesPage = () => {
           <LectureDetail 
             lecture={{
               ...selectedLecture,
-              courseId: selectedCourse.courseId
+              courseId: selectedCourse.courseId,
+              href: courseId // Add the missing href property, using courseId which is the href value
             }}
             onComplete={handleCompleteLecture}
           />

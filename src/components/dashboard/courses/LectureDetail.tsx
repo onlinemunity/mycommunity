@@ -25,7 +25,7 @@ type LectureDetailProps = {
 
 export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
   const navigate = useNavigate();
-  console.log('LectureDetail component with lecture ID:', lecture.id, 'and course ID:', lecture.courseId);
+  console.log('LectureDetail component with lecture ID:', lecture.id, 'and course ID:', lecture.courseId, 'and href:', lecture.href);
   
   const { data: lectureData, isLoading } = useQuery({
     queryKey: ['lecture', lecture.id],
@@ -64,7 +64,7 @@ export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
   const nextLecture = siblingLectures && currentIndex < siblingLectures.length - 1 ? siblingLectures[currentIndex + 1] : null;
   
   const handleNavigate = (lectureId: string) => {
-    navigate(`/dashboard/courses/${lecture.courseId}/lecture/${lectureId}`);
+    navigate(`/dashboard/courses/${lecture.href}/lecture/${lectureId}`);
   };
   
   const renderVideoOrContent = () => {
