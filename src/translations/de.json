@@ -115,7 +115,10 @@
 		"accountDetailsDesc" : "",
 		"memberSince" : "",
 		"accountStatus" : "",
-		"accountType" : ""
+		"accountType" : "",
+		"personalInfoDesc" : "",
+		"usernamePlaceholer" : "",
+		"fullNamePlaceholer" : ""
 		},
 
 	"member": {
@@ -129,7 +132,8 @@
 		"viewAllResources" : "",
 		"discussions" : "",
 		"discussionsDesc" : "",
-		"viewAllDiscussions" : ""
+		"viewAllDiscussions" : "",
+		"eventsDesc" : ""
 		},
 
 
