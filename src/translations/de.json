@@ -36,24 +36,34 @@
     "dontHaveAccount": "Kein Konto? Registrieren"
   },
   "auth": {
-    "signIn": "Anmelden",
-    "signInDescription": "Melden Sie sich mit Ihren Zugangsdaten an, um fortzufahren.",
-    "forgotPassword": "Passwort vergessen?",
-    "signInButton": "Anmelden",
-    "noAccount": "Kein Konto?",
-    "createAccount": "Konto erstellen",
-    "signUp": "Registrieren",
-    "signUpDescription": "Erstellen Sie ein neues Konto, um loszulegen.",  
-    "fullName": "Vollständiger Name",
-    "fullNamePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
-    "email": "E-Mail-Adresse",
-    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
-    "password": "Passwort",
-    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
-    "signUpButton": "Registrieren",
-    "haveAccount": "Haben Sie bereits ein Konto?",
-    "signInNow": "Jetzt anmelden"
-  },  
+    "signIn": {
+      "title": "Anmelden",
+      "subtitle": "Willkommen zurück! Melde dich an, um fortzufahren",
+      "button": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "createAccount": "Konto erstellen",
+      "withGoogle": "Mit Google anmelden",
+      "withGithub": "Mit GitHub anmelden"
+    },
+    "signUp": {
+      "title": "Registrieren",
+      "subtitle": "Erstelle dein Konto und werde Teil unserer Community",
+      "button": "Registrieren",
+      "hasAccount": "Bereits ein Konto?",
+      "signIn": "Anmelden",
+      "withGoogle": "Mit Google registrieren",
+      "withGithub": "Mit GitHub registrieren",
+      "terms": "Durch die Registrierung stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu"
+    },
+    "forgotPassword": {
+      "title": "Passwort vergessen",
+      "subtitle": "Gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen",
+      "button": "Zurücksetzen-Link senden",
+      "backToSignIn": "Zurück zur Anmeldung",
+      "success": "Wenn ein Konto mit dieser E-Mail existiert, haben wir einen Zurücksetzen-Link gesendet"
+    }
+  },
   "navigation": {
     "home": "Startseite",
     "about": "Über uns",
@@ -124,36 +134,14 @@
       "button": "Jetzt beitreten"
     }
   },
-
   "academy": {
-      "hero": {
-        "title": "Unsere Akadenie",
-        "subtitle": "Lerne unsere Akadenie kennen",
-        "joinButton": "Jetzt mitmachen",
-        "learnMoreButton": "mehr erfahren"
-      }
-    },
-
-  "auth": {
-    "signIn": "Anmelden",
-    "signInDescription": "Melden Sie sich mit Ihren Zugangsdaten an, um fortzufahren.",
-    "forgotPassword": "Passwort vergessen?",
-    "signInButton": "Anmelden",
-    "noAccount": "Kein Konto?",
-    "createAccount": "Konto erstellen",
-    "signUp": "Registrieren",
-    "signUpDescription": "Erstellen Sie ein neues Konto, um loszulegen.",  
-    "fullName": "Vollständiger Name",
-    "fullNamePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
-    "email": "E-Mail-Adresse",
-    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
-    "password": "Passwort",
-    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
-    "signUpButton": "Registrieren",
-    "haveAccount": "Haben Sie bereits ein Konto?",
-    "signInNow": "Jetzt anmelden"
-  },  
- 
+    "hero": {
+      "title": "Unsere Akademie",
+      "subtitle": "Lerne unsere Akademie kennen",
+      "joinButton": "Jetzt mitmachen",
+      "learnMoreButton": "mehr erfahren"
+    }
+  },
   "community": {
     "title": "Unsere Community",
     "subtitle": "Ein Ort zum Lernen, Teilen und Wachsen",
@@ -162,8 +150,7 @@
       "subtitle": "Verbinde dich mit Gleichgesinnten, teile Wissen und wachse gemeinsam",
       "joinButton": "Jetzt beitreten",
       "learnMoreButton": "Mehr erfahren"
-    },   
-
+    },
     "features": {
       "title": "Community-Funktionen",
       "subtitle": "Alles was du brauchst, um dich zu vernetzen und zu wachsen",
@@ -316,194 +303,12 @@
       },
       "quality": {
         "title": "Qualität",
-        "description": "Wir streben nach höchsten Standards in allem, was wir tun"
+        "description": "Unsere Kurse und Inhalte sind von Experten entwickelt"
       }
     },
     "team": {
       "title": "Unser Team",
-      "description": "Erfahrene Fachleute, die unsere Community unterstützen",
-      "members": {
-        "founder": "Gründer & CEO",
-        "coFounder": "Mitgründer & CTO",
-        "communityManager": "Community Manager",
-        "contentCreator": "Content Creator",
-        "customerSupport": "Kundendienst"
-      }
-    },
-    "story": {
-      "title": "Unsere Geschichte",
-      "description": "Von den Anfängen bis heute",
-      "timeline": {
-        "founding": "Gründung",
-        "growth": "Wachstum",
-        "expansion": "Expansion",
-        "today": "Heute"
-      }
-    }
-  },
-  "contact": {
-    "title": "Kontaktiere uns",
-    "subtitle": "Wir freuen uns, von dir zu hören",
-    "form": {
-      "name": "Name",
-      "email": "E-Mail",
-      "subject": "Betreff",
-      "message": "Nachricht",
-      "submit": "Nachricht senden",
-      "success": "Deine Nachricht wurde gesendet. Wir werden uns bald bei dir melden!",
-      "error": "Es gab ein Problem beim Senden deiner Nachricht. Bitte versuche es erneut."
-    },
-    "info": {
-      "title": "Kontaktinformationen",
-      "email": "E-Mail",
-      "phone": "Telefon",
-      "address": "Adresse",
-      "hours": "Geschäftszeiten"
-    }
-  },
-  "dashboard": {
-    "overview": "Hauptmenü",
-    "profile": "Mein Profil",
-    "myprofile": "Mein Profil",
-    "memberArea": "Mein Bereich",
-    "adminArea": "Admin Bereich",
-    "welcome": "Willkommen zurück",
-    "upcomingEvents" : "Bevorstehende Events",
-    "stats": {
-      "title": "Deine Statistiken",
-      "courses": "Eingeschriebene Kurse",
-      "completed": "Abgeschlossene Kurse",
-      "posts": "Forum-Beiträge",
-      "connections": "Verbindungen",
-      "members": "Community-Mitglieder",
-      "membersDesc": "Aktive Mitglieder in unserer Community",
-      "coursesDesc": "Kurse, die du derzeit belegst",
-      "events": "Kommende Events",
-      "eventsDesc": "Events in den nächsten 30 Tagen",
-      "activity": "Letzte Aktivitäten",
-      "activityDesc": "Deine neuesten Interaktionen"
-    },
-    "recentActivity": "Letzte Aktivitäten",
-    "recentActivityDesc": "Deine neuesten Interaktionen mit der Community",
-    "activityItem": "Aktivität",
-    "upcomingEventsDesc": "Bald anstehende Events",
-    "eventTitle": "Event",
-    "activity": {
-      "title": "Neueste Aktivitäten",
-      "empty": "Noch keine Aktivitäten",
-      "viewAll": "Alle anzeigen"
-    },
-    "courses": {
-      "myCourses": "Meine Kurse",
-      "title": "Deine Kurse",
-      "inProgress": "In Bearbeitung",
-      "completed": "Abgeschlossen",
-      "continue": "Fortsetzen",
-      "lecture": "Kapitel",
-      "duration": "Dauer",
-      "status": "Status",
-      "actions": "Aktion",
-      "backToCourse": "Zurück zum Kurs",
-      "video": "Video",
-      "notes": "Notizen",
-      "full_description": "Information",
-      "material": "Arbeitsmaterial",
-      "links": "Links",
-      "markComplete": "Als abgeschlossen markieren",
-      "completeAndContinue": "Abschließen & Fortfahren",
-      "lectures": "Kapitel",
-      "lessons": "Lektionen",
-      "yourProgress": "Dein Fortschritt",
-      "lecturesList": "Kursinhalt",
-      "quiz": "Quiz",
-      "submitQuiz": "Abschicken",
-      "tryAgain": "nochmal versuchen",
-      "quizFailed": "Leiner nicht bestanden",
-      "correctAnswer": "richtig",
-      "quizPassed": "Alles richtig!",
-      "review": "Zur Lektion"
-      
-    },
-    "profile": {
-      "myprofile": "Mein Profil",
-      "title": "Dein Profil",
-      "edit": "Profil bearbeiten",
-      "save": "Änderungen speichern",
-      "personalInfo": "Persönliche Informationen",
-      "accountSettings": "Kontoeinstellungen",
-      "notifications": "Benachrichtigungen",
-      "privacy": "Datenschutz",
-      "fullName": "Vollständiger Name",
-      "username": "Benutzername",
-      "bio": "Über mich",
-      "avatar": "Profilbild",
-      "upload": "Hochladen",
-      "remove": "Entfernen"
-    }
-  },
-  "profile": {
-    "title": "Mein Profil",
-    "subtitle": "Verwalte deine persönlichen Informationen",
-    "personalInfo": "Persönliche Informationen",
-    "personalInfoDesc": "Aktualisiere deine grundlegenden Profildetails",
-    "avatar": "Profilbild",
-    "avatarDesc": "Lade ein Profilbild hoch (max. 2MB)",
-    "avatarUrl": "Bild-URL",
-    "username": "Benutzername",
-    "fullName": "Vollständiger Name",
-    "email": "E-Mail-Adresse",
-    "emailNote": "Deine Login E-Mail",
-    "saveChanges": "Änderungen speichern",
-    "usernamePlaceholder": "Gib deinen Benutzernamen ein",
-    "fullNamePlaceholder": "Gib deinen vollständigen Namen ein",
-    "accountDetails": "Kontoinformationen",
-    "accountDetailsDesc": "Sieh dir deine Kontoinformationen an",
-    "memberSince": "Mitglied seit",
-    "accountStatus": "Kontostatus",
-    "accountType": "Kontotyp",
-    "updateSuccess": "Daten geändert",
-    "updateSuccessDesc": "Daten erfolgreich gespeichert"
-  },
-  "member": {
-    "title": "Mein Bereich",
-    "subtitle": "Deine Community-Zentrale für Kurse, Events und Ressourcen",
-    "events": "Kommende Events",
-    "eventsDesc": "Events, die dich interessieren könnten",
-    "viewAllEvents": "Alle Events anzeigen",
-    "resources": "Lernressourcen",
-    "resourcesDesc": "Hilfreiche Materialien für deine Reise",
-    "viewAllResources": "Alle Ressourcen anzeigen",
-    "discussions": "Aktuelle Diskussionen",
-    "discussionsDesc": "Nimm an Gesprächen in deiner Community teil",
-    "viewAllDiscussions": "Alle Diskussionen anzeigen"
-  },
-  "auth": {
-    "signIn": {
-      "title": "Anmelden",
-      "subtitle": "Willkommen zurück! Melde dich an, um fortzufahren",
-      "button": "Anmelden",
-      "forgotPassword": "Passwort vergessen?",
-      "noAccount": "Noch kein Konto?",
-      "createAccount": "Konto erstellen",
-      "withGoogle": "Mit Google anmelden",
-      "withGithub": "Mit GitHub anmelden"
-    },
-    "signUp": {
-      "title": "Registrieren",
-      "subtitle": "Erstelle dein Konto und werde Teil unserer Community",
-      "button": "Registrieren",
-      "hasAccount": "Bereits ein Konto?",
-      "signIn": "Anmelden",
-      "withGoogle": "Mit Google registrieren",
-      "withGithub": "Mit GitHub registrieren",
-      "terms": "Durch die Registrierung stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu"
-    },
-    "forgotPassword": {
-      "title": "Passwort vergessen",
-      "subtitle": "Gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen",
-      "button": "Zurücksetzen-Link senden",
-      "backToSignIn": "Zurück zur Anmeldung",
-      "success": "Wenn ein Konto mit dieser E-Mail existiert, haben wir einen Zurücksetzen-Link gesendet"
+      "subtitle": "Lerne die Köpfe hinter der Akademie kennen"
     }
   }
 }
