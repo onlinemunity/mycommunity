@@ -84,6 +84,17 @@
 	"profile" : {
 		"myprofile" 	: ""
 		}
+
+	"stats" : {
+		"members" 	: "",
+		"courses" 	: "",
+		"events" 	: "",
+		"activity" 	: "",
+		"membersDesc" 	: "",
+		"coursesDesc" 	: "",
+		"eventsDesc" 	: "",
+		"activityDesc" 	: ""
+		}	
 	
 	},
 
