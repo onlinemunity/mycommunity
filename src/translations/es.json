@@ -200,14 +200,14 @@
         "annual": {
           "title": "Suscripción anual",
           "description": "Acceso completo a todas las funciones",
-          "price": "99€",
+          "price": "299€",
           "period": "por año",
           "cta": "Actualizar ahora"
         },
         "lifetime": {
           "title": "Oferta de por vida",
           "description": "Pago único, acceso de por vida",
-          "price": "399€",
+          "price": "699€",
           "period": "Único",
           "cta": "Obtener acceso de por vida"
         }
