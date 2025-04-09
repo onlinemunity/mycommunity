@@ -36,114 +36,104 @@
     "dontHaveAccount": "Kein Konto? Registrieren"
   },
   "auth": {
-      "signIn"			: "Anmelden",
-      "signInDescription"	: "Willkommen zurück! Melde dich an, um fortzufahren",
-      "email"			: "E-Mail Adresse",
-      "emailPlaceholder"	: "Deine eMail Adresse",
-      "password"		: "Passwort",
-      "passwordPlaceholder"	: "Dein Passwort",
-      "signInButton"		: "Anmelden",
-      "forgotPassword"		: "Passwort vergessen?",
-      "noAccount"		: "Noch kein Konto?",
-      "createAccount"		: "Konto erstellen",
-      "withGoogle"		: "Mit Google anmelden",
-      "withGithub"		: "Mit GitHub anmelden",
-      "signUp"			: "Anmeldung",
-      "signUpDescription"	: "Jetzt anmelden",
-      "fullName"		: "Vor- und Nachname",
-      "fullNamePlaceholder"	: "Dein Vor- und Nachname",
-      "signUpButton"		: "Anmelden",
-      "haveAccount" 		: "Bereits angemeldet?", 
-      "signInNow"		: "Zum Login"
+    "signIn": "Anmelden",
+    "signInDescription": "Willkommen zurück! Melde dich an, um fortzufahren",
+    "email": "E-Mail Adresse",
+    "emailPlaceholder": "Deine E-Mail Adresse",
+    "password": "Passwort",
+    "passwordPlaceholder": "Dein Passwort",
+    "signInButton": "Anmelden",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Noch kein Konto?",
+    "createAccount": "Konto erstellen",
+    "withGoogle": "Mit Google anmelden",
+    "withGithub": "Mit GitHub anmelden",
+    "signUp": "Anmeldung",
+    "signUpDescription": "Jetzt anmelden",
+    "fullName": "Vor- und Nachname",
+    "fullNamePlaceholder": "Dein Vor- und Nachname",
+    "signUpButton": "Anmelden",
+    "haveAccount": "Bereits angemeldet?",
+    "signInNow": "Zum Login"
+  },
+  "dashboard": {
+    "welcome": "Willkommen",
+    "overview": "Übersicht",
+    "recentActivity": "Letzte Aktivitäten",
+    "recentActivityDesc": "Hier siehst du deine letzten Aktivitäten.",
+    "activityItem": "Aktivitätseintrag",
+    "eventTitle": "Ereignis Titel",
+    "memberArea": "Mitgliederbereich",
+    "upcomingEvents": "Bevorstehende Ereignisse",
+    "upcomingEventsDesc": "Schau dir die nächsten Ereignisse an.",
+    "courses": {
+      "title": "Kurse",
+      "duration": "Dauer",
+      "lectures": "Vorlesungen",
+      "lessons": "Lektionen",
+      "yourProgress": "Dein Fortschritt",
+      "lecturesLis": "Vorlesungsübersicht",
+      "lecture": "Vorlesung",
+      "status": "Status",
+      "actions": "Aktionen",
+      "completed": "Abgeschlossen",
+      "myCourses": "Meine Kurse",
+      "lecturesList": "Vorlesungsübersicht",
+      "inProgress": "In Bearbeitung",
+      "review": "Bewertung",
+      "continue": "Fortfahren",
+      "completed": "Abgeschlossen"
     },
-
-"dashboard" : {
-	"welcome" 		: "",
-	"overview" 		: "",
-	"recentActivity" 	: "",
-	"recentActivityDesc" 	: "",
-	"activityItem" 		: "",
-	"eventTitle" 		: "",
-	"memberArea" 		: "",
-	"upcomingEvents" 	: "",
-	"upcomingEventsDesc"	: "",
-
-	"courses" : {
-		"title" 	: "",
-		"duration" 	: "",
-		"lectures"	: "",
-		"lessons" 	: "",
-		"yourProgress" 	: "",
-		"lecturesLis" 	: "",
-		"lecture" 	: "",
-		"status" 	: "",
-		"actions" 	: "",
-		"completed" 	: "",
-		"myCourses"	: "",
-		"lecturesList"	: "",
-		"inProgress"	: "",
-		"review"	: "",
-		"continue"	: "",
-		"completed"	: ""
-		},
-	"profile" : {
-		"myprofile" 	: ""
-		},
-
-	"stats" : {
-		"members" 	: "",
-		"courses" 	: "",
-		"events" 	: "",
-		"activity" 	: "",
-		"membersDesc" 	: "",
-		"coursesDesc" 	: "",
-		"eventsDesc" 	: "",
-		"activityDesc" 	: ""
-		}	
-	
-	},
-
-	"profile" : {
-		"title" : "",
-		"subtitle" : "",
-		"personalInfo" : "",
-		"personalInfoDes" : "",
-		"avatar" : "",
-		"avatarDesc" : "",
-		"avatarUrl" : "",
-		"username" : "",
-		"fullName" : "",
-		"email" : "",
-		"emailNote" : "",
-		"saveChanges" : "",
-		"accountDetails" : "",
-		"accountDetailsDesc" : "",
-		"memberSince" : "",
-		"accountStatus" : "",
-		"accountType" : "",
-		"personalInfoDesc" : "",
-		"usernamePlaceholder" : "",
-		"fullNamePlaceholder" : ""
-		},
-
-	"member": {
-		"title" : "",
-		"subtitle" : "",
-		"events" : "",
-		"eventsDes" : "",
-		"viewAllEvents" : "",
-		"resources" : "",
-		"resourcesDesc" : "",
-		"viewAllResources" : "",
-		"discussions" : "",
-		"discussionsDesc" : "",
-		"viewAllDiscussions" : "",
-		"eventsDesc" : ""
-		},
-
-
-  
-   
+    "profile": {
+      "myprofile": "Mein Profil"
+    },
+    "stats": {
+      "members": "Mitglieder",
+      "courses": "Kurse",
+      "events": "Ereignisse",
+      "activity": "Aktivität",
+      "membersDesc": "Gesamtzahl der Mitglieder.",
+      "coursesDesc": "Gesamtzahl der Kurse.",
+      "eventsDesc": "Gesamtzahl der Ereignisse.",
+      "activityDesc": "Gesamtzahl der Aktivitäten."
+    }
+  },
+  "profile": {
+    "title": "Mein Profil",
+    "subtitle": "Verwalte deine persönlichen Daten",
+    "personalInfo": "Persönliche Informationen",
+    "personalInfoDes": "Bearbeite deine persönlichen Daten.",
+    "avatar": "Avatar",
+    "avatarDesc": "Ändere dein Profilbild.",
+    "avatarUrl": "Avatar URL",
+    "username": "Benutzername",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "emailNote": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "saveChanges": "Änderungen speichern",
+    "accountDetails": "Kontodetails",
+    "accountDetailsDesc": "Deine Kontoinformationen und Einstellungen.",
+    "memberSince": "Mitglied seit",
+    "accountStatus": "Kontostatus",
+    "accountType": "Kontotyp",
+    "personalInfoDesc": "Verwalte deine persönlichen Informationen.",
+    "usernamePlaceholder": "Benutzername",
+    "fullNamePlaceholder": "Vollständiger Name"
+  },
+  "member": {
+    "title": "Mein Bereich",
+    "subtitle": "Verwalte deine Mitgliedsdaten",
+    "events": "Veranstaltungen",
+    "eventsDes": "Hier findest du alle bevorstehenden Veranstaltungen.",
+    "viewAllEvents": "Alle Veranstaltungen anzeigen",
+    "resources": "Ressourcen",
+    "resourcesDesc": "Zugang zu verschiedenen Lernressourcen.",
+    "viewAllResources": "Alle Ressourcen anzeigen",
+    "discussions": "Diskussionen",
+    "discussionsDesc": "Nimm an Community-Diskussionen teil.",
+    "viewAllDiscussions": "Alle Diskussionen anzeigen",
+    "eventsDesc": "Alle anstehenden und vergangenen Ereignisse."
+  },
   "navigation": {
     "home": "Startseite",
     "about": "Über uns",
@@ -157,7 +147,7 @@
   },
   "homepage": {
     "hero": {
-      "title": "Willkommen in unser Akademie",
+      "title": "Willkommen in unserer Akademie",
       "subtitle": "Lernen, Wachsen und Verbinden in einer unterstützenden Umgebung",
       "cta": "Heute kostenlos beitreten"
     },
@@ -219,7 +209,7 @@
       "title": "Unsere Akademie",
       "subtitle": "Lerne unsere Akademie kennen",
       "joinButton": "Jetzt mitmachen",
-      "learnMoreButton": "mehr erfahren"
+      "learnMoreButton": "Mehr erfahren"
     }
   },
   "community": {
