@@ -69,7 +69,7 @@
     "courses": {
       "title": "Kurse",
       "duration": "Dauer",
-      "lectures": "Vorlesungen",
+      "lectures": "Lektionen",
       "lessons": "Lektionen",
       "yourProgress": "Dein Fortschritt",
       "lecturesLis": "Vorlesungsübersicht",
@@ -80,7 +80,7 @@
       "myCourses": "Meine Kurse",
       "lecturesList": "Vorlesungsübersicht",
       "inProgress": "In Bearbeitung",
-      "review": "Bewertung",
+      "review": "Abgeschlossen",
       "continue": "Fortfahren",
       "completed": "Abgeschlossen"
     },
