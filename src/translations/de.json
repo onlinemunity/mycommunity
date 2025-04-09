@@ -1,401 +1,398 @@
- {
+{
   "common": {
-    "learnMore": "Learn More",
-    "joinNow": "Join Now",
-    "readMore": "Read More",
-    "signIn": "Sign In",
-    "signUp": "Sign Up",
-    "signOut": "Sign Out",
+    "learnMore": "Erfahren Sie mehr",
+    "joinNow": "Jetzt beitreten",
+    "readMore": "Weiterlesen",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
     "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "logOut": "Log Out",
-    "search": "Search...",
-    "loading": "Loading...",
-    "close": "Close",
-    "error": "Error",
-    "success": "Success",
-    "cancel": "Cancel",
-    "save": "Save",
-    "edit": "Edit",
-    "delete": "Delete",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "showMore": "Show More",
-    "showLess": "Show Less",
-    "filters": "Filters",
-    "all": "All",
-    "noResults": "No results found",
-    "tryAgain": "Try again",
-    "emailAddress": "Email Address",
-    "password": "Password",
-    "forgotPassword": "Forgot Password?",
-    "resetPassword": "Reset Password",
-    "alreadyHaveAccount": "Already have an account? Sign In",
-    "dontHaveAccount": "Don't have an account? Sign Up"
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logOut": "Ausloggen",
+    "search": "Suche...",
+    "loading": "Lädt...",
+    "close": "Schließen",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
+    "filters": "Filter",
+    "all": "Alle",
+    "noResults": "Keine Ergebnisse gefunden",
+    "tryAgain": "Erneut versuchen",
+    "emailAddress": "E-Mail-Adresse",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "resetPassword": "Passwort zurücksetzen",
+    "alreadyHaveAccount": "Haben Sie bereits ein Konto? Anmelden",
+    "dontHaveAccount": "Haben Sie noch kein Konto? Registrieren"
   },
   "auth": {
-    "signIn": "Sign In",
-    "signInDescription": "Welcome back! Sign in to continue",
-    "email": "Email Address",
-    "emailPlaceholder": "Your email address",
-    "password": "Password",
-    "passwordPlaceholder": "Your password",
-    "signInButton": "Sign In",
-    "forgotPassword": "Forgot Password?",
-    "noAccount": "Don't have an account?",
-    "createAccount": "Create Account",
-    "withGoogle": "Sign in with Google",
-    "withGithub": "Sign in with GitHub",
-    "signUp": "Sign Up",
-    "signUpDescription": "Sign up now",
-    "fullName": "Full Name",
-    "fullNamePlaceholder": "Your full name",
-    "signUpButton": "Sign Up",
-    "haveAccount": "Already have an account?",
-    "signInNow": "Sign in now"
+    "signIn": "Anmelden",
+    "signInDescription": "Willkommen zurück! Melden Sie sich an, um fortzufahren",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "Ihre E-Mail-Adresse",
+    "password": "Passwort",
+    "passwordPlaceholder": "Ihr Passwort",
+    "signInButton": "Anmelden",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Haben Sie kein Konto?",
+    "createAccount": "Konto erstellen",
+    "withGoogle": "Mit Google anmelden",
+    "withGithub": "Mit GitHub anmelden",
+    "signUp": "Registrieren",
+    "signUpDescription": "Jetzt registrieren",
+    "fullName": "Vollständiger Name",
+    "fullNamePlaceholder": "Ihr vollständiger Name",
+    "signUpButton": "Registrieren",
+    "haveAccount": "Haben Sie bereits ein Konto?",
+    "signInNow": "Jetzt anmelden"
   },
   "dashboard": {
-    "welcome": "Welcome",
-    "overview": "Overview",
-    "recentActivity": "Recent Activity",
-    "recentActivityDesc": "Here you can see your recent activities.",
-    "activityItem": "Activity Item",
-    "eventTitle": "Event Title",
-    "memberArea": "Member Area",
-    "adminArea": "Admin Area",
-    "upcomingEvents": "Upcoming Events",
-    "upcomingEventsDesc": "Check out the upcoming events.",
-    
+    "welcome": "Willkommen",
+    "overview": "Übersicht",
+    "recentActivity": "Letzte Aktivitäten",
+    "recentActivityDesc": "Hier können Sie Ihre letzten Aktivitäten sehen.",
+    "activityItem": "Aktivitätsobjekt",
+    "eventTitle": "Veranstaltungstitel",
+    "memberArea": "Mitgliederbereich",
+    "adminArea": "Admin-Bereich",
+    "upcomingEvents": "Bevorstehende Veranstaltungen",
+    "upcomingEventsDesc": "Schauen Sie sich die bevorstehenden Veranstaltungen an.",
     "courses": {
-      "title": "Courses",
-      "duration": "Duration",
-      "lectures": "Lectures",
-      "lessons": "Lessons",
-      "yourProgress": "Your Progress",
-      "lecturesList": "Lecture Overview",
-      "lecture": "Lecture",
+      "title": "Kurse",
+      "duration": "Dauer",
+      "lectures": "Vorlesungen",
+      "lessons": "Lektionen",
+      "yourProgress": "Ihr Fortschritt",
+      "lecturesList": "Übersicht der Vorlesungen",
+      "lecture": "Vorlesung",
       "status": "Status",
-      "actions": "Actions",
-      "completed": "Completed",
-      "myCourses": "My Courses",
-      "lecturesList": "Lecture Overview",
-      "inProgress": "In Progress",
-      "review": "Completed",
-      "continue": "Continue",
-      "completed": "Completed"
+      "actions": "Aktionen",
+      "completed": "Abgeschlossen",
+      "myCourses": "Meine Kurse",
+      "lecturesList": "Übersicht der Vorlesungen",
+      "inProgress": "In Bearbeitung",
+      "review": "Abgeschlossen",
+      "continue": "Fortsetzen",
+      "completed": "Abgeschlossen"
     },
     "profile": {
-      "myprofile": "My Profile"
+      "myprofile": "Mein Profil"
     },
     "stats": {
-      "members": "Members",
-      "courses": "Courses",
-      "events": "Events",
-      "activity": "Activity",
-      "membersDesc": "Total number of members.",
-      "coursesDesc": "Total number of courses.",
-      "eventsDesc": "Total number of events.",
-      "activityDesc": "Total number of activities."
+      "members": "Mitglieder",
+      "courses": "Kurse",
+      "events": "Veranstaltungen",
+      "activity": "Aktivität",
+      "membersDesc": "Gesamtzahl der Mitglieder.",
+      "coursesDesc": "Gesamtzahl der Kurse.",
+      "eventsDesc": "Gesamtzahl der Veranstaltungen.",
+      "activityDesc": "Gesamtzahl der Aktivitäten."
     }
   },
   "profile": {
-    "title": "My Profile",
-    "subtitle": "Manage your personal data",
-    "personalInfo": "Personal Information",
-    "personalInfoDes": "Edit your personal data.",
+    "title": "Mein Profil",
+    "subtitle": "Verwalten Sie Ihre persönlichen Daten",
+    "personalInfo": "Persönliche Informationen",
+    "personalInfoDes": "Bearbeiten Sie Ihre persönlichen Daten.",
     "avatar": "Avatar",
-    "avatarDesc": "Change your profile picture.",
+    "avatarDesc": "Ändern Sie Ihr Profilbild.",
     "avatarUrl": "Avatar URL",
-    "username": "Username",
-    "fullName": "Full Name",
-    "email": "Email",
-    "emailNote": "Email address cannot be changed. Please contact support.",
-    "saveChanges": "Save Changes",
-    "accountDetails": "Account Details",
-    "accountDetailsDesc": "Your account information and settings.",
-    "memberSince": "Member Since",
-    "accountStatus": "Account Status",
-    "accountType": "Account Type",
-    "personalInfoDesc": "Manage your personal information.",
-    "usernamePlaceholder": "Username",
-    "fullNamePlaceholder": "Full Name",
-    "updateSuccess": "Update Successful",
-    "updateSuccessDesc": "Changes successfully saved"
+    "username": "Benutzername",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "emailNote": "Die E-Mail-Adresse kann nicht geändert werden. Bitte wenden Sie sich an den Support.",
+    "saveChanges": "Änderungen speichern",
+    "accountDetails": "Kontodetails",
+    "accountDetailsDesc": "Ihre Kontoinformationen und Einstellungen.",
+    "memberSince": "Mitglied seit",
+    "accountStatus": "Kontostatus",
+    "accountType": "Kontotyp",
+    "personalInfoDesc": "Verwalten Sie Ihre persönlichen Informationen.",
+    "usernamePlaceholder": "Benutzername",
+    "fullNamePlaceholder": "Vollständiger Name",
+    "updateSuccess": "Aktualisierung erfolgreich",
+    "updateSuccessDesc": "Änderungen erfolgreich gespeichert"
   },
   "member": {
-    "title": "My Area",
-    "subtitle": "Manage your membership data",
-    "events": "Events",
-    "eventsDes": "Here you can find all upcoming events.",
-    "viewAllEvents": "View All Events",
-    "resources": "Resources",
-    "resourcesDesc": "Access various learning resources.",
-    "viewAllResources": "View All Resources",
-    "discussions": "Discussions",
-    "discussionsDesc": "Participate in community discussions.",
-    "viewAllDiscussions": "View All Discussions",
-    "eventsDesc": "All upcoming and past events."
+    "title": "Mein Bereich",
+    "subtitle": "Verwalten Sie Ihre Mitgliedsdaten",
+    "events": "Veranstaltungen",
+    "eventsDes": "Hier finden Sie alle bevorstehenden Veranstaltungen.",
+    "viewAllEvents": "Alle Veranstaltungen anzeigen",
+    "resources": "Ressourcen",
+    "resourcesDesc": "Zugang zu verschiedenen Lernressourcen.",
+    "viewAllResources": "Alle Ressourcen anzeigen",
+    "discussions": "Diskussionen",
+    "discussionsDesc": "Beteiligen Sie sich an Community-Diskussionen.",
+    "viewAllDiscussions": "Alle Diskussionen anzeigen",
+    "eventsDesc": "Alle bevorstehenden und vergangenen Veranstaltungen."
   },
-
-"admin": {
-  "title": "Admin-Bereich",
-  "subtitle": "Verwalte Benutzer und Einstellungen",
-  "refresh": "Aktualisieren",
-  "users": "Benutzer",
-  "searchUsers": "Benutzer suchen",
-  "activity": "Aktivität",
-  "manage": "Verwalten",
-  "manageUsers": "Benutzer verwalten",
-  "manageUsersDesc": "Hier kannst du registrierte Benutzer verwalten, ihre Berechtigungen und Rollen im System bearbeiten."
-},
-  
+  "admin": {
+    "title": "Admin-Bereich",
+    "subtitle": "Verwalte Benutzer und Einstellungen",
+    "refresh": "Aktualisieren",
+    "users": "Benutzer",
+    "searchUsers": "Benutzer suchen",
+    "activity": "Aktivität",
+    "manage": "Verwalten",
+    "manageUsers": "Benutzer verwalten",
+    "manageUsersDesc": "Hier kannst du registrierte Benutzer verwalten, ihre Berechtigungen und Rollen im System bearbeiten."
+  },
   "navigation": {
-    "home": "Home",
-    "about": "About Us",
-    "academy": "Academy",
+    "home": "Startseite",
+    "about": "Über uns",
+    "academy": "Akademie",
     "community": "Community",
-    "courses": "Courses",
-    "pricing": "Pricing",
-    "contact": "Contact",
+    "courses": "Kurse",
+    "pricing": "Preise",
+    "contact": "Kontakt",
     "blog": "Blog",
-    "dashboard": "My Area"
+    "dashboard": "Mein Bereich"
   },
   "homepage": {
     "hero": {
-      "title": "Welcome to Our Academy",
-      "subtitle": "Learn, Grow, and Connect in a Supportive Environment",
-      "cta": "Join for Free Today"
+      "title": "Willkommen in unserer Akademie",
+      "subtitle": "Lernen, wachsen und sich in einer unterstützenden Umgebung verbinden",
+      "cta": "Jetzt kostenlos beitreten"
     },
     "features": {
-      "title": "What We Offer",
-      "subtitle": "Discover all the benefits of our community",
+      "title": "Was wir bieten",
+      "subtitle": "Entdecken Sie alle Vorteile unserer Community",
       "community": {
-        "title": "Vibrant Community",
-        "description": "Connect with like-minded people and share knowledge"
+        "title": "Lebendige Community",
+        "description": "Verbinden Sie sich mit Gleichgesinnten und teilen Sie Wissen"
       },
       "courses": {
-        "title": "High-Quality Courses",
-        "description": "Learn from experts with our structured courses"
+        "title": "Hochwertige Kurse",
+        "description": "Lernen Sie von Experten mit unseren strukturierten Kursen"
       },
       "discussions": {
-        "title": "Thematic Discussions",
-        "description": "Engage in exciting conversations on various topics"
+        "title": "Thematische Diskussionen",
+        "description": "Beteiligen Sie sich an spannenden Gesprächen zu verschiedenen Themen"
       }
     },
     "testimonials": {
-      "title": "What Our Members Say",
-      "subtitle": "Experiences from our community"
+      "title": "Was unsere Mitglieder sagen",
+      "subtitle": "Erfahrungen aus unserer Community"
     },
     "pricing": {
-      "title": "Choose Your Plan",
-      "subtitle": "Find the best plan for your needs",
+      "title": "Wählen Sie Ihren Plan",
+      "subtitle": "Finden Sie den besten Plan für Ihre Bedürfnisse",
       "plans": {
         "free": {
-          "title": "Free",
-          "description": "Basic community features",
+          "title": "Kostenlos",
+          "description": "Grundlegende Community-Funktionen",
           "price": "0€",
-          "period": "Forever free",
-          "cta": "Sign up for free"
+          "period": "Für immer kostenlos",
+          "cta": "Jetzt kostenlos anmelden"
         },
         "annual": {
-          "title": "Annual Membership",
-          "description": "Full access to all features",
+          "title": "Jahresmitgliedschaft",
+          "description": "Vollzugriff auf alle Funktionen",
           "price": "99€",
-          "period": "per year",
-          "cta": "Upgrade now"
+          "period": "pro Jahr",
+          "cta": "Jetzt upgraden"
         },
         "lifetime": {
-          "title": "Lifetime Deal",
-          "description": "One-time payment, lifetime access",
+          "title": "Lebenslanges Angebot",
+          "description": "Einmalige Zahlung, lebenslanger Zugang",
           "price": "399€",
-          "period": "One-time",
-          "cta": "Get Lifetime Access"
+          "period": "Einmalig",
+          "cta": "Lebenslangen Zugang erhalten"
         }
       }
     },
     "cta": {
-      "title": "Ready to Be Part of Our Community?",
-      "description": "Start your journey with us",
-      "button": "Join Now"
+      "title": "Bereit, Teil unserer Community zu werden?",
+      "description": "Beginnen Sie Ihre Reise mit uns",
+      "button": "Jetzt beitreten"
     }
   },
   "academy": {
     "hero": {
-      "title": "Our Academy",
-      "subtitle": "Learn more about our academy",
-      "joinButton": "Join Now",
-      "learnMoreButton": "Learn More"
+      "title": "Unsere Akademie",
+      "subtitle": "Erfahren Sie mehr über unsere Akademie",
+      "joinButton": "Jetzt beitreten",
+      "learnMoreButton": "Mehr erfahren"
     }
   },
   "community": {
-    "title": "Our Community",
-    "subtitle": "A place to learn, share, and grow",
+    "title": "Unsere Community",
+    "subtitle": "Ein Ort zum Lernen, Teilen und Wachsen",
     "hero": {
-      "title": "Join Our Community",
-      "subtitle": "Connect with like-minded people, share knowledge, and grow together",
-      "joinButton": "Join Now",
-      "learnMoreButton": "Learn More"
+      "title": "Treten Sie unserer Community bei",
+      "subtitle": "Verbinden Sie sich mit Gleichgesinnten, teilen Sie Wissen und wachsen Sie zusammen",
+      "joinButton": "Jetzt beitreten",
+      "learnMoreButton": "Mehr erfahren"
     },
     "features": {
-      "title": "Community Features",
-      "subtitle": "Everything you need to connect and grow",
+      "title": "Community-Funktionen",
+      "subtitle": "Alles, was Sie brauchen, um sich zu verbinden und zu wachsen",
       "forums": {
-        "title": "Thematic Forums",
-        "description": "Discuss in organized topic areas"
+        "title": "Themenforen",
+        "description": "Diskutieren Sie in organisierten Themenbereichen"
       },
       "members": {
-        "title": "Build Network",
-        "description": "Connect with like-minded people"
+        "title": "Netzwerk aufbauen",
+        "description": "Verbinden Sie sich mit Gleichgesinnten"
       },
       "content": {
-        "title": "Exclusive Content",
-        "description": "Access to special resources and materials"
+        "title": "Exklusive Inhalte",
+        "description": "Zugang zu speziellen Ressourcen und Materialien"
       },
       "networking": {
-        "title": "Networking Opportunities",
-        "description": "Network with professionals in your field"
+        "title": "Netzwerkmöglichkeiten",
+        "description": "Vernetzen Sie sich mit Fachleuten in Ihrem Bereich"
       },
       "discussions": {
-        "title": "Exciting Discussions",
-        "description": "Join engaging conversations"
+        "title": "Spannende Diskussionen",
+        "description": "Beteiligen Sie sich an spannenden Gesprächen"
       },
       "events": {
-        "title": "Community Events",
-        "description": "Join webinars, workshops, and meetups"
+        "title": "Community-Veranstaltungen",
+        "description": "Nehmen Sie an Webinaren, Workshops und Meetups teil"
       },
       "exclusiveContent": {
-        "title": "Exclusive Content",
-        "description": "Access to premium learning materials"
+        "title": "Exklusive Inhalte",
+        "description": "Zugang zu Premium-Lernmaterialien"
       },
       "support": {
-        "title": "Community Support",
-        "description": "Get help from peers and experts"
+        "title": "Community-Support",
+        "description": "Holen Sie sich Hilfe von Gleichgesinnten und Experten"
       },
       "lifetime": {
-        "title": "Lifetime Access",
-        "description": "Learn at your own pace with no time limit"
+        "title": "Lebenslanger Zugang",
+        "description": "Lernen Sie in Ihrem eigenen Tempo ohne Zeitbegrenzung"
       }
     },
     "testimonials": {
-      "title": "What Our Members Say",
-      "subtitle": "Experiences from our community"
+      "title": "Was unsere Mitglieder sagen",
+      "subtitle": "Erfahrungen aus unserer Community"
     },
     "cta": {
-      "title": "Ready to Be Part of Our Community?",
-      "subtitle": "Take the next step on your learning journey",
-      "button": "Join Now"
+      "title": "Bereit, Teil unserer Community zu werden?",
+      "subtitle": "Machen Sie den nächsten Schritt auf Ihrer Lernreise",
+      "button": "Jetzt beitreten"
     },
     "join": {
-      "title": "Join Our Community",
-      "description": "Exchange ideas with like-minded people and learn together",
-      "button": "Join Now"
+      "title": "Treten Sie unserer Community bei",
+      "description": "Austausch von Ideen mit Gleichgesinnten und gemeinsames Lernen",
+      "button": "Jetzt beitreten"
     },
     "stats": {
-      "members": "Active Members",
-      "posts": "Posts per day",
-      "groups": "Interest Groups"
+      "members": "Aktive Mitglieder",
+      "posts": "Beiträge pro Tag",
+      "groups": "Interessensgruppen"
     }
   },
   "courses": {
-    "title": "Our Courses",
-    "subtitle": "Specialized knowledge for your development",
-    "loadMoreButton": "Load more courses...",
+    "title": "Unsere Kurse",
+    "subtitle": "Spezialisiertes Wissen für Ihre Entwicklung",
+    "loadMoreButton": "Mehr Kurse laden...",
     "hero": {
-      "title": "Expand Your Knowledge",
-      "subtitle": "Discover courses that help you grow",
-      "searchPlaceholder": "Search for courses...",
-      "searchButton": "Search",
-      "loadMoreButton": "Load more courses..."
+      "title": "Erweitern Sie Ihr Wissen",
+      "subtitle": "Entdecken Sie Kurse, die Ihnen beim Wachsen helfen",
+      "searchPlaceholder": "Suche nach Kursen...",
+      "searchButton": "Suchen",
+      "loadMoreButton": "Mehr Kurse laden..."
     },
     "popular": {
-      "title": "Popular Courses",
-      "subtitle": "Our most sought-after learning experiences"
+      "title": "Beliebte Kurse",
+      "subtitle": "Unsere meistgefragten Lernerfahrungen"
     },
     "filters": {
-      "title": "Filters",
-      "categories": "Categories",
-      "level": "Difficulty",
-      "duration": "Duration",
-      "resetButton": "Reset filters",
-      "all": "All",
-      "category": "Category",
-      "beginner": "Beginner",
-      "intermediate": "Intermediate",
-      "advanced": "Advanced"
+      "title": "Filter",
+      "categories": "Kategorien",
+      "level": "Schwierigkeitsgrad",
+      "duration": "Dauer",
+      "resetButton": "Filter zurücksetzen",
+      "all": "Alle",
+      "category": "Kategorie",
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "advanced": "Experte"
     },
     "sortby": {
-      "newest": "Newest",
-      "popular": "Most Popular",
-      "rating": "Highest Rated"
+      "newest": "Neueste",
+      "popular": "Beliebteste",
+      "rating": "Höchste Bewertung"
     },
-    "results": "Results found",
+    "results": "Ergebnisse gefunden",
     "cta": {
-      "title": "Couldn't find what you're looking for?",
-      "subtitle": "Let us know which courses you'd like to see",
-      "button": "Suggest a Course",
-      "secondaryButton": "Browse All Courses"
+      "title": "Konnte nicht finden, wonach Sie suchen?",
+      "subtitle": "Lassen Sie uns wissen, welche Kurse Sie sehen möchten",
+      "button": "Kurs vorschlagen",
+      "secondaryButton": "Alle Kurse durchsuchen"
     },
     "search": {
-      "placeholder": "Search for a course...",
-      "button": "Search",
-      "noResults": "No courses found",
-      "tryAgain": "Try with different search terms"
+      "placeholder": "Suche nach einem Kurs...",
+      "button": "Suchen",
+      "noResults": "Keine Kurse gefunden",
+      "tryAgain": "Versuchen Sie es mit anderen Suchbegriffen"
     },
     "categories": {
-      "webDevelopment": "Web Development",
+      "webDevelopment": "Webentwicklung",
       "frontend": "Frontend",
       "backend": "Backend",
       "design": "Design",
-      "dataScience": "Data Science",
+      "dataScience": "Datenwissenschaft",
       "devOps": "DevOps",
-      "mobile": "Mobile Development"
+      "mobile": "Mobile Entwicklung"
     },
     "courseDetails": {
-      "duration": "Duration",
+      "duration": "Dauer",
       "level": "Level",
-      "students": "Students",
-      "instructor": "Instructor",
-      "enrollNow": "Enroll Now",
-      "viewCourse": "View Course"
+      "students": "Studierende",
+      "instructor": "Dozent",
+      "enrollNow": "Jetzt anmelden",
+      "viewCourse": "Kurs ansehen"
     },
     "sort": {
-      "label": "Sort by",
-      "popular": "Popularity",
-      "newest": "Newest",
-      "highestRated": "Highest Rated"
+      "label": "Sortieren nach",
+      "popular": "Beliebtheit",
+      "newest": "Neueste",
+      "highestRated": "Höchste Bewertung"
     },
     "error": {
-      "title": "Error loading courses",
-      "message": "Please try again later or contact support"
+      "title": "Fehler beim Laden der Kurse",
+      "message": "Bitte versuchen Sie es später noch einmal oder kontaktieren Sie den Support"
     }
   },
   "about": {
-    "title": "About Us",
-    "subtitle": "Our story, mission, and team",
+    "title": "Über uns",
+    "subtitle": "Unsere Geschichte, Mission und Team",
     "mission": {
-      "title": "Our Mission",
-      "description": "We aim to bring people together to learn and grow"
+      "title": "Unsere Mission",
+      "description": "Wir möchten Menschen zusammenbringen, um zu lernen und zu wachsen"
     },
     "values": {
-      "title": "Our Values",
+      "title": "Unsere Werte",
       "learning": {
-        "title": "Continuous Learning",
-        "description": "We believe in lifelong learning and personal development"
+        "title": "Lifelong Learning",
+        "description": "Wir glauben an lebenslanges Lernen und persönliche Entwicklung"
       },
       "community": {
-        "title": "Community",
-        "description": "We create a supportive environment for all members"
+        "title": "Gemeinschaft",
+        "description": "Wir schaffen ein unterstützendes Umfeld für alle Mitglieder"
       },
       "quality": {
-        "title": "Quality",
-        "description": "Our courses and content are developed by experts"
+        "title": "Qualität",
+        "description": "Unsere Kurse und Inhalte werden von Experten entwickelt"
       }
     },
     "team": {
-      "title": "Our Team",
-      "subtitle": "Meet the minds behind the academy"
+      "title": "Unser Team",
+      "subtitle": "Lernen Sie die Köpfe hinter der Akademie kennen"
     }
   }
 }
