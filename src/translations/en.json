@@ -138,17 +138,18 @@
     "viewAllDiscussions": "View All Discussions",
     "eventsDesc": "All upcoming and past events."
   },
-  "admin": {
-    "title": "",
-    "subtitle": "",
-    "refresh": "",
-    "users": "",
-    "searchUsers": "",
-    "activity": "",
-    "manage": "",
-    "manageUsers": "",
-    "manageUsersDesc": ""
-  },
+ "admin": {
+  "title": "Admin Area",
+  "subtitle": "Manage users and settings",
+  "refresh": "Refresh",
+  "users": "Users",
+  "searchUsers": "Search users",
+  "activity": "Activity",
+  "manage": "Manage",
+  "manageUsers": "Manage users",
+  "manageUsersDesc": "Here you can manage registered users, editing their permissions and roles within the system."
+}
+
   "navigation": {
     "home": "Home",
     "about": "About Us",
