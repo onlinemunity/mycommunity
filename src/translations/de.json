@@ -199,14 +199,14 @@
         "annual": {
           "title": "Jahresmitgliedschaft",
           "description": "Vollzugriff auf alle Funktionen",
-          "price": "99€",
+          "price": "299€",
           "period": "pro Jahr",
           "cta": "Jetzt upgraden"
         },
         "lifetime": {
           "title": "Lebenslanges Angebot",
           "description": "Einmalige Zahlung, lebenslanger Zugang",
-          "price": "399€",
+          "price": "699€",
           "period": "Einmalig",
           "cta": "Lebenslangen Zugang erhalten"
         }
