@@ -204,11 +204,11 @@
           "cta": "Jetzt upgraden"
         },
         "lifetime": {
-          "title": "Lebenslanges Angebot",
-          "description": "Einmalige Zahlung, lebenslanger Zugang",
+          "title": "Lifetime Angebot",
+          "description": "Einmalige Zahlung, dauerhafter Zugang",
           "price": "699€",
           "period": "Einmalig",
-          "cta": "Lebenslangen Zugang erhalten"
+          "cta": "Dauerharft Zugang erhalten"
         }
       }
     },
