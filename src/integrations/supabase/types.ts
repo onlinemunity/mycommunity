@@ -32,6 +32,7 @@ export type Database = {
           video_url: string | null
           zertifikat: string | null
           zielgruppe: string | null
+          course_type: string | null
         }
         Insert: {
           allgemein?: string | null
@@ -55,6 +56,7 @@ export type Database = {
           video_url?: string | null
           zertifikat?: string | null
           zielgruppe?: string | null
+          course_type?: string | null
         }
         Update: {
           allgemein?: string | null
@@ -78,6 +80,7 @@ export type Database = {
           video_url?: string | null
           zertifikat?: string | null
           zielgruppe?: string | null
+          course_type?: string | null
         }
         Relationships: []
       }
