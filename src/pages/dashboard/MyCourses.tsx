@@ -25,6 +25,7 @@ interface CourseData {
   lectures: Lecture[];
   video_url?: string | null;
   duration?: string;
+  course_type?: string;
 }
 
 const MyCoursesPage = () => {
