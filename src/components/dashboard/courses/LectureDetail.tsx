@@ -196,7 +196,7 @@ export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
           {renderVideoOrContent()}
         </TabsContent>
         <TabsContent value="discussions" className="pt-6">
-          {lecture.id && lecture.courseId && (
+          {lecture && lecture.id && lecture.courseId && (
             <DiscussionBoard 
               courseId={lecture.courseId}
               lectureId={lecture.id}

@@ -58,11 +58,13 @@ const CourseVideo = ({ course, lecture }: CourseVideoProps) => {
             </TabsContent>
             <TabsContent value="discussions">
               <div className="max-w-4xl mx-auto">
-                <DiscussionBoard 
-                  courseId={course.id}
-                  lectureId={lecture.id}
-                  title="Lecture Discussions"
-                />
+                {course.id && lecture.id && (
+                  <DiscussionBoard 
+                    courseId={course.id}
+                    lectureId={lecture.id}
+                    title="Lecture Discussions"
+                  />
+                )}
               </div>
             </TabsContent>
           </Tabs>

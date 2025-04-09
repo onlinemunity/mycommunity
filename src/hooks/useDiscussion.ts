@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -204,6 +203,8 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         pinned: false,
         solved: false
       };
+      
+      console.log('Creating topic with data:', topicData);
       
       const { data, error } = await supabase
         .from('discussion_topics')
