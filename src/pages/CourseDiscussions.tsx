@@ -21,6 +21,7 @@ const CourseDiscussions = () => {
         .single();
 
       if (error) throw error;
+      console.log('CourseDiscussions - Found course:', data);
       return data;
     },
   });
@@ -60,10 +61,12 @@ const CourseDiscussions = () => {
           <p className="text-muted-foreground">Community Discussions</p>
         </div>
         
-        <DiscussionBoard 
-          courseId={course.id}
-          title="Course Discussions"
-        />
+        {course && course.id && (
+          <DiscussionBoard 
+            courseId={course.id}
+            title="Course Discussions"
+          />
+        )}
       </div>
     </Layout>
   );

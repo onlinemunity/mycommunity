@@ -2,13 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDiscussion } from '@/hooks/useDiscussion';
 import { TopicForm } from './TopicForm';
-import { TopicItem } from './TopicItem';
 import { TopicDetail } from './TopicDetail';
+import { DiscussionBoardContent } from './DiscussionBoardContent';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Loader2 } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface DiscussionBoardProps {
@@ -26,6 +25,7 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
   const navigate = useNavigate();
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [showNewForm, setShowNewForm] = useState(false);
+  const [filterTab, setFilterTab] = useState<'all' | 'solved' | 'unsolved'>('all');
   
   const routeParams = useParams();
   const routeLectureId = routeParams.lectureId;
@@ -49,26 +49,17 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     setEditingTopic,
     editingComment,
     setEditingComment,
-    replyingToTopic,
-    setReplyingToTopic,
     createTopic,
     updateTopic,
     deleteTopic,
-    createComment,
-    updateComment,
-    deleteComment,
     markTopicSolved,
-    markCommentSolution,
     voteTopic,
-    voteComment,
     isCreatingTopic,
-    isUpdatingTopic,
-    isCreatingComment,
-    isUpdatingComment
+    isUpdatingTopic
   } = useDiscussion(courseId, effectiveLectureId);
   
   useEffect(() => {
-    console.log('Topics loaded:', topics);
+    console.log('Topics loaded:', topics?.length || 0);
   }, [topics]);
   
   const selectedTopic = selectedTopicId ? topics.find(t => t.id === selectedTopicId) : null;
@@ -79,6 +70,7 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
       content: newTopicForm.content
     });
     setShowNewForm(false);
+    setNewTopicForm({ title: '', content: '' });
   };
   
   const handleUpdateTopic = () => {
@@ -118,14 +110,6 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
   
   const handleLoginPrompt = () => {
     navigate('/auth', { state: { redirectTo: window.location.pathname } });
-  };
-
-  const wrapVoteTopic = (topicId: string, voteType: number) => {
-    voteTopic({ topicId, voteType });
-  };
-
-  const wrapSolveToggle = (topicId: string, solved: boolean) => {
-    markTopicSolved({ topicId, solved });
   };
 
   return (
@@ -184,24 +168,30 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
             topic={selectedTopic}
             onEditTopic={handleEditTopic}
             onDeleteTopic={handleDeleteTopic}
-            onVoteTopic={wrapVoteTopic}
-            onSolveToggle={wrapSolveToggle}
+            onVoteTopic={(topicId, voteType) => voteTopic({ topicId, voteType })}
+            onSolveToggle={(topicId, solved) => markTopicSolved({ topicId, solved })}
             getComments={getComments}
             newCommentForm={newCommentForm}
             setNewCommentForm={setNewCommentForm}
             editingComment={editingComment}
             setEditingComment={setEditingComment}
-            createComment={createComment}
-            updateComment={updateComment}
-            deleteComment={deleteComment}
-            voteComment={voteComment}
-            markCommentSolution={markCommentSolution}
-            isCreatingComment={isCreatingComment}
-            isUpdatingComment={isUpdatingComment}
+            createComment={({ topicId, content }) => getComments(topicId).createComment({ content })}
+            updateComment={({ id, content }) => {
+              if (editingComment) {
+                getComments(editingComment.topic_id).updateComment({ id, content });
+              }
+            }}
+            deleteComment={({ id, topicId }) => getComments(topicId).deleteComment(id)}
+            voteComment={({ commentId, topicId, voteType }) => 
+              getComments(topicId).voteComment({ commentId, voteType })}
+            markCommentSolution={({ commentId, topicId, isSolution }) => 
+              getComments(topicId).markCommentSolution({ commentId, isSolution })}
+            isCreatingComment={false}
+            isUpdatingComment={false}
           />
         </div>
       ) : (
-        <Tabs defaultValue="all">
+        <Tabs defaultValue="all" onValueChange={(value) => setFilterTab(value as any)}>
           <TabsList>
             <TabsTrigger value="all">All Topics</TabsTrigger>
             <TabsTrigger value="solved">Solved</TabsTrigger>
@@ -209,93 +199,48 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
           </TabsList>
           
           <TabsContent value="all">
-            {isTopicsLoading ? (
-              <div className="text-center py-10">
-                <Loader2 className="h-8 w-8 animate-spin text-accent1 mx-auto mb-4" />
-                <p>Loading topics...</p>
-              </div>
-            ) : topics.length === 0 ? (
-              <Card>
-                <CardContent className="text-center py-10">
-                  <p className="text-muted-foreground">No discussion topics yet.</p>
-                  {user && (
-                    <Button 
-                      variant="outline" 
-                      className="mt-4" 
-                      onClick={() => setShowNewForm(true)}
-                    >
-                      Start a new discussion
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {topics.map((topic) => (
-                  <TopicItem
-                    key={topic.id}
-                    topic={topic}
-                    onEdit={handleEditTopic}
-                    onDelete={handleDeleteTopic}
-                    onReply={handleReply}
-                    onVote={wrapVoteTopic}
-                    onSolveToggle={wrapSolveToggle}
-                  />
-                ))}
-              </div>
-            )}
+            <DiscussionBoardContent
+              topics={topics}
+              isTopicsLoading={isTopicsLoading}
+              filter="all"
+              onEditTopic={handleEditTopic}
+              onDeleteTopic={handleDeleteTopic}
+              onReplyTopic={handleReply}
+              onVoteTopic={(topicId, voteType) => voteTopic({ topicId, voteType })}
+              onSolveToggle={(topicId, solved) => markTopicSolved({ topicId, solved })}
+              onNewTopic={() => setShowNewForm(true)}
+              user={user}
+            />
           </TabsContent>
           
           <TabsContent value="solved">
-            {isTopicsLoading ? (
-              <div className="text-center py-10">Loading topics...</div>
-            ) : topics.filter(t => t.solved).length === 0 ? (
-              <Card>
-                <CardContent className="text-center py-10">
-                  <p className="text-muted-foreground">No solved discussion topics yet.</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {topics.filter(t => t.solved).map((topic) => (
-                  <TopicItem
-                    key={topic.id}
-                    topic={topic}
-                    onEdit={handleEditTopic}
-                    onDelete={handleDeleteTopic}
-                    onReply={handleReply}
-                    onVote={wrapVoteTopic}
-                    onSolveToggle={wrapSolveToggle}
-                  />
-                ))}
-              </div>
-            )}
+            <DiscussionBoardContent
+              topics={topics}
+              isTopicsLoading={isTopicsLoading}
+              filter="solved"
+              onEditTopic={handleEditTopic}
+              onDeleteTopic={handleDeleteTopic}
+              onReplyTopic={handleReply}
+              onVoteTopic={(topicId, voteType) => voteTopic({ topicId, voteType })}
+              onSolveToggle={(topicId, solved) => markTopicSolved({ topicId, solved })}
+              onNewTopic={() => setShowNewForm(true)}
+              user={user}
+            />
           </TabsContent>
           
           <TabsContent value="unsolved">
-            {isTopicsLoading ? (
-              <div className="text-center py-10">Loading topics...</div>
-            ) : topics.filter(t => !t.solved).length === 0 ? (
-              <Card>
-                <CardContent className="text-center py-10">
-                  <p className="text-muted-foreground">No unsolved discussion topics.</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {topics.filter(t => !t.solved).map((topic) => (
-                  <TopicItem
-                    key={topic.id}
-                    topic={topic}
-                    onEdit={handleEditTopic}
-                    onDelete={handleDeleteTopic}
-                    onReply={handleReply}
-                    onVote={wrapVoteTopic}
-                    onSolveToggle={wrapSolveToggle}
-                  />
-                ))}
-              </div>
-            )}
+            <DiscussionBoardContent
+              topics={topics}
+              isTopicsLoading={isTopicsLoading}
+              filter="unsolved"
+              onEditTopic={handleEditTopic}
+              onDeleteTopic={handleDeleteTopic}
+              onReplyTopic={handleReply}
+              onVoteTopic={(topicId, voteType) => voteTopic({ topicId, voteType })}
+              onSolveToggle={(topicId, solved) => markTopicSolved({ topicId, solved })}
+              onNewTopic={() => setShowNewForm(true)}
+              user={user}
+            />
           </TabsContent>
         </Tabs>
       )}
