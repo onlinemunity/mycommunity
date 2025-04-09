@@ -124,6 +124,12 @@
       "button": "Jetzt beitreten"
     }
   },
+
+  "academy": {
+      "hero": {
+        "title": "Unsere Akadenie",
+      }
+    },
  
   "community": {
     "title": "Unsere Community",
@@ -133,10 +139,8 @@
       "subtitle": "Verbinde dich mit Gleichgesinnten, teile Wissen und wachse gemeinsam",
       "joinButton": "Jetzt beitreten",
       "learnMoreButton": "Mehr erfahren"
-    },
+    },   
 
-
-    
     "features": {
       "title": "Community-Funktionen",
       "subtitle": "Alles was du brauchst, um dich zu vernetzen und zu wachsen",
