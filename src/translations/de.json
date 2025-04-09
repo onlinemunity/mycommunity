@@ -118,7 +118,10 @@
     "accountType": "Kontotyp",
     "personalInfoDesc": "Verwalte deine persönlichen Informationen.",
     "usernamePlaceholder": "Benutzername",
-    "fullNamePlaceholder": "Vollständiger Name"
+    "fullNamePlaceholder": "Vollständiger Name",
+    "updateSuccess"      : "Änderung erfolgreich",
+    "updateSuccessDesc"      : "Änderungen erfolgreich gespeichert",
+    
   },
   "member": {
     "title": "Mein Bereich",
