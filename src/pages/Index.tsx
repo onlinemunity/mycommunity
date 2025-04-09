@@ -60,7 +60,7 @@ const Index = () => {
       { text: "Basis-Kursinhalte", included: true },
       { text: "Forum-Zugang", included: true },
       { text: "Premium-Kurse", included: true },
-      { text: "1:1 Mentoring (unbegrenzt)", included: true },
+      { text: "1:1 Mentoring (2x/Monat)", included: true },
       { text: "Exklusive Events", included: true },
     ],
   };
