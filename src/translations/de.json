@@ -78,11 +78,13 @@
 		"lecture" 	: "",
 		"status" 	: "",
 		"actions" 	: "",
-		"completed" 	: ""
+		"completed" 	: "",
+		"myCourses"	: ""
 		},
 	"profile" : {
 		"myprofile" 	: ""
 		}
+	
 	},
 
 
