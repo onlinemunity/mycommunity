@@ -36,11 +36,12 @@
     "dontHaveAccount": "Kein Konto? Registrieren"
   },
   "auth": {
-    "signIn": {
-      "title": "Anmelden",
-      "subtitle": "Willkommen zurück! Melde dich an, um fortzufahren",
-      "button": "Anmelden",
-      "forgotPassword": "Passwort vergessen?",
+    "signIn": "Anmelden",
+    "signInDescription": "Willkommen zurück! Melde dich an, um fortzufahren",
+    "email": "E-Mail Adresse",
+    "password": "Passwort",
+    "signInButton": "Anmelden",
+    "forgotPassword": "Passwort vergessen?",
       "noAccount": "Noch kein Konto?",
       "createAccount": "Konto erstellen",
       "withGoogle": "Mit Google anmelden",
