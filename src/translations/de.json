@@ -57,33 +57,34 @@
     "signInNow": "Zum Login"
   },
   "dashboard": {
-    "welcome": "Willkommen",
-    "overview": "Übersicht",
-    "recentActivity": "Letzte Aktivitäten",
-    "recentActivityDesc": "Hier siehst du deine letzten Aktivitäten.",
-    "activityItem": "Aktivitätseintrag",
-    "eventTitle": "Ereignis Titel",
-    "memberArea": "Mitgliederbereich",
-    "adminArea" : "Admin Bereich",
-    "upcomingEvents": "Bevorstehende Ereignisse",
-    "upcomingEventsDesc": "Schau dir die nächsten Ereignisse an.",
+    "welcome"              : "Willkommen",
+    "overview"             : "Übersicht",
+    "recentActivity"       : "Letzte Aktivitäten",
+    "recentActivityDesc"   : "Hier siehst du deine letzten Aktivitäten.",
+    "activityItem"         : "Aktivitätseintrag",
+    "eventTitle"           : "Ereignis Titel",
+    "memberArea"           : "Mitgliederbereich",
+    "adminArea"            : "Admin Bereich",
+    "upcomingEvents"       : "Bevorstehende Ereignisse",
+    "upcomingEventsDesc"   : "Schau dir die nächsten Ereignisse an.",
+    
     "courses": {
-      "title": "Kurse",
-      "duration": "Dauer",
-      "lectures": "Lektionen",
-      "lessons": "Lektionen",
-      "yourProgress": "Dein Fortschritt",
-      "lecturesLis": "Vorlesungsübersicht",
-      "lecture": "Vorlesung",
-      "status": "Status",
-      "actions": "Aktionen",
-      "completed": "Abgeschlossen",
-      "myCourses": "Meine Kurse",
-      "lecturesList": "Vorlesungsübersicht",
-      "inProgress": "In Bearbeitung",
-      "review": "Abgeschlossen",
-      "continue": "Fortfahren",
-      "completed": "Abgeschlossen"
+      "title"              : "Kurse",
+      "duration"           : "Dauer",
+      "lectures"           : "Lektionen",
+      "lessons"            : "Lektionen",
+      "yourProgress"       : "Dein Fortschritt",
+      "lecturesLis"        : "Vorlesungsübersicht",
+      "lecture"            : "Vorlesung",
+      "status"             : "Status",
+      "actions"            : "Aktionen",
+      "completed"          : "Abgeschlossen",
+      "myCourses"          : "Meine Kurse",
+      "lecturesList"       : "Vorlesungsübersicht",
+      "inProgress"         : "In Bearbeitung",
+      "review"             : "Abgeschlossen",
+      "continue"           : "Fortfahren",
+      "completed"          : "Abgeschlossen"
     },
     "profile": {
       "myprofile"          : "Mein Profil"
@@ -149,7 +150,7 @@
     "manage"                : "",
     "manageUsers"           : "",
     "manageUsersDesc"       : ""
-  }
+  },
   
   "navigation": {
     "home"                 : "Startseite",
