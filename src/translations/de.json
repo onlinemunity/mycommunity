@@ -138,17 +138,19 @@
     "viewAllDiscussions": "View All Discussions",
     "eventsDesc": "All upcoming and past events."
   },
-  "admin": {
-    "title": "",
-    "subtitle": "",
-    "refresh": "",
-    "users": "",
-    "searchUsers": "",
-    "activity": "",
-    "manage": "",
-    "manageUsers": "",
-    "manageUsersDesc": ""
-  },
+
+"admin": {
+  "title": "Admin-Bereich",
+  "subtitle": "Verwalte Benutzer und Einstellungen",
+  "refresh": "Aktualisieren",
+  "users": "Benutzer",
+  "searchUsers": "Benutzer suchen",
+  "activity": "Aktivität",
+  "manage": "Verwalten",
+  "manageUsers": "Benutzer verwalten",
+  "manageUsersDesc": "Hier kannst du registrierte Benutzer verwalten, ihre Berechtigungen und Rollen im System bearbeiten."
+}
+  
   "navigation": {
     "home": "Home",
     "about": "About Us",
