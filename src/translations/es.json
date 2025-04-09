@@ -1,14 +1,14 @@
-
 {
   "common": {
-    "learnMore": "Saber más",
+    "learnMore": "Aprender más",
     "joinNow": "Únete ahora",
     "readMore": "Leer más",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
-    "dashboard": "Panel",
+    "signOut": "Cerrar sesión",
+    "dashboard": "Tablero",
     "profile": "Perfil",
-    "settings": "Configuración",
+    "settings": "Configuraciones",
     "logOut": "Cerrar sesión",
     "search": "Buscar...",
     "loading": "Cargando...",
@@ -31,38 +31,153 @@
     "emailAddress": "Dirección de correo electrónico",
     "password": "Contraseña",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "resetPassword": "Restablecer contraseña",
-    "alreadyHaveAccount": "¿Ya tienes una cuenta? Inicia sesión",
-    "dontHaveAccount": "¿No tienes una cuenta? Regístrate"
+    "resetPassword": "Restablecer la contraseña",
+    "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+    "dontHaveAccount": "¿No tienes cuenta? Regístrate"
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signInDescription": "¡Bienvenido de nuevo! Inicia sesión para continuar",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Tu dirección de correo electrónico",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Tu contraseña",
+    "signInButton": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste la contraseña?",
+    "noAccount": "¿No tienes cuenta?",
+    "createAccount": "Crear cuenta",
+    "withGoogle": "Iniciar sesión con Google",
+    "withGithub": "Iniciar sesión con GitHub",
+    "signUp": "Registrarse",
+    "signUpDescription": "Regístrate ahora",
+    "fullName": "Nombre completo",
+    "fullNamePlaceholder": "Tu nombre completo",
+    "signUpButton": "Registrarse",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "signInNow": "Iniciar sesión"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido",
+    "overview": "Resumen",
+    "recentActivity": "Actividad reciente",
+    "recentActivityDesc": "Aquí puedes ver tus actividades recientes.",
+    "activityItem": "Elemento de actividad",
+    "eventTitle": "Título del evento",
+    "memberArea": "Área de miembros",
+    "adminArea": "Área de administración",
+    "upcomingEvents": "Próximos eventos",
+    "upcomingEventsDesc": "Consulta los próximos eventos.",
+    "courses": {
+      "title": "Cursos",
+      "duration": "Duración",
+      "lectures": "Lecciones",
+      "lessons": "Lecciones",
+      "yourProgress": "Tu progreso",
+      "lecturesLis": "Lista de lecciones",
+      "lecture": "Lección",
+      "status": "Estado",
+      "actions": "Acciones",
+      "completed": "Completado",
+      "myCourses": "Mis cursos",
+      "lecturesList": "Lista de lecciones",
+      "inProgress": "En progreso",
+      "review": "Revisión",
+      "continue": "Continuar",
+      "completed": "Completado"
+    },
+    "profile": {
+      "myprofile": "Mi perfil"
+    },
+    "stats": {
+      "members": "Miembros",
+      "courses": "Cursos",
+      "events": "Eventos",
+      "activity": "Actividad",
+      "membersDesc": "Número total de miembros.",
+      "coursesDesc": "Número total de cursos.",
+      "eventsDesc": "Número total de eventos.",
+      "activityDesc": "Número total de actividades."
+    }
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "subtitle": "Gestiona tu información personal",
+    "personalInfo": "Información personal",
+    "personalInfoDes": "Edita tus datos personales.",
+    "avatar": "Avatar",
+    "avatarDesc": "Cambia tu foto de perfil.",
+    "avatarUrl": "URL del avatar",
+    "username": "Nombre de usuario",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "emailNote": "La dirección de correo electrónico no puede ser cambiada. Por favor, contacta con soporte.",
+    "saveChanges": "Guardar cambios",
+    "accountDetails": "Detalles de la cuenta",
+    "accountDetailsDesc": "Tu información de cuenta y configuración.",
+    "memberSince": "Miembro desde",
+    "accountStatus": "Estado de la cuenta",
+    "accountType": "Tipo de cuenta",
+    "personalInfoDesc": "Gestiona tu información personal.",
+    "usernamePlaceholder": "Nombre de usuario",
+    "fullNamePlaceholder": "Nombre completo",
+    "updateSuccess": "Cambio exitoso",
+    "updateSuccessDesc": "Los cambios se guardaron correctamente"
+  },
+  "member": {
+    "title": "Mi área",
+    "subtitle": "Gestiona tus datos de membresía",
+    "events": "Eventos",
+    "eventsDes": "Aquí puedes ver todos los eventos próximos.",
+    "viewAllEvents": "Ver todos los eventos",
+    "resources": "Recursos",
+    "resourcesDesc": "Accede a diversos recursos de aprendizaje.",
+    "viewAllResources": "Ver todos los recursos",
+    "discussions": "Discusión",
+    "discussionsDesc": "Participa en discusiones comunitarias.",
+    "viewAllDiscussions": "Ver todas las discusiones",
+    "eventsDesc": "Todos los eventos pasados y futuros."
+  },
+  "admin": {
+    "title": "Área de administración",
+    "subtitle": "Gestión de usuarios y configuraciones",
+    "refresh": "Actualizar",
+    "users": "Usuarios",
+    "searchUsers": "Buscar usuarios",
+    "activity": "Actividad",
+    "manage": "Gestionar",
+    "manageUsers": "Gestionar usuarios",
+    "manageUsersDesc": "Aquí puedes gestionar los usuarios registrados."
   },
   "navigation": {
     "home": "Inicio",
-    "about": "Sobre nosotros",
+    "about": "Acerca de",
+    "academy": "Academia",
     "community": "Comunidad",
     "courses": "Cursos",
     "pricing": "Precios",
     "contact": "Contacto",
-    "blog": "Blog"
+    "blog": "Blog",
+    "dashboard": "Mi área"
   },
   "homepage": {
     "hero": {
-      "title": "Bienvenido a nuestra Comunidad",
-      "subtitle": "Aprende, Crece y Conéctate en un Ambiente de Apoyo",
-      "cta": "Únete gratis hoy"
+      "title": "Bienvenido a nuestra academia",
+      "subtitle": "Aprender, crecer y conectar en un entorno de apoyo",
+      "cta": "Únete hoy de forma gratuita"
     },
     "features": {
       "title": "Lo que ofrecemos",
       "subtitle": "Descubre todos los beneficios de nuestra comunidad",
       "community": {
-        "title": "Comunidad Vibrante",
-        "description": "Conéctate con personas afines e intercambia conocimientos"
+        "title": "Comunidad activa",
+        "description": "Conéctate con personas afines y comparte conocimientos"
       },
       "courses": {
-        "title": "Cursos de Calidad",
+        "title": "Cursos de calidad",
         "description": "Aprende de expertos con nuestros cursos estructurados"
       },
       "discussions": {
-        "title": "Discusiones Temáticas",
+        "title": "Discusión temática",
         "description": "Participa en conversaciones interesantes sobre diversos temas"
       }
     },
@@ -72,126 +187,135 @@
     },
     "pricing": {
       "title": "Elige tu plan",
-      "subtitle": "Encuentra la oferta adecuada para tus necesidades",
+      "subtitle": "Encuentra la oferta que mejor se adapte a tus necesidades",
       "plans": {
         "free": {
           "title": "Gratis",
           "description": "Funciones básicas de la comunidad",
           "price": "0€",
-          "period": "Siempre gratis",
-          "cta": "Regístrate gratis"
+          "period": "Gratis para siempre",
+          "cta": "Registrarse gratis"
         },
         "annual": {
-          "title": "Membresía Anual",
+          "title": "Suscripción anual",
           "description": "Acceso completo a todas las funciones",
           "price": "99€",
           "period": "por año",
-          "cta": "Actualiza ahora"
+          "cta": "Actualizar ahora"
         },
         "lifetime": {
-          "title": "Acceso de por Vida",
+          "title": "Oferta de por vida",
           "description": "Pago único, acceso de por vida",
           "price": "399€",
-          "period": "Pago único",
-          "cta": "Asegura acceso de por vida"
+          "period": "Único",
+          "cta": "Obtener acceso de por vida"
         }
       }
     },
     "cta": {
-      "title": "¿Listo para formar parte de nuestra comunidad?",
-      "description": "Comienza tu viaje con nosotros ahora",
+      "title": "¿Listo para unirte a nuestra comunidad?",
+      "description": "Comienza tu viaje con nosotros",
       "button": "Únete ahora"
+    }
+  },
+  "academy": {
+    "hero": {
+      "title": "Nuestra Academia",
+      "subtitle": "Conoce nuestra academia",
+      "joinButton": "Únete ahora",
+      "learnMoreButton": "Aprender más"
     }
   },
   "community": {
     "title": "Nuestra Comunidad",
     "subtitle": "Un lugar para aprender, compartir y crecer",
     "hero": {
-      "title": "Únete a Nuestra Próspera Comunidad",
-      "subtitle": "Conéctate con colegas, comparte conocimientos y crece juntos",
-      "joinButton": "Únete Ahora",
-      "learnMoreButton": "Saber Más"
+      "title": "Únete a nuestra comunidad",
+      "subtitle": "Conéctate con personas afines, comparte conocimientos y crece juntos",
+      "joinButton": "Únete ahora",
+      "learnMoreButton": "Aprender más"
     },
-    
     "features": {
-      "title": "Características de la Comunidad",
+      "title": "Características de la comunidad",
       "subtitle": "Todo lo que necesitas para conectarte y crecer",
       "forums": {
-        "title": "Foros por Temas",
-        "description": "Discute en áreas temáticas organizadas"
+        "title": "Foros temáticos",
+        "description": "Participa en debates organizados por temas"
       },
       "members": {
-        "title": "Construye una Red",
+        "title": "Construye tu red",
         "description": "Conéctate con personas afines"
       },
       "content": {
-        "title": "Contenido Exclusivo",
-        "description": "Acceso a recursos y materiales especiales"
+        "title": "Contenido exclusivo",
+        "description": "Accede a recursos y materiales especiales"
       },
       "networking": {
-        "title": "Oportunidades de Networking",
-        "description": "Conéctate con profesionales en tu campo"
+        "title": "Oportunidades de networking",
+        "description": "Conéctate con profesionales en tu área"
       },
       "discussions": {
-        "title": "Discusiones Interesantes",
-        "description": "Participa en conversaciones reflexivas"
+        "title": "Discusión interesante",
+        "description": "Participa en conversaciones estimulantes"
       },
       "events": {
-        "title": "Eventos Comunitarios",
-        "description": "Únete a webinars, talleres y encuentros"
+        "title": "Eventos comunitarios",
+        "description": "Participa en seminarios web, talleres y reuniones"
       },
       "exclusiveContent": {
-        "title": "Contenido Exclusivo",
-        "description": "Accede a materiales premium de aprendizaje"
+        "title": "Contenido exclusivo",
+        "description": "Acceso a materiales de aprendizaje premium"
       },
       "support": {
-        "title": "Soporte Comunitario",
-        "description": "Recibe ayuda de colegas y expertos"
+        "title": "Soporte comunitario",
+        "description": "Recibe ayuda de compañeros y expertos"
       },
       "lifetime": {
-        "title": "Acceso de por Vida",
-        "description": "Aprende a tu propio ritmo sin límites de tiempo"
+        "title": "Acceso de por vida",
+        "description": "Aprende a tu propio ritmo sin limitación de tiempo"
       }
     },
     "testimonials": {
-      "title": "Lo que Dicen los Miembros",
-      "subtitle": "Escucha a los miembros de nuestra comunidad"
+      "title": "Lo que dicen nuestros miembros",
+      "subtitle": "Experiencias de nuestra comunidad"
     },
     "cta": {
-      "title": "¿Listo para Unirte a Nuestra Comunidad?",
+      "title": "¿Listo para ser parte de nuestra comunidad?",
       "subtitle": "Da el siguiente paso en tu viaje de aprendizaje",
-      "button": "Únete Ahora"
+      "button": "Únete ahora"
     },
     "join": {
-      "title": "Únete a Nuestra Comunidad",
+      "title": "Únete a nuestra comunidad",
       "description": "Conéctate con personas afines y aprende juntos",
       "button": "Únete ahora"
     },
     "stats": {
-      "members": "Miembros Activos",
-      "posts": "Publicaciones por Día",
-      "groups": "Grupos de Interés"
+      "members": "Miembros activos",
+      "posts": "Publicaciones por día",
+      "groups": "Grupos de interés"
     }
   },
   "courses": {
     "title": "Nuestros Cursos",
-    "subtitle": "Conocimiento especializado para tu desarrollo",
+    "subtitle": "Conocimientos especializados para tu desarrollo",
+    "loadMoreButton": "Cargar más cursos...",
     "hero": {
-      "title": "Expande Tu Conocimiento",
-      "subtitle": "Descubre cursos diseñados para ayudarte a crecer",
+      "title": "Expande tu conocimiento",
+      "subtitle": "Descubre cursos que te ayudarán a crecer",
       "searchPlaceholder": "Buscar cursos...",
-      "searchButton": "Buscar"
+      "searchButton": "Buscar",
+      "loadMoreButton": "Cargar más cursos..."
     },
     "popular": {
-      "title": "Cursos Populares",
-      "subtitle": "Nuestras experiencias de aprendizaje más solicitadas"
+      "title": "Cursos populares",
+      "subtitle": "Las experiencias de aprendizaje más demandadas"
     },
     "filters": {
       "title": "Filtros",
       "categories": "Categorías",
       "level": "Dificultad",
       "duration": "Duración",
-      "resetButton": "Restablecer Filtros",
+      "resetButton": "Restablecer filtros",
       "all": "Todos",
       "category": "Categoría",
       "beginner": "Principiante",
@@ -199,63 +323,63 @@
       "advanced": "Avanzado"
     },
     "sortby": {
-      "newest": "Más Recientes",
-      "popular": "Más Populares",
-      "rating": "Mejor Calificados"
+      "newest": "Más recientes",
+      "popular": "Más populares",
+      "rating": "Mejor valorado"
     },
-    "results": "Mostrando {{count}} resultados",
+    "results": "Resultados encontrados",
     "cta": {
-      "title": "¿No encuentras lo que buscas?",
-      "subtitle": "Déjanos saber qué cursos te gustaría ver",
-      "button": "Solicitar un Curso",
-      "secondaryButton": "Explorar Todos los Cursos"
+      "title": "¿No encontraste lo que buscas?",
+      "subtitle": "Háganos saber qué cursos te gustaría ver",
+      "button": "Proponer curso",
+      "secondaryButton": "Ver todos los cursos"
     },
     "search": {
-      "placeholder": "Buscar cursos...",
+      "placeholder": "Buscar curso...",
       "button": "Buscar",
       "noResults": "No se encontraron cursos",
-      "tryAgain": "Intenta con otros términos de búsqueda"
+      "tryAgain": "Intenta con otras palabras clave"
     },
     "categories": {
-      "webDevelopment": "Desarrollo Web",
+      "webDevelopment": "Desarrollo web",
       "frontend": "Frontend",
       "backend": "Backend",
       "design": "Diseño",
-      "dataScience": "Ciencia de Datos",
+      "dataScience": "Ciencia de datos",
       "devOps": "DevOps",
-      "mobile": "Desarrollo Móvil"
+      "mobile": "Desarrollo móvil"
     },
     "courseDetails": {
       "duration": "Duración",
       "level": "Nivel",
       "students": "Estudiantes",
       "instructor": "Instructor",
-      "enrollNow": "Inscribirse Ahora",
-      "viewCourse": "Ver Curso"
+      "enrollNow": "Inscribirse ahora",
+      "viewCourse": "Ver curso"
     },
     "sort": {
       "label": "Ordenar por",
-      "popular": "Más Popular",
-      "newest": "Más Recientes",
-      "highestRated": "Mejor Valorados"
+      "popular": "Popularidad",
+      "newest": "Más recientes",
+      "highestRated": "Mejor valorados"
     },
     "error": {
       "title": "Error al cargar los cursos",
-      "message": "Por favor intenta más tarde o contacta con soporte"
+      "message": "Por favor, intenta nuevamente más tarde o contacta al soporte"
     }
   },
   "about": {
-    "title": "Sobre Nosotros",
+    "title": "Acerca de nosotros",
     "subtitle": "Nuestra historia, misión y equipo",
     "mission": {
-      "title": "Nuestra Misión",
-      "description": "Buscamos reunir a personas para aprender y crecer colectivamente"
+      "title": "Nuestra misión",
+      "description": "Queremos reunir a las personas para aprender y crecer juntos"
     },
     "values": {
-      "title": "Nuestros Valores",
+      "title": "Nuestros valores",
       "learning": {
-        "title": "Aprendizaje Continuo",
-        "description": "Creemos en el aprendizaje permanente y el desarrollo personal"
+        "title": "Aprendizaje continuo",
+        "description": "Creemos en el aprendizaje continuo y el desarrollo personal"
       },
       "community": {
         "title": "Comunidad",
@@ -263,179 +387,12 @@
       },
       "quality": {
         "title": "Calidad",
-        "description": "Nos esforzamos por alcanzar los más altos estándares en todo lo que hacemos"
+        "description": "Nuestros cursos y contenidos son creados por expertos"
       }
     },
     "team": {
-      "title": "Nuestro Equipo",
-      "description": "Profesionales experimentados que apoyan nuestra comunidad",
-      "members": {
-        "founder": "Fundador y CEO",
-        "coFounder": "Cofundador y CTO",
-        "communityManager": "Gestor de Comunidad",
-        "contentCreator": "Creador de Contenido",
-        "customerSupport": "Atención al Cliente"
-      }
-    },
-    "story": {
-      "title": "Nuestra Historia",
-      "description": "Desde nuestros inicios hasta donde estamos hoy",
-      "timeline": {
-        "founding": "Fundación",
-        "growth": "Crecimiento",
-        "expansion": "Expansión",
-        "today": "Hoy"
-      }
-    }
-  },
-  "contact": {
-    "title": "Contáctanos",
-    "subtitle": "Nos encantaría saber de ti",
-    "form": {
-      "name": "Nombre",
-      "email": "Correo electrónico",
-      "subject": "Asunto",
-      "message": "Mensaje",
-      "submit": "Enviar Mensaje",
-      "success": "Tu mensaje ha sido enviado. ¡Nos pondremos en contacto pronto!",
-      "error": "Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo."
-    },
-    "info": {
-      "title": "Información de Contacto",
-      "email": "Correo Electrónico",
-      "phone": "Teléfono",
-      "address": "Dirección",
-      "hours": "Horario de Atención"
-    }
-  },
-  "dashboard": {
-    "welcome": "Bienvenido de nuevo",
-    "stats": {
-      "title": "Tus Estadísticas",
-      "courses": "Cursos Inscritos",
-      "completed": "Cursos Completados",
-      "posts": "Publicaciones en el Foro",
-      "connections": "Conexiones",
-      "members": "Miembros de la Comunidad",
-      "membersDesc": "Miembros activos en nuestra comunidad",
-      "coursesDesc": "Cursos que estás tomando actualmente",
-      "events": "Próximos Eventos",
-      "eventsDesc": "Eventos programados en los próximos 30 días",
-      "activity": "Actividad Reciente",
-      "activityDesc": "Tus últimas interacciones"
-    },
-    "recentActivity": "Actividad Reciente",
-    "recentActivityDesc": "Tus últimas interacciones con la comunidad",
-    "activityItem": "Actividad",
-    "upcomingEventsDesc": "Eventos próximos",
-    "eventTitle": "Evento",
-    "activity": {
-      "title": "Actividad Reciente",
-      "empty": "Aún no hay actividad",
-      "viewAll": "Ver todo"
-    },
-    "courses": {
-      "title": "Tus Cursos",
-      "inProgress": "En Progreso",
-      "completed": "Completado",
-      "continue": "Continuar",
-      "review": "Revisar",
-      "lecture": "Lección",
-      "duration": "Duración",
-      "status": "Estado",
-      "actions": "Acciones",
-      "backToCourse": "Volver al Curso",
-      "video": "Video",
-      "notes": "Notas",
-      "quiz": "Cuestionario",
-      "quizPassed": "¡Felicidades! Has aprobado el cuestionario.",
-      "quizFailed": "Por favor intenta de nuevo. Necesitas 70% para aprobar.",
-      "correctAnswer": "Respuesta correcta",
-      "submitQuiz": "Enviar Respuestas",
-      "tryAgain": "Intentar de Nuevo",
-      "markComplete": "Marcar como completado",
-      "completeAndContinue": "Completar y Continuar",
-      "lessons": "lecciones",
-      "yourProgress": "Tu Progreso",
-      "lecturesList": "Contenido del Curso",
-      "myCourses": "Mis Cursos"
-    },
-    "profile": {
-      "title": "Tu Perfil",
-      "edit": "Editar Perfil",
-      "save": "Guardar Cambios",
-      "personalInfo": "Información Personal",
-      "accountSettings": "Configuración de la Cuenta",
-      "notifications": "Notificaciones",
-      "privacy": "Privacidad",
-      "fullName": "Nombre Completo",
-      "username": "Nombre de Usuario",
-      "bio": "Sobre Mí",
-      "avatar": "Foto de Perfil",
-      "upload": "Subir",
-      "remove": "Eliminar"
-    }
-  },
-  "profile": {
-    "title": "Mi Perfil",
-    "subtitle": "Gestiona tu información personal",
-    "personalInfo": "Información Personal",
-    "personalInfoDesc": "Actualiza los detalles básicos de tu perfil",
-    "avatar": "Foto de Perfil",
-    "avatarDesc": "Sube una imagen de perfil (máx. 2MB)",
-    "avatarUrl": "URL de la imagen",
-    "username": "Nombre de Usuario",
-    "fullName": "Nombre Completo",
-    "email": "Correo Electrónico",
-    "saveChanges": "Guardar Cambios",
-    "usernamePlaceholder": "Ingresa tu nombre de usuario",
-    "fullNamePlaceholder": "Ingresa tu nombre completo",
-    "accountDetails": "Detalles de la Cuenta",
-    "accountDetailsDesc": "Consulta la información de tu cuenta",
-    "memberSince": "Miembro Desde",
-    "accountStatus": "Estado de la Cuenta",
-    "accountType": "Tipo de Cuenta"
-  },
-  "member": {
-    "title": "Área de Miembros",
-    "subtitle": "Tu centro comunitario para cursos, eventos y recursos",
-    "events": "Próximos Eventos",
-    "eventsDesc": "Eventos que podrían interesarte",
-    "viewAllEvents": "Ver Todos los Eventos",
-    "resources": "Recursos de Aprendizaje",
-    "resourcesDesc": "Materiales útiles para tu viaje",
-    "viewAllResources": "Ver Todos los Recursos",
-    "discussions": "Discusiones Recientes",
-    "discussionsDesc": "Únete a conversaciones en tu comunidad",
-    "viewAllDiscussions": "Ver Todas las Discusiones"
-  },
-  "auth": {
-    "signIn": {
-      "title": "Iniciar Sesión",
-      "subtitle": "¡Bienvenido de nuevo! Inicia sesión para continuar",
-      "button": "Iniciar Sesión",
-      "forgotPassword": "¿Olvidaste tu contraseña?",
-      "noAccount": "¿No tienes una cuenta?",
-      "createAccount": "Crear una cuenta",
-      "withGoogle": "Iniciar sesión con Google",
-      "withGithub": "Iniciar sesión con GitHub"
-    },
-    "signUp": {
-      "title": "Registrarse",
-      "subtitle": "Crea tu cuenta y únete a nuestra comunidad",
-      "button": "Registrarse",
-      "hasAccount": "¿Ya tienes una cuenta?",
-      "signIn": "Iniciar sesión",
-      "withGoogle": "Registrarse con Google",
-      "withGithub": "Registrarse con GitHub",
-      "terms": "Al registrarte, aceptas nuestros Términos de Servicio y Política de Privacidad"
-    },
-    "forgotPassword": {
-      "title": "Contraseña Olvidada",
-      "subtitle": "Ingresa tu correo electrónico para restablecer tu contraseña",
-      "button": "Enviar Enlace de Restablecimiento",
-      "backToSignIn": "Volver a iniciar sesión",
-      "success": "Si existe una cuenta con ese correo electrónico, hemos enviado un enlace para restablecer la contraseña"
+      "title": "Nuestro equipo",
+      "subtitle": "Conoce a los fundadores de nuestra academia"
     }
   }
 }
