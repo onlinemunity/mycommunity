@@ -79,7 +79,12 @@
 		"status" 	: "",
 		"actions" 	: "",
 		"completed" 	: "",
-		"myCourses"	: ""
+		"myCourses"	: "",
+		"lecturesList"	: "",
+		"inProgress"	: "",
+		"review"	: "",
+		"continue"	" "",
+		"completed"	: ""
 		},
 	"profile" : {
 		"myprofile" 	: ""
@@ -117,8 +122,8 @@
 		"accountStatus" : "",
 		"accountType" : "",
 		"personalInfoDesc" : "",
-		"usernamePlaceholer" : "",
-		"fullNamePlaceholer" : ""
+		"usernamePlaceholder" : "",
+		"fullNamePlaceholder" : ""
 		},
 
 	"member": {
