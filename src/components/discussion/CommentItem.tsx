@@ -5,6 +5,7 @@ import { ArrowUp, ArrowDown, Edit, Trash, CheckCircle } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { DiscussionComment } from '@/types/discussion';
 import { useAuth } from '@/context/AuthContext';
 
@@ -107,6 +108,38 @@ export const CommentItem: React.FC<CommentItemProps> = ({
               <CheckCircle className="h-4 w-4 text-green-500" />
             </Button>
           )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Create a skeleton loader for comment items
+export const CommentItemSkeleton: React.FC = () => {
+  return (
+    <div className="border rounded-lg p-4 mb-4">
+      <div className="flex items-start gap-4">
+        <div className="flex flex-col items-center">
+          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-4 w-4 my-1" />
+          <Skeleton className="h-8 w-8 rounded-full" />
+        </div>
+        
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <Skeleton className="h-6 w-6 rounded-full" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+          
+          <Skeleton className="h-4 w-full mb-1" />
+          <Skeleton className="h-4 w-full mb-1" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+        
+        <div className="flex items-center gap-1">
+          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-8 w-8 rounded-full" />
         </div>
       </div>
     </div>

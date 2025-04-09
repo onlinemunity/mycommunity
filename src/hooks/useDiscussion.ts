@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DiscussionTopic, DiscussionComment } from '@/types/discussion';
@@ -14,108 +14,120 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
   const [editingTopic, setEditingTopic] = useState<DiscussionTopic | null>(null);
   const [editingComment, setEditingComment] = useState<DiscussionComment | null>(null);
   const [replyingToTopic, setReplyingToTopic] = useState<string | null>(null);
-
-  useEffect(() => {
-    console.log('useDiscussion hook initialized with courseId:', courseId, 'lectureId:', lectureId);
-  }, [courseId, lectureId]);
-
-  // Get topics based on course or lecture
+  
+  // Get topics based on course or lecture - with optimized data fetching
   const { data: topics = [], isLoading: isTopicsLoading } = useQuery({
     queryKey: ['discussionTopics', courseId, lectureId],
     queryFn: async () => {
       if (!courseId) {
-        console.log('No courseId provided, returning empty topics array');
         return [];
       }
       
       console.log('Fetching topics with courseId:', courseId, 'lectureId:', lectureId);
       
+      // First, get topics with profile data
       let query = supabase
         .from('discussion_topics')
         .select(`
           *,
-          user_profile:user_id(username, avatar_url)
+          user_profile:profiles(username, avatar_url)
         `)
         .eq('course_id', courseId);
 
       if (lectureId) {
-        console.log('Adding lecture filter with lectureId:', lectureId);
         query = query.eq('lecture_id', lectureId);
       } else {
-        console.log('No lectureId, fetching course-level topics only');
         query = query.is('lecture_id', null);
       }
 
-      query = query.order('pinned', { ascending: false })
-                  .order('created_at', { ascending: false });
+      query = query
+        .order('pinned', { ascending: false })
+        .order('created_at', { ascending: false });
       
-      const { data, error } = await query;
+      const { data: topicsData, error } = await query;
       
       if (error) {
         console.error('Error fetching topics:', error);
         throw error;
       }
       
-      console.log('Fetched topics:', data);
+      if (!topicsData || topicsData.length === 0) {
+        return [];
+      }
       
-      // Get vote counts and user votes for each topic
-      const topicsWithVotes = await Promise.all(data.map(async (topic: any) => {
-        // Get vote count
-        const { data: votesData, error: votesError } = await supabase
+      // Get all topic IDs
+      const topicIds = topicsData.map(topic => topic.id);
+      
+      // Batch fetch vote counts for all topics
+      const { data: votesData, error: votesError } = await supabase
+        .from('discussion_votes')
+        .select('topic_id, vote_type')
+        .in('topic_id', topicIds);
+        
+      if (votesError) throw votesError;
+      
+      // Batch fetch comment counts for all topics
+      const { data: commentCountsData, error: commentCountsError } = await supabase
+        .from('discussion_comments')
+        .select('topic_id, id')
+        .in('topic_id', topicIds);
+        
+      if (commentCountsError) throw commentCountsError;
+      
+      // Get user votes for all topics if user is logged in
+      let userVotesData: any[] = [];
+      if (user) {
+        const { data: userVotes, error: userVotesError } = await supabase
           .from('discussion_votes')
-          .select('vote_type')
-          .eq('topic_id', topic.id);
+          .select('topic_id, vote_type')
+          .in('topic_id', topicIds)
+          .eq('user_id', user.id);
           
-        if (votesError) throw votesError;
-        
-        const voteCount = votesData.reduce((acc: number, vote: any) => acc + vote.vote_type, 0);
-        
-        // Get user vote if logged in
-        let userVote = 0;
-        if (user) {
-          const { data: userVoteData, error: userVoteError } = await supabase
-            .from('discussion_votes')
-            .select('vote_type')
-            .eq('topic_id', topic.id)
-            .eq('user_id', user.id)
-            .maybeSingle();
-            
-          if (!userVoteError && userVoteData) {
-            userVote = userVoteData.vote_type;
-          }
+        if (!userVotesError) {
+          userVotesData = userVotes || [];
         }
+      }
+      
+      // Process the data to calculate vote counts and user votes
+      const topicsWithMeta = topicsData.map((topic: any) => {
+        // Count votes for this topic
+        const topicVotes = votesData?.filter(vote => vote.topic_id === topic.id) || [];
+        const voteCount = topicVotes.reduce((sum, vote) => sum + vote.vote_type, 0);
         
-        // Get comment count
-        const { count, error: commentCountError } = await supabase
-          .from('discussion_comments')
-          .select('id', { count: 'exact', head: true })
-          .eq('topic_id', topic.id);
-          
-        if (commentCountError) throw commentCountError;
+        // Count comments for this topic
+        const commentCount = commentCountsData?.filter(comment => comment.topic_id === topic.id).length || 0;
+        
+        // Get user vote for this topic
+        const userVote = userVotesData.find(vote => vote.topic_id === topic.id);
         
         return {
           ...topic,
           vote_count: voteCount,
-          user_vote: userVote,
-          comment_count: count || 0
+          user_vote: userVote ? userVote.vote_type : 0,
+          comment_count: commentCount,
+          // Make sure we properly handle the nested user profile data
+          user_profile: topic.user_profile && topic.user_profile.length > 0 
+            ? topic.user_profile[0] 
+            : { username: 'Anonymous', avatar_url: null }
         };
-      }));
+      });
       
-      return topicsWithVotes;
+      return topicsWithMeta;
     },
     enabled: !!courseId,
   });
 
-  // Get comments for a specific topic
+  // Get comments for a specific topic - with optimized data fetching
   const getComments = (topicId: string) => {
     return useQuery({
       queryKey: ['discussionComments', topicId],
       queryFn: async () => {
-        const { data, error } = await supabase
+        // Get comments with profile data
+        const { data: commentsData, error } = await supabase
           .from('discussion_comments')
           .select(`
             *,
-            user_profile:user_id(username, avatar_url)
+            user_profile:profiles(username, avatar_url)
           `)
           .eq('topic_id', topicId)
           .order('is_solution', { ascending: false })
@@ -123,41 +135,56 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         
         if (error) throw error;
         
-        // Get vote counts and user votes for each comment
-        const commentsWithVotes = await Promise.all(data.map(async (comment: any) => {
-          // Get vote count
-          const { data: votesData, error: votesError } = await supabase
+        if (!commentsData || commentsData.length === 0) {
+          return [];
+        }
+        
+        // Get all comment IDs
+        const commentIds = commentsData.map(comment => comment.id);
+        
+        // Batch fetch vote counts for all comments
+        const { data: votesData, error: votesError } = await supabase
+          .from('discussion_votes')
+          .select('comment_id, vote_type')
+          .in('comment_id', commentIds);
+          
+        if (votesError) throw votesError;
+        
+        // Get user votes for all comments if user is logged in
+        let userVotesData: any[] = [];
+        if (user) {
+          const { data: userVotes, error: userVotesError } = await supabase
             .from('discussion_votes')
-            .select('vote_type')
-            .eq('comment_id', comment.id);
+            .select('comment_id, vote_type')
+            .in('comment_id', commentIds)
+            .eq('user_id', user.id);
             
-          if (votesError) throw votesError;
-          
-          const voteCount = votesData.reduce((acc: number, vote: any) => acc + vote.vote_type, 0);
-          
-          // Get user vote if logged in
-          let userVote = 0;
-          if (user) {
-            const { data: userVoteData, error: userVoteError } = await supabase
-              .from('discussion_votes')
-              .select('vote_type')
-              .eq('comment_id', comment.id)
-              .eq('user_id', user.id)
-              .maybeSingle();
-              
-            if (!userVoteError && userVoteData) {
-              userVote = userVoteData.vote_type;
-            }
+          if (!userVotesError) {
+            userVotesData = userVotes || [];
           }
+        }
+        
+        // Process the data to calculate vote counts and user votes
+        const commentsWithMeta = commentsData.map((comment: any) => {
+          // Count votes for this comment
+          const commentVotes = votesData?.filter(vote => vote.comment_id === comment.id) || [];
+          const voteCount = commentVotes.reduce((sum, vote) => sum + vote.vote_type, 0);
+          
+          // Get user vote for this comment
+          const userVote = userVotesData.find(vote => vote.comment_id === comment.id);
           
           return {
             ...comment,
             vote_count: voteCount,
-            user_vote: userVote
+            user_vote: userVote ? userVote.vote_type : 0,
+            // Make sure we properly handle the nested user profile data
+            user_profile: comment.user_profile && comment.user_profile.length > 0 
+              ? comment.user_profile[0] 
+              : { username: 'Anonymous', avatar_url: null }
           };
-        }));
+        });
         
-        return commentsWithVotes;
+        return commentsWithMeta;
       },
       enabled: !!topicId,
     });
@@ -178,8 +205,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         solved: false
       };
       
-      console.log('Creating topic with data:', topicData);
-      
       const { data, error } = await supabase
         .from('discussion_topics')
         .insert(topicData)
@@ -191,7 +216,6 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
         throw error;
       }
       
-      console.log('Created topic:', data);
       return data;
     },
     onSuccess: () => {
@@ -448,7 +472,7 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
     }
   });
 
-  // Vote on a topic
+  // Vote on a topic - optimized to use fewer database calls
   const voteTopicMutation = useMutation({
     mutationFn: async ({ topicId, voteType }: { topicId: string; voteType: number }) => {
       if (!user) throw new Error('User must be logged in');
@@ -504,7 +528,7 @@ export const useDiscussion = (courseId?: string, lectureId?: string) => {
     }
   });
 
-  // Vote on a comment
+  // Vote on a comment - optimized to use fewer database calls
   const voteCommentMutation = useMutation({
     mutationFn: async ({ commentId, topicId, voteType }: { commentId: string; topicId: string; voteType: number }) => {
       if (!user) throw new Error('User must be logged in');
