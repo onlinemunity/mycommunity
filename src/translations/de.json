@@ -128,9 +128,31 @@
   "academy": {
       "hero": {
         "title": "Unsere Akadenie",
-        "subtitle": "Lerne unsere Akadenie kennen"
+        "subtitle": "Lerne unsere Akadenie kennen",
+        "joinButton": "Jetzt mitmachen",
+        "learnMoreButton": "mehr erfahren"
       }
     },
+
+  "auth": {
+    "signIn": "Anmelden",
+    "signInDescription": "Melden Sie sich mit Ihren Zugangsdaten an, um fortzufahren.",
+    "forgotPassword": "Passwort vergessen?",
+    "signInButton": "Anmelden",
+    "noAccount": "Kein Konto?",
+    "createAccount": "Konto erstellen",
+    "signUp": "Registrieren",
+    "signUpDescription": "Erstellen Sie ein neues Konto, um loszulegen.",  
+    "fullName": "Vollständiger Name",
+    "fullNamePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "password": "Passwort",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "signUpButton": "Registrieren",
+    "haveAccount": "Haben Sie bereits ein Konto?",
+    "signInNow": "Jetzt anmelden"
+  },  
  
   "community": {
     "title": "Unsere Community",
