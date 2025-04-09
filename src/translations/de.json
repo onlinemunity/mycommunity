@@ -36,28 +36,27 @@
     "dontHaveAccount": "Kein Konto? Registrieren"
   },
   "auth": {
-    "signIn": "Anmelden",
-    "signInDescription": "Willkommen zurück! Melde dich an, um fortzufahren",
-    "email": "E-Mail Adresse",
-    "emailPlaceholder": "email@email.de",
-    "password": "Passwort",
-    "passwordPlaceholder": "Mein Passwort",
-    "signInButton": "Anmelden",
-    "forgotPassword": "Passwort vergessen?",
+      "signIn": "Anmelden",
+      "signInDescription": "Willkommen zurück! Melde dich an, um fortzufahren",
+      "email": "E-Mail Adresse",
+      "emailPlaceholder": "Deine eMail Adresse",
+      "password": "Passwort",
+      "passwordPlaceholder": "Dein Passwort",
+      "signInButton": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
       "noAccount": "Noch kein Konto?",
       "createAccount": "Konto erstellen",
       "withGoogle": "Mit Google anmelden",
-      "withGithub": "Mit GitHub anmelden"
+      "withGithub": "Mit GitHub anmelden",
+      "signUp": "Anmeldung",
+      "signUpDescription": "Jetzt anmelden",
+      "fullName": "Vor- und Nachname",
+      "fullNamePlaceholder": "Dein Vor- und Nachname",
+      "signUpButton": "Anmelden",
+      "haveAccount" : "Bereits angemeldet?", 
+      "signInNow": "Zum Login"
     },
    
-    "forgotPassword": {
-      "title": "Passwort vergessen",
-      "subtitle": "Gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen",
-      "button": "Zurücksetzen-Link senden",
-      "backToSignIn": "Zurück zur Anmeldung",
-      "success": "Wenn ein Konto mit dieser E-Mail existiert, haben wir einen Zurücksetzen-Link gesendet"
-    
-  },
   "navigation": {
     "home": "Startseite",
     "about": "Über uns",
