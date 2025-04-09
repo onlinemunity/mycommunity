@@ -201,14 +201,14 @@
         "annual": {
           "title": "Annual Membership",
           "description": "Full access to all features",
-          "price": "99€",
+          "price": "299€",
           "period": "per year",
           "cta": "Upgrade now"
         },
         "lifetime": {
           "title": "Lifetime Deal",
           "description": "One-time payment, lifetime access",
-          "price": "399€",
+          "price": "699€",
           "period": "One-time",
           "cta": "Get Lifetime Access"
         }
