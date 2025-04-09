@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, ChevronLeft, ChevronRight, Check } from 'lucide-react';
@@ -25,7 +26,10 @@ type LectureDetailProps = {
 
 export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
   const navigate = useNavigate();
-  console.log('LectureDetail component with lecture ID:', lecture.id, 'and course ID:', lecture.courseId, 'and href:', lecture.href);
+  
+  useEffect(() => {
+    console.log('LectureDetail component with lecture ID:', lecture.id, 'and course ID:', lecture.courseId, 'and href:', lecture.href);
+  }, [lecture.id, lecture.courseId, lecture.href]);
   
   const { data: lectureData, isLoading } = useQuery({
     queryKey: ['lecture', lecture.id],
@@ -192,11 +196,13 @@ export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
           {renderVideoOrContent()}
         </TabsContent>
         <TabsContent value="discussions" className="pt-6">
-          <DiscussionBoard 
-            courseId={lecture.courseId}
-            lectureId={lecture.id}
-            title="Lecture Discussions"
-          />
+          {lecture.id && lecture.courseId && (
+            <DiscussionBoard 
+              courseId={lecture.courseId}
+              lectureId={lecture.id}
+              title="Lecture Discussions"
+            />
+          )}
         </TabsContent>
       </Tabs>
     </div>

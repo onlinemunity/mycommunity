@@ -34,7 +34,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   // Safely get the username and avatar from the user_profile
   const username = comment.user_profile?.username || 'Anonymous';
   const avatarUrl = comment.user_profile?.avatar_url || '';
-  const userInitial = username[0]?.toUpperCase() || 'A';
+  const userInitial = username.charAt(0)?.toUpperCase() || 'A';
 
   return (
     <div className={`border rounded-lg p-4 mb-4 ${comment.is_solution ? 'border-green-500 bg-green-50 dark:bg-green-950/20' : ''}`}>

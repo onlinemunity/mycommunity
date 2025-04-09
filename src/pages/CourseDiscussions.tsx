@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +10,7 @@ import { DiscussionBoard } from '@/components/discussion/DiscussionBoard';
 const CourseDiscussions = () => {
   const { courseId } = useParams();
   
-  const { data: course, isLoading } = useQuery({
+  const { data: course, isLoading, error } = useQuery({
     queryKey: ['course', courseId],
     queryFn: async () => {
       // First get the course by href
@@ -24,6 +24,12 @@ const CourseDiscussions = () => {
       return data;
     },
   });
+  
+  useEffect(() => {
+    if (course) {
+      console.log('CourseDiscussions - Using course ID:', course.id, 'from href:', courseId);
+    }
+  }, [course, courseId]);
 
   if (isLoading) {
     return (
@@ -35,17 +41,16 @@ const CourseDiscussions = () => {
     );
   }
 
-  if (!course) {
+  if (error || !course) {
     return (
       <Layout>
         <div className="container py-12">
           <h1 className="text-2xl font-bold">Course not found</h1>
+          <p>{error?.message || 'The requested course could not be found.'}</p>
         </div>
       </Layout>
     );
   }
-
-  console.log('CourseDiscussions - Using course ID:', course.id, 'from href:', courseId);
 
   return (
     <Layout>
