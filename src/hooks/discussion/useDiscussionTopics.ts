@@ -55,6 +55,9 @@ export const useDiscussionTopics = (courseId?: string, lectureId?: string) => {
         return [];
       }
       
+      // Log the raw data for debugging
+      console.log('Raw topics data:', JSON.stringify(topicsData));
+      
       // Get all topic IDs
       const topicIds = topicsData.map(topic => topic.id);
       
@@ -112,6 +115,7 @@ export const useDiscussionTopics = (courseId?: string, lectureId?: string) => {
         };
       });
       
+      console.log('Processed topics with meta:', topicsWithMeta.length);
       return topicsWithMeta;
     },
     enabled: !!courseId,

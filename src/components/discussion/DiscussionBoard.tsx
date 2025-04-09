@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
-import { useDiscussion } from '@/hooks/useDiscussion';
-import { TopicForm } from './TopicForm';
-import { TopicDetail } from './TopicDetail';
-import { DiscussionBoardContent } from './DiscussionBoardContent';
+import { useDiscussionTopics } from '@/hooks/discussion/useDiscussionTopics';
 import { useAuth } from '@/context/AuthContext';
+import { useNavigate, useParams } from 'react-router-dom';
+import { DiscussionBoardContent } from './DiscussionBoardContent';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { useNavigate, useParams } from 'react-router-dom';
+import { TopicForm } from './TopicForm';
+import { TopicDetail } from './TopicDetail';
+import { useDiscussionComments } from '@/hooks/discussion/useDiscussionComments';
 
 interface DiscussionBoardProps {
   courseId: string;
@@ -26,29 +27,19 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [showNewForm, setShowNewForm] = useState(false);
   const [filterTab, setFilterTab] = useState<'all' | 'solved' | 'unsolved'>('all');
-  
-  const routeParams = useParams();
-  const routeLectureId = routeParams.lectureId;
-  
-  const effectiveLectureId = lectureId || routeLectureId;
+  const [newTopicForm, setNewTopicForm] = useState({ title: '', content: '' });
+  const [newCommentForm, setNewCommentForm] = useState({ content: '' });
+  const [editingTopic, setEditingTopic] = useState<any>(null);
+  const [editingComment, setEditingComment] = useState<any>(null);
   
   useEffect(() => {
     console.log('DiscussionBoard: courseId =', courseId);
-    console.log('DiscussionBoard: effectiveLectureId =', effectiveLectureId);
-  }, [courseId, effectiveLectureId]);
+    console.log('DiscussionBoard: lectureId =', lectureId);
+  }, [courseId, lectureId]);
   
   const {
     topics,
     isTopicsLoading,
-    getComments,
-    newTopicForm,
-    setNewTopicForm,
-    newCommentForm,
-    setNewCommentForm,
-    editingTopic,
-    setEditingTopic,
-    editingComment,
-    setEditingComment,
     createTopic,
     updateTopic,
     deleteTopic,
@@ -56,10 +47,13 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     voteTopic,
     isCreatingTopic,
     isUpdatingTopic
-  } = useDiscussion(courseId, effectiveLectureId);
+  } = useDiscussionTopics(courseId, lectureId);
   
   useEffect(() => {
     console.log('Topics loaded:', topics?.length || 0);
+    if (topics?.length > 0) {
+      console.log('First topic:', topics[0]);
+    }
   }, [topics]);
   
   const selectedTopic = selectedTopicId ? topics.find(t => t.id === selectedTopicId) : null;
@@ -106,6 +100,10 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     if (selectedTopicId === topicId) {
       setSelectedTopicId(null);
     }
+  };
+  
+  const getComments = (topicId: string) => {
+    return useDiscussionComments(topicId, courseId, lectureId);
   };
   
   const handleLoginPrompt = () => {

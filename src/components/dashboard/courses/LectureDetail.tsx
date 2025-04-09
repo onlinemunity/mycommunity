@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -196,9 +195,9 @@ export const LectureDetail = ({ lecture, onComplete }: LectureDetailProps) => {
           {renderVideoOrContent()}
         </TabsContent>
         <TabsContent value="discussions" className="pt-6">
-          {lecture && lecture.id && lecture.courseId && (
+          {lecture && lecture.id && (
             <DiscussionBoard 
-              courseId={lecture.courseId}
+              courseId={lecture.courseId} 
               lectureId={lecture.id}
               title="Lecture Discussions"
             />
