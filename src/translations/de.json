@@ -47,23 +47,14 @@
       "withGoogle": "Mit Google anmelden",
       "withGithub": "Mit GitHub anmelden"
     },
-    "signUp": {
-      "title": "Registrieren",
-      "subtitle": "Erstelle dein Konto und werde Teil unserer Community",
-      "button": "Registrieren",
-      "hasAccount": "Bereits ein Konto?",
-      "signIn": "Anmelden",
-      "withGoogle": "Mit Google registrieren",
-      "withGithub": "Mit GitHub registrieren",
-      "terms": "Durch die Registrierung stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu"
-    },
+   
     "forgotPassword": {
       "title": "Passwort vergessen",
       "subtitle": "Gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen",
       "button": "Zurücksetzen-Link senden",
       "backToSignIn": "Zurück zur Anmeldung",
       "success": "Wenn ein Konto mit dieser E-Mail existiert, haben wir einen Zurücksetzen-Link gesendet"
-    }
+    
   },
   "navigation": {
     "home": "Startseite",
