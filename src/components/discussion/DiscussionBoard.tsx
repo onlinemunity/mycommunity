@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useDiscussionTopics } from '@/hooks/discussion/useDiscussionTopics';
 import { useAuth } from '@/context/AuthContext';
@@ -102,8 +101,10 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     }
   };
   
+  // Adjust the getComments function to return the correct data structure
   const getComments = (topicId: string) => {
-    return useDiscussionComments(topicId, courseId, lectureId);
+    const { data, isLoading } = useDiscussionComments(topicId, courseId, lectureId);
+    return { data, isLoading }; // Ensure it returns { data, isLoading }
   };
   
   const handleLoginPrompt = () => {
@@ -168,7 +169,7 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
             onDeleteTopic={handleDeleteTopic}
             onVoteTopic={(topicId, voteType) => voteTopic({ topicId, voteType })}
             onSolveToggle={(topicId, solved) => markTopicSolved({ topicId, solved })}
-            getComments={getComments}
+            getComments={getComments} // This is where the fixed getComments is used
             newCommentForm={newCommentForm}
             setNewCommentForm={setNewCommentForm}
             editingComment={editingComment}
