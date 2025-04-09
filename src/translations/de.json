@@ -109,7 +109,7 @@
     "username": "Benutzername",
     "fullName": "Vollständiger Name",
     "email": "E-Mail",
-    "emailNote": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "emailNote": "E-Mail-Adresse kann nicht geändert werden, bitte Support kontaktieren.",
     "saveChanges": "Änderungen speichern",
     "accountDetails": "Kontodetails",
     "accountDetailsDesc": "Deine Kontoinformationen und Einstellungen.",
