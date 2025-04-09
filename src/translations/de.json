@@ -98,6 +98,40 @@
 	
 	},
 
+	profile : {
+"title" : "",
+"subtitle" : "",
+"personalInfo" : "",
+"personalInfoDes" : "",
+"avatar" : "",
+"avatarDesc" : "",
+"avatarUrl" : "",
+"username" : "",
+"fullName" : "",
+"email" : "",
+"emailNote" : "",
+"saveChanges" : "",
+"accountDetails" : "",
+"accountDetailsDesc" : "",
+"memberSince" : "",
+"accountStatus" : "",
+"accountType" : ""
+},
+
+"member": {
+"title" : "",
+"subtitle" : "",
+"events" : "",
+"eventsDes" : "",
+"viewAllEvents" : "",
+"resources" : "",
+"resourcesDesc" : "",
+"viewAllResources" : "",
+"discussions" : "",
+"discussionsDesc" : "",
+"viewAllDiscussions" : ""
+},
+
 
   
    
