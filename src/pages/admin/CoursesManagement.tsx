@@ -35,6 +35,7 @@ interface CourseFormData {
   students?: number;
   video_url?: string;
   href: string;
+  course_type: string;
 }
 
 const CoursesManagement = () => {
@@ -53,6 +54,7 @@ const CoursesManagement = () => {
     duration: '',
     image: '/placeholder.svg',
     href: '',
+    course_type: 'basis',
   });
 
   const { toast } = useToast();
@@ -175,6 +177,7 @@ const CoursesManagement = () => {
       rating: course.rating,
       students: course.students,
       href: course.href,
+      course_type: course.course_type,
     });
     setIsDialogOpen(true);
   };
@@ -194,6 +197,7 @@ const CoursesManagement = () => {
       duration: '',
       image: '/placeholder.svg',
       href: '',
+      course_type: 'basic',
     });
     setSelectedCourse(null);
   };
@@ -286,6 +290,23 @@ const CoursesManagement = () => {
                             onChange={handleChange}
                             required
                           />
+                        </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="level">Kurs-Typ *</Label>
+                            <select
+                              id="course_type"
+                              name="course_type"
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              value={formData.course_type}
+                              onChange={handleChange}
+                              required
+                            >
+                              <option value="basic">Basis</option>
+                              <option value="premium">Premium</option>
+                              
+                            </select>
+                          </div>
                         </div>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
