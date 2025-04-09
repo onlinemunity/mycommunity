@@ -56,6 +56,32 @@
       "haveAccount" : "Bereits angemeldet?", 
       "signInNow": "Zum Login"
     },
+
+"dashboard" : {
+	"welcome" : "",
+	"overview" : "",
+	"recentActivity" : "",
+	"recentActivityDesc" : "",
+	"activityItem" : "",
+	"eventTitle" : "",
+	"memberArea" : "",
+
+	"courses" : {
+			"title" : "",
+			"duration" : "",
+			"lectures" : "",
+			"lessons" : "",
+			"yourProgress" : "",
+			"lecturesLis" : "",
+			"lecture" : "",
+			"status" : "",
+			"actions" : "",
+			"completed" : ""
+	}
+},
+
+
+  
    
   "navigation": {
     "home": "Startseite",
