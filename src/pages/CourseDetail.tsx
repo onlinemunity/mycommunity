@@ -26,7 +26,7 @@ const CourseDetail = () => {
         .from('courses')
         .select('*')
         .eq('href', courseId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as Course;
