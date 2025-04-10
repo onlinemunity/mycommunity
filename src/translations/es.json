@@ -121,7 +121,8 @@
     "usernamePlaceholder": "Nombre de usuario",
     "fullNamePlaceholder": "Nombre completo",
     "updateSuccess": "Cambio exitoso",
-    "updateSuccessDesc": "Los cambios se guardaron correctamente"
+    "updateSuccessDesc": "Los cambios se guardaron correctamente",
+    "membershipType": "mi membresía"
   },
   "member": {
     "title": "Mi área",
