@@ -1,3 +1,4 @@
+
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Layout } from '@/components/Layout';
@@ -10,7 +11,7 @@ import { DiscussionBoard } from '@/components/discussion/DiscussionBoard';
 import { Course } from '@/types/supabase';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { useAuth } from '@/hooks/auth';
+import { useAuth } from '@/context/AuthContext';
 import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

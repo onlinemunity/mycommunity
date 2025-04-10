@@ -37,6 +37,7 @@ const Pricing = () => {
     }
 
     try {
+      // Update the profile with the new user_type
       const { error } = await supabase
         .from('profiles')
         .update({ user_type: planType })
@@ -154,16 +155,19 @@ const Pricing = () => {
     
     // Determine CTA text and action based on user status
     let ctaText = plan.cta;
-    let ctaAction = () => handleUpgrade(plan.planType);
+    let ctaAction = async () => handleUpgrade(plan.planType);
     let ctaDisabled = false;
     
     if (isCurrentPlan) {
       ctaText = 'Current Plan';
-      ctaAction = () => {};
+      ctaAction = async () => {}; // Empty async function to satisfy Promise<void> return type
       ctaDisabled = true;
     } else if (plan.title === 'Enterprise') {
       ctaText = 'Contact Sales';
-      ctaAction = () => window.location.href = '/contact';
+      ctaAction = async () => {
+        window.location.href = '/contact';
+        return Promise.resolve();
+      };
       ctaDisabled = false;
     }
 

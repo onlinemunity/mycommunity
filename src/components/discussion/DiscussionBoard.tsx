@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useDiscussionTopics } from '@/hooks/discussion/useDiscussionTopics';
 import { useAuth } from '@/context/AuthContext';
@@ -101,10 +102,21 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
     }
   };
   
-  // Adjust the getComments function to return the correct data structure
+  // Fix the getComments function to correctly access and return comment data
   const getComments = (topicId: string) => {
-    const { data, isLoading } = useDiscussionComments(topicId, courseId, lectureId);
-    return { data, isLoading }; // Ensure it returns { data, isLoading }
+    const commentsResult = useDiscussionComments(topicId, courseId, lectureId);
+    
+    return { 
+      data: commentsResult.comments, 
+      isLoading: commentsResult.isCommentsLoading,
+      createComment: commentsResult.createComment,
+      updateComment: commentsResult.updateComment,
+      deleteComment: commentsResult.deleteComment,
+      voteComment: commentsResult.voteComment,
+      markCommentSolution: commentsResult.markCommentSolution,
+      isCreatingComment: commentsResult.isCreatingComment,
+      isUpdatingComment: commentsResult.isUpdatingComment,
+    };
   };
   
   const handleLoginPrompt = () => {
@@ -169,22 +181,33 @@ export const DiscussionBoard: React.FC<DiscussionBoardProps> = ({
             onDeleteTopic={handleDeleteTopic}
             onVoteTopic={(topicId, voteType) => voteTopic({ topicId, voteType })}
             onSolveToggle={(topicId, solved) => markTopicSolved({ topicId, solved })}
-            getComments={getComments} // This is where the fixed getComments is used
+            getComments={getComments}
             newCommentForm={newCommentForm}
             setNewCommentForm={setNewCommentForm}
             editingComment={editingComment}
             setEditingComment={setEditingComment}
-            createComment={({ topicId, content }) => getComments(topicId).createComment({ content })}
+            createComment={({ topicId, content }) => {
+              const commentsData = getComments(topicId);
+              commentsData.createComment({ content });
+            }}
             updateComment={({ id, content }) => {
               if (editingComment) {
-                getComments(editingComment.topic_id).updateComment({ id, content });
+                const commentsData = getComments(editingComment.topic_id);
+                commentsData.updateComment({ id, content });
               }
             }}
-            deleteComment={({ id, topicId }) => getComments(topicId).deleteComment(id)}
-            voteComment={({ commentId, topicId, voteType }) => 
-              getComments(topicId).voteComment({ commentId, voteType })}
-            markCommentSolution={({ commentId, topicId, isSolution }) => 
-              getComments(topicId).markCommentSolution({ commentId, isSolution })}
+            deleteComment={({ id, topicId }) => {
+              const commentsData = getComments(topicId);
+              commentsData.deleteComment(id);
+            }}
+            voteComment={({ commentId, topicId, voteType }) => {
+              const commentsData = getComments(topicId);
+              commentsData.voteComment({ commentId, voteType });
+            }}
+            markCommentSolution={({ commentId, topicId, isSolution }) => {
+              const commentsData = getComments(topicId);
+              commentsData.markCommentSolution({ commentId, isSolution });
+            }}
             isCreatingComment={false}
             isUpdatingComment={false}
           />
