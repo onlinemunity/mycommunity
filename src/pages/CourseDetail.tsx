@@ -49,6 +49,8 @@ const CourseDetail = () => {
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           <h2 className="text-2xl font-bold mb-4">Course not found</h2>
           <p className="text-muted-foreground">The course you're looking for doesn't exist or has been removed.</p>
+          <p> {course.title}   </p>
+          <p> {course.href}   </p>
         </div>
       </Layout>
     );
