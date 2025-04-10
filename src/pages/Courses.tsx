@@ -4,23 +4,27 @@ import { CourseCard } from '@/components/ui-components/CourseCard';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/useTranslation';
-import { Search, Filter, BookOpen, Clock, Users, BadgeCheck, Loader2, Lock } from 'lucide-react';
+import { Search, Filter, BookOpen, Clock, Users, BadgeCheck, Loader2, Lock, Star } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { Course } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
   const { t } = useTranslation();
+  const { profile } = useAuth();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'rating'>('popular');
   
-  // Function to fetch all categories with counts
   const fetchCategories = async () => {
     const { data, error } = await supabase
       .from('courses')
@@ -32,7 +36,6 @@ const Courses = () => {
       throw error;
     }
     
-    // Count categories
     const categoryCounts: Record<string, number> = {};
     data.forEach(course => {
       categoryCounts[course.category] = (categoryCounts[course.category] || 0) + 1;
@@ -41,32 +44,29 @@ const Courses = () => {
     return Object.entries(categoryCounts).map(([name, count]) => ({ name, count }));
   };
   
-  // Function to fetch courses with filters and sorting
   const fetchCourses = async () => {
     let query = supabase.from('courses').select('*');
     
-    // Apply search filter
     if (searchTerm) {
       query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
     }
     
-    // Apply category filters
     if (selectedCategories.length > 0) {
       query = query.in('category', selectedCategories);
     }
     
-    // Apply level filters
     if (selectedLevels.length > 0) {
       query = query.in('level', selectedLevels);
     }
     
-    // Apply duration filters
     if (selectedDurations.length > 0) {
-      // For duration, we need to manually filter after fetching
-      // since it's a text field and requires special handling
+      query = query.in('duration', selectedDurations);
     }
     
-    // Apply sorting
+    if (selectedTypes.length > 0) {
+      query = query.in('course_type', selectedTypes);
+    }
+    
     switch (sortBy) {
       case 'newest':
         query = query.order('created_at', { ascending: false });
@@ -91,7 +91,6 @@ const Courses = () => {
       throw error;
     }
     
-    // Apply duration filters manually
     let filteredData = data;
     if (selectedDurations.length > 0) {
       filteredData = data.filter(course => {
@@ -106,14 +105,13 @@ const Courses = () => {
     return filteredData as Course[];
   };
   
-  // Use React Query to fetch categories and courses
   const categoriesQuery = useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategories
   });
   
   const coursesQuery = useQuery({
-    queryKey: ['courses', searchTerm, selectedCategories, selectedLevels, selectedDurations, sortBy],
+    queryKey: ['courses', searchTerm, selectedCategories, selectedLevels, selectedDurations, selectedTypes, sortBy],
     queryFn: fetchCourses
   });
   
@@ -147,31 +145,44 @@ const Courses = () => {
     );
   };
   
+  const handleTypeChange = (type: string) => {
+    setSelectedTypes(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type) 
+        : [...prev, type]
+    );
+  };
+  
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedLevels([]);
     setSelectedDurations([]);
+    setSelectedTypes([]);
     setSearchTerm('');
   };
   
-  const features = [
-    { name: 'Project-Based Learning', icon: <BookOpen className="h-5 w-5" /> },
-    { name: 'Self-Paced Courses', icon: <Clock className="h-5 w-5" /> },
-    { name: 'Community Support', icon: <Users className="h-5 w-5" /> },
-    { name: 'Verified Certificates', icon: <BadgeCheck className="h-5 w-5" /> },
-  ];
+  const canAccessPremium = profile?.user_type === 'yearly' || profile?.user_type === 'lifetime';
 
-  // Add a function to render the course type badge
   const renderCourseTypeBadge = (course: Course) => {
     if (course.course_type === 'premium') {
       return (
         <div className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold flex items-center">
-          <Lock className="h-3 w-3 mr-1" />
+          <Star className="h-3 w-3 mr-1" />
           Premium
+        </div>
+      );
+    } else if (course.course_type === 'basic') {
+      return (
+        <div className="absolute top-2 right-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-semibold">
+          Basic
         </div>
       );
     }
     return null;
+  };
+
+  const handleUpgradeClick = () => {
+    navigate('/pricing');
   };
 
   return (
@@ -207,13 +218,37 @@ const Courses = () => {
           </div>
         </section>
         
+        {!canAccessPremium && (
+          <div className="bg-gradient-to-r from-amber-50 to-amber-100 py-6 border-y border-amber-200">
+            <div className="container-wide">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-amber-200 p-2 rounded-full">
+                    <Lock className="h-5 w-5 text-amber-700" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Unlock Premium Courses</h3>
+                    <p className="text-sm text-amber-700">Upgrade your membership to access all premium courses</p>
+                  </div>
+                </div>
+                <Button 
+                  onClick={handleUpgradeClick} 
+                  className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700"
+                >
+                  Upgrade Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <section className="py-16">
           <div className="container-wide">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {features.map((feature, i) => (
                 <div 
                   key={i}
-                  className="bg-white rounded-xl p-6 border border-metal/30 shadow-sm flex items-center gap-4"
+                  className="bg-white rounded-xl border border-metal/30 p-6 shadow-sm flex items-center gap-4"
                 >
                   <div className="bg-primary/10 rounded-full p-2">
                     {feature.icon}
@@ -236,7 +271,6 @@ const Courses = () => {
             <div className="mt-8 flex flex-col md:flex-row gap-8">
               <div className="w-full md:w-64 space-y-6">
                 
-                
                 <div className="bg-white rounded-xl border border-metal/30 p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-4">
                     <Filter className="h-5 w-5 text-accent1" />
@@ -244,7 +278,6 @@ const Courses = () => {
                   </div>
                   
                   <div className="space-y-4">
-                    
                     
                     <div>
                       <h4 className="text-sm font-medium mb-2">{t('courses.filters.categories')}</h4>
@@ -307,6 +340,28 @@ const Courses = () => {
                         ))}
                       </div>
                     </div>
+
+                    <div className="pt-2 border-t border-metal/30">
+                      <h4 className="text-sm font-medium mb-2">Course Type</h4>
+                      <div className="space-y-2">
+                        {['basic', 'premium'].map((type, i) => (
+                          <div key={i} className="flex items-center">
+                            <label className="text-sm flex items-center cursor-pointer">
+                              <input 
+                                type="checkbox" 
+                                className="mr-2"
+                                checked={selectedTypes.includes(type)}
+                                onChange={() => handleTypeChange(type)}
+                              />
+                              {type.charAt(0).toUpperCase() + type.slice(1)}
+                              {type === 'premium' && (
+                                <Star className="h-3 w-3 text-amber-500 ml-1" />
+                              )}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                   
                   <Button variant="outline" className="w-full mt-4" onClick={resetFilters}>
@@ -316,7 +371,6 @@ const Courses = () => {
               </div>
               
               <div className="flex-1">
-                
                 
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex gap-2">
@@ -384,7 +438,6 @@ const Courses = () => {
                   </div>
                 )}
                 
-                
                 {(coursesQuery.data?.length || 0) > 0 && (
                   <div className="mt-10 flex justify-center">
                     <Button>
@@ -396,7 +449,6 @@ const Courses = () => {
             </div>
           </div>
         </section>
-        
         
         <section className="py-20 bg-gradient-to-br from-accent1/10 to-accent2/10">
           <div className="container-wide">
@@ -411,8 +463,8 @@ const Courses = () => {
                 <Button className="button-primary">
                   {t('courses.cta.button')}
                 </Button>
-                <Button variant="outline">
-                  {t('courses.cta.secondaryButton')}
+                <Button variant="outline" onClick={handleUpgradeClick}>
+                  Upgrade Membership
                 </Button>
               </div>
             </div>

@@ -1,12 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { PricingCard } from '@/components/ui-components/PricingCard';
-import { Check, Lock, User, Star } from 'lucide-react';
+import { Check, Lock, User, Star, Calendar } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 interface PricingFeature {
   text: string;
@@ -20,13 +23,16 @@ interface PricingPlan {
   features: PricingFeature[];
   cta: string;
   popular?: boolean;
-  planType: 'basic' | 'premium';
+  planType: 'basic' | 'yearly' | 'lifetime';
 }
 
 const Pricing = () => {
   const { user, profile, refreshProfile } = useAuth();
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'yearly' | 'lifetime' | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleUpgrade = async (planType: 'basic' | 'premium') => {
+  const handleUpgrade = async (planType: 'basic' | 'yearly' | 'lifetime') => {
     if (!user) {
       toast({
         title: "Sign in required",
@@ -36,11 +42,36 @@ const Pricing = () => {
       return;
     }
 
+    // For free plan, we can directly apply
+    if (planType === 'basic') {
+      applyMembership(planType);
+    } else {
+      // For paid plans, show confirmation dialog
+      setSelectedPlan(planType);
+      setShowConfirmDialog(true);
+    }
+  };
+
+  const applyMembership = async (planType: 'basic' | 'yearly' | 'lifetime') => {
+    if (!user) return;
+    
+    setIsProcessing(true);
     try {
+      // Set expiration date for yearly membership (1 year from now)
+      let expiresAt = null;
+      if (planType === 'yearly') {
+        const oneYearFromNow = new Date();
+        oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+        expiresAt = oneYearFromNow.toISOString();
+      }
+
       // Update the profile with the new user_type
       const { error } = await supabase
         .from('profiles')
-        .update({ user_type: planType })
+        .update({ 
+          user_type: planType,
+          membership_expires_at: expiresAt
+        })
         .eq('id', user.id);
 
       if (error) throw error;
@@ -50,14 +81,20 @@ const Pricing = () => {
 
       toast({
         title: `Upgraded to ${planType.charAt(0).toUpperCase() + planType.slice(1)}!`,
-        description: `Your account has been successfully upgraded to the ${planType} plan.`,
+        description: planType === 'basic' 
+          ? 'Your account has been downgraded to the basic plan.'
+          : `Your account has been successfully upgraded to the ${planType} plan.`,
       });
+      
+      setShowConfirmDialog(false);
     } catch (error: any) {
       toast({
         title: "Upgrade failed",
         description: error.message,
         variant: "destructive",
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -75,15 +112,15 @@ const Pricing = () => {
         { text: 'Access to premium courses', available: false },
         { text: 'Mentor support', available: false },
         { text: 'Project reviews', available: false },
-        { text: 'Career coaching', available: false },
+        { text: 'Live events and sessions', available: false },
       ],
       cta: 'Get Started',
       planType: 'basic',
     },
     {
-      title: 'Premium',
-      price: '$29',
-      description: 'Full access to all courses and community features',
+      title: 'Yearly Membership',
+      price: '$99',
+      description: 'Full access to all courses and live events',
       features: [
         { text: 'Access to community forum', available: true },
         { text: 'Full access to learning resources', available: true },
@@ -92,30 +129,30 @@ const Pricing = () => {
         { text: 'Course completion certificates', available: true },
         { text: 'Access to project repositories', available: true },
         { text: 'Mentor support', available: true },
-        { text: 'Project reviews', available: false },
-        { text: 'Career coaching', available: false },
+        { text: 'Project reviews', available: true },
+        { text: 'Live events and sessions', available: true },
       ],
-      cta: 'Subscribe Now',
+      cta: 'Subscribe Yearly',
       popular: true,
-      planType: 'premium',
+      planType: 'yearly',
     },
     {
-      title: 'Enterprise',
-      price: '$99',
-      description: 'Advanced features for professional development',
+      title: 'Lifetime Access',
+      price: '$299',
+      description: 'Permanent access to all courses',
       features: [
-        { text: 'Everything in Premium plan', available: true },
-        { text: 'Team management dashboard', available: true },
-        { text: 'Custom learning paths', available: true },
-        { text: 'Advanced analytics', available: true },
-        { text: 'Dedicated account manager', available: true },
-        { text: 'Private mentorship sessions', available: true },
-        { text: 'Custom course creation', available: true },
+        { text: 'Access to community forum', available: true },
+        { text: 'Full access to learning resources', available: true },
+        { text: 'Access to ALL courses (Basic & Premium)', available: true },
+        { text: 'Community support', available: true },
+        { text: 'Course completion certificates', available: true },
+        { text: 'Access to project repositories', available: true },
+        { text: 'Mentor support', available: true },
         { text: 'Project reviews', available: true },
-        { text: 'Career coaching', available: true },
+        { text: 'Live events and sessions', available: false },
       ],
-      cta: 'Contact Sales',
-      planType: 'premium',
+      cta: 'Get Lifetime Access',
+      planType: 'lifetime',
     },
   ];
 
@@ -162,13 +199,22 @@ const Pricing = () => {
       ctaText = 'Current Plan';
       ctaAction = async () => {}; // Empty async function to satisfy Promise<void> return type
       ctaDisabled = true;
-    } else if (plan.title === 'Enterprise') {
-      ctaText = 'Contact Sales';
-      ctaAction = async () => {
-        window.location.href = '/contact';
-        return Promise.resolve();
-      };
-      ctaDisabled = false;
+    }
+
+    // Special badge for plans
+    let badge = null;
+    if (plan.planType === 'yearly') {
+      badge = (
+        <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 rounded-full">
+          Most Popular
+        </span>
+      );
+    } else if (plan.planType === 'lifetime') {
+      badge = (
+        <span className="px-2.5 py-0.5 text-xs font-semibold bg-purple-100 text-purple-800 rounded-full">
+          Best Value
+        </span>
+      );
     }
 
     return {
@@ -176,14 +222,27 @@ const Pricing = () => {
       title: plan.title,
       description: plan.description,
       price: plan.price,
-      period: "per month",
+      period: plan.planType === 'yearly' ? "per year" : plan.planType === 'basic' ? "free forever" : "one-time payment",
       features: mappedFeatures,
       ctaText: ctaText,
       ctaAction: ctaAction,
       ctaDisabled: ctaDisabled,
       highlighted: plan.popular || isCurrentPlan,
+      badge: badge,
       delay: index * 100
     };
+  };
+
+  // Format membership expiration date
+  const formatExpirationDate = (dateString?: string | null) => {
+    if (!dateString) return null;
+    
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }).format(date);
   };
 
   return (
@@ -204,16 +263,27 @@ const Pricing = () => {
               <div>
                 <p className="text-sm text-muted-foreground">Your current plan</p>
                 <p className="font-semibold flex items-center">
-                  {profile.user_type === 'premium' ? (
+                  {profile.user_type === 'lifetime' ? (
                     <>
-                      Premium 
-                      <Star className="h-4 w-4 text-amber-500 ml-1 inline" />
+                      Lifetime Access
+                      <Star className="h-4 w-4 text-purple-500 ml-1 inline" />
+                    </>
+                  ) : profile.user_type === 'yearly' ? (
+                    <>
+                      Yearly Membership
+                      <Star className="h-4 w-4 text-emerald-500 ml-1 inline" />
                     </>
                   ) : 'Basic'}
                 </p>
+                {profile.user_type === 'yearly' && profile.membership_expires_at && (
+                  <p className="text-xs text-muted-foreground flex items-center mt-1">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Expires: {formatExpirationDate(profile.membership_expires_at)}
+                  </p>
+                )}
               </div>
             </div>
-            {profile.user_type === 'premium' && (
+            {(profile.user_type === 'yearly' || profile.user_type === 'lifetime') && (
               <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                 Active
               </span>
@@ -244,6 +314,63 @@ const Pricing = () => {
             ))}
           </div>
         </div>
+
+        {/* Confirmation dialog for upgrading */}
+        <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Confirm Membership Upgrade</DialogTitle>
+              <DialogDescription>
+                {selectedPlan === 'yearly' ? (
+                  <>You're about to upgrade to the Yearly Membership plan for $99 per year.</>
+                ) : (
+                  <>You're about to purchase Lifetime Access for a one-time payment of $299.</>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <div className="rounded-lg bg-muted p-4 text-sm">
+                <p className="font-medium mb-2">Your selected plan includes:</p>
+                <ul className="space-y-1">
+                  {pricingPlans.find(p => p.planType === selectedPlan)?.features
+                    .filter(f => f.available)
+                    .map((feature, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-500 mt-0.5" />
+                        <span>{feature.text}</span>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              <p className="text-sm text-muted-foreground mt-4">
+                In a real application, this would connect to a payment processor like Stripe.
+                For this demo, we'll simulate the payment and upgrade your account directly.
+              </p>
+            </div>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowConfirmDialog(false)}
+                disabled={isProcessing}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={() => selectedPlan && applyMembership(selectedPlan)}
+                disabled={isProcessing}
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Confirm and Pay'
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );

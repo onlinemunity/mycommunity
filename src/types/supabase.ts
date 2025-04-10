@@ -8,7 +8,8 @@ export type Profile = {
   avatar_url: string | null;
   role: 'member' | 'admin';
   updated_at?: string;
-  user_type?: 'basic' | 'premium' | null;
+  user_type?: 'basic' | 'yearly' | 'lifetime' | null;
+  membership_expires_at?: string | null;
 };
 
 export type Course = {

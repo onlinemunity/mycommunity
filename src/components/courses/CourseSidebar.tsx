@@ -2,7 +2,7 @@
 import { Course } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Check, Loader2, Lock } from 'lucide-react';
+import { Check, Loader2, Lock, Star, Calendar } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from '@/components/ui/use-toast';
 import { useState } from 'react';
@@ -46,7 +46,9 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
   const canEnroll = () => {
     if (!profile || !course.course_type) return true; // Default to allowing enrollment if types not set
     
-    if (profile.user_type === 'premium') return true; // Premium users can enroll in any course
+    if (profile.user_type === 'yearly' || profile.user_type === 'lifetime') {
+      return true; // Yearly or lifetime members can enroll in any course
+    }
     
     // Basic users can only enroll in basic courses
     return profile.user_type === 'basic' && course.course_type === 'basic';
@@ -108,8 +110,12 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
     }
   };
 
+  const handleUpgrade = () => {
+    navigate('/pricing');
+  };
+
   const isPremiumCourse = course.course_type === 'premium';
-  const userCanAccessPremium = profile?.user_type === 'premium';
+  const userCanAccessPremium = profile?.user_type === 'yearly' || profile?.user_type === 'lifetime';
 
   const features = [
     'Full lifetime access',
@@ -118,45 +124,85 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
     'Community support',
   ];
 
+  if (isPremiumCourse) {
+    features.push('Premium course content');
+    if (profile?.user_type === 'yearly') {
+      features.push('Access to live events');
+    }
+  }
+
   return (
     <Card className="sticky top-6">
       <CardContent className="pt-6">
         <div className="mb-6 flex justify-between items-center">
           <div>
-            <div className="text-3xl font-bold mb-2">
+            <div className="text-2xl font-bold mb-1">
               {isPremiumCourse ? 'Premium' : 'Free'}
             </div>
-            <p className="text-sm text-muted-foreground">
-              {isPremiumCourse ? 'Premium membership required' : 'Start learning today'}
-            </p>
+            <div className="flex items-center">
+              {isPremiumCourse ? (
+                <div className="flex items-center text-amber-700 text-sm">
+                  <Star className="h-4 w-4 text-amber-500 mr-1" />
+                  Premium course
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Basic course - available to all members
+                </p>
+              )}
+            </div>
           </div>
           
           {isPremiumCourse && (
             <div className="bg-amber-100 p-2 rounded-full">
-              <Lock className="h-5 w-5 text-amber-600" />
+              {userCanAccessPremium ? (
+                <Star className="h-5 w-5 text-amber-600" />
+              ) : (
+                <Lock className="h-5 w-5 text-amber-600" />
+              )}
             </div>
           )}
         </div>
 
-        <Button 
-          className="w-full mb-6" 
-          size="lg" 
-          onClick={handleEnroll}
-          disabled={enrolling || isLoading || (isPremiumCourse && !userCanAccessPremium)}
-        >
-          {enrolling ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Enrolling...
-            </>
-          ) : isEnrolled ? (
-            'Go to Course'
-          ) : isPremiumCourse && !userCanAccessPremium ? (
-            'Upgrade to Premium'
-          ) : (
-            'Enroll Now'
-          )}
-        </Button>
+        {isPremiumCourse && !userCanAccessPremium ? (
+          <Button 
+            className="w-full mb-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700" 
+            size="lg" 
+            onClick={handleUpgrade}
+          >
+            Upgrade to Access
+          </Button>
+        ) : (
+          <Button 
+            className="w-full mb-6" 
+            size="lg" 
+            onClick={handleEnroll}
+            disabled={enrolling || isLoading}
+          >
+            {enrolling ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Enrolling...
+              </>
+            ) : isEnrolled ? (
+              'Go to Course'
+            ) : (
+              'Enroll Now'
+            )}
+          </Button>
+        )}
+
+        {isPremiumCourse && profile?.user_type === 'yearly' && (
+          <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <Calendar className="h-5 w-5 text-emerald-600 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-emerald-800">Yearly Member Benefits</p>
+                <p className="text-xs text-emerald-700">Your yearly membership includes access to all premium courses and live events.</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-4">
           {features.map((feature, i) => (
@@ -166,6 +212,18 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
             </div>
           ))}
         </div>
+
+        {isPremiumCourse && profile?.user_type === 'lifetime' && (
+          <div className="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <Star className="h-5 w-5 text-purple-600 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-purple-800">Lifetime Access</p>
+                <p className="text-xs text-purple-700">You have unlimited access to all premium courses, but live events are only available with yearly membership.</p>
+              </div>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

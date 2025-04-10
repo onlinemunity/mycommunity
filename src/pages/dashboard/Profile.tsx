@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, User, Star, ArrowRight } from 'lucide-react';
+import { Loader2, User, Star, ArrowRight, Calendar } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,18 @@ const Profile = () => {
     fullName: profile?.full_name || '',
     avatarUrl: profile?.avatar_url || '',
   });
+
+  // Format membership expiration date
+  const formatExpirationDate = (dateString?: string | null) => {
+    if (!dateString) return null;
+    
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }).format(date);
+  };
 
   const getInitials = (name: string | null) => {
     if (!name) return 'U';
@@ -71,7 +83,7 @@ const Profile = () => {
       toast({
         title: t('profile.updateError') || 'Update failed',
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -80,6 +92,39 @@ const Profile = () => {
 
   const handleUpgradeClick = () => {
     navigate('/pricing');
+  };
+
+  // Get the appropriate membership badge styling
+  const getMembershipBadge = () => {
+    if (profile?.user_type === 'lifetime') {
+      return (
+        <div className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
+          Lifetime
+        </div>
+      );
+    } else if (profile?.user_type === 'yearly') {
+      return (
+        <div className="px-2 py-1 rounded-full text-xs bg-emerald-100 text-emerald-800">
+          Yearly
+        </div>
+      );
+    } else {
+      return (
+        <div className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+          Basic
+        </div>
+      );
+    }
+  };
+
+  // Get membership icon
+  const getMembershipIcon = () => {
+    if (profile?.user_type === 'lifetime') {
+      return <Star className="h-4 w-4 text-purple-500 ml-1" />;
+    } else if (profile?.user_type === 'yearly') {
+      return <Star className="h-4 w-4 text-emerald-500 ml-1" />;
+    }
+    return null;
   };
 
   return (
@@ -221,18 +266,24 @@ const Profile = () => {
                   <div>
                     <p className="font-medium">{t('profile.membershipType') || 'Membership Type'}</p>
                     <p className="text-sm text-muted-foreground flex items-center">
-                      {profile?.user_type === 'premium' ? (
+                      {profile?.user_type === 'lifetime' ? (
                         <>
-                          Premium <Star className="h-4 w-4 text-amber-500 ml-1" />
+                          Lifetime Access <Star className="h-4 w-4 text-purple-500 ml-1" />
+                        </>
+                      ) : profile?.user_type === 'yearly' ? (
+                        <>
+                          Yearly Membership <Star className="h-4 w-4 text-emerald-500 ml-1" />
                         </>
                       ) : 'Basic'}
                     </p>
+                    {profile?.user_type === 'yearly' && profile.membership_expires_at && (
+                      <p className="text-xs text-muted-foreground flex items-center mt-1">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        Expires: {formatExpirationDate(profile.membership_expires_at)}
+                      </p>
+                    )}
                   </div>
-                  <div className={`px-2 py-1 rounded-full text-xs ${
-                    profile?.user_type === 'premium' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'
-                  }`}>
-                    {profile?.user_type === 'premium' ? 'Premium' : 'Basic'}
-                  </div>
+                  {getMembershipBadge()}
                 </div>
                 
                 <div className="flex justify-between items-center">
@@ -246,7 +297,7 @@ const Profile = () => {
               </CardContent>
             </Card>
 
-            {profile?.user_type !== 'premium' && (
+            {profile?.user_type === 'basic' && (
               <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -268,7 +319,7 @@ const Profile = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      {t('profile.premiumFeature1') || 'Access to all premium courses'}
+                      Access to all premium courses
                     </li>
                     <li className="flex items-start text-sm">
                       <div className="rounded-full bg-amber-200 p-1 mr-2 mt-0.5">
@@ -276,7 +327,7 @@ const Profile = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      {t('profile.premiumFeature2') || 'Mentor support and guidance'}
+                      Yearly members get access to live events
                     </li>
                     <li className="flex items-start text-sm">
                       <div className="rounded-full bg-amber-200 p-1 mr-2 mt-0.5">
@@ -284,7 +335,7 @@ const Profile = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      {t('profile.premiumFeature3') || 'Course completion certificates'}
+                      Course completion certificates
                     </li>
                   </ul>
                 </CardContent>
@@ -293,7 +344,7 @@ const Profile = () => {
                     onClick={handleUpgradeClick} 
                     className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
                   >
-                    {t('profile.upgradeCta') || 'Upgrade to Premium'} 
+                    {t('profile.upgradeCta') || 'Upgrade Membership'} 
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
