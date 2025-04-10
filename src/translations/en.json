@@ -122,7 +122,8 @@
     "usernamePlaceholder": "Username",
     "fullNamePlaceholder": "Full Name",
     "updateSuccess": "Update Successful",
-    "updateSuccessDesc": "Changes successfully saved"
+    "updateSuccessDesc": "Changes successfully saved",
+    "membershipType": "My Membership"
   },
   "member": {
     "title": "My Area",
