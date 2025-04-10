@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { useCart } from '@/context/CartContext';
@@ -127,7 +126,7 @@ const Checkout = () => {
           billing_zip: values.zipCode,
           billing_country: values.country
         })
-        .select('id')
+        .select()
         .single();
 
       if (orderError) throw orderError;
