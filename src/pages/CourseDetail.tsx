@@ -43,7 +43,7 @@ const CourseDetail = () => {
     );
   }
 
-  if (error ) {
+  if (error || !course) {
     return (
       <Layout>
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
