@@ -86,7 +86,8 @@
       "completed": "Abgeschlossen"
     },
     "profile": {
-      "myprofile": "Mein Profil"
+      "myprofile": "Mein Profil",
+      "membershipType": "Meine Mitgliedschaft"
     },
     "stats": {
       "members": "Mitglieder",
