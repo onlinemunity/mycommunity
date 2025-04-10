@@ -122,7 +122,8 @@
     "usernamePlaceholder": "Benutzername",
     "fullNamePlaceholder": "Vollständiger Name",
     "updateSuccess": "Aktualisierung erfolgreich",
-    "updateSuccessDesc": "Änderungen erfolgreich gespeichert"
+    "updateSuccessDesc": "Änderungen erfolgreich gespeichert",
+    "membershipType": "Meine Mitgliedshaft"
   },
   "member": {
     "title": "Mein Bereich",
