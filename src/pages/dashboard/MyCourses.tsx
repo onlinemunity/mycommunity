@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
@@ -14,6 +13,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Lecture, Course } from '@/types/supabase';
 import { toast } from '@/components/ui/use-toast';
+import { Lock } from 'lucide-react';
 
 interface CourseData {
   id: string;
@@ -31,7 +31,7 @@ interface CourseData {
 const MyCoursesPage = () => {
   const { t } = useTranslation();
   const { courseId, lectureId } = useParams();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   const { data: enrolledCourses, isLoading, refetch } = useQuery({
     queryKey: ['enrolledCourses', user?.id],
@@ -184,7 +184,8 @@ const MyCoursesPage = () => {
           enrollmentId: enrollment.id,
           lectures: finalLectures,
           video_url: enrollment.course.video_url,
-          duration: enrollment.course.duration
+          duration: enrollment.course.duration,
+          course_type: enrollment.course.course_type
         } as CourseData;
       });
     },
@@ -336,7 +337,7 @@ const MyCoursesPage = () => {
             lecture={{
               ...selectedLecture,
               courseId: selectedCourse.courseId,
-              href: courseId // Add the missing href property, using courseId which is the href value
+              href: courseId
             }}
             onComplete={handleCompleteLecture}
           />
@@ -386,11 +387,37 @@ const MyCoursesPage = () => {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6">
-          {displayCourses.map(course => (
-            <CourseTable2 key={course.id} course={course} />
-          ))}
-        </div>
+        <>
+          {profile?.user_type === 'basic' && (
+            <div className="mb-6 p-4 border border-amber-200 bg-amber-50 rounded-lg flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-amber-800">Basic Membership</h3>
+                <p className="text-sm text-amber-700">You have access to basic courses only. Upgrade to premium for access to all courses.</p>
+              </div>
+              <Button 
+                variant="outline" 
+                className="bg-white text-amber-800 hover:bg-amber-100 border-amber-300"
+                onClick={() => window.location.href = "/pricing"}
+              >
+                Upgrade to Premium
+              </Button>
+            </div>
+          )}
+          
+          <div className="grid grid-cols-1 gap-6">
+            {displayCourses.map(course => (
+              <div key={course.id} className="relative">
+                {course.course_type === 'premium' && (
+                  <div className="absolute top-2 right-2 z-10 bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold flex items-center">
+                    <Lock className="h-3 w-3 mr-1" />
+                    Premium
+                  </div>
+                )}
+                <CourseTable2 course={course} />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </DashboardLayout>
   );

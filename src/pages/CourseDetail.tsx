@@ -1,4 +1,3 @@
-
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Layout } from '@/components/Layout';
@@ -11,9 +10,13 @@ import { DiscussionBoard } from '@/components/discussion/DiscussionBoard';
 import { Course } from '@/types/supabase';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useAuth } from '@/hooks/auth';
+import { Lock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
+  const { profile } = useAuth(); 
 
   const { data: course, isLoading, error } = useQuery({
     queryKey: ['course', courseId],
@@ -52,11 +55,36 @@ const CourseDetail = () => {
 
   console.log('CourseDetail - Using course ID:', course.id, 'from href:', courseId);
 
+  const isPremiumCourse = course.course_type === 'premium';
+  const userCanAccessPremium = profile?.user_type === 'premium';
+  const showPremiumWarning = isPremiumCourse && profile && !userCanAccessPremium;
+
   return (
     <Layout>
       <div className="page-transition">
         <CourseHeader course={course} />
        
+        {showPremiumWarning && (
+          <div className="container-wide my-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <Lock className="h-5 w-5 text-amber-600 mr-3" />
+                <div>
+                  <h3 className="font-medium text-amber-800">Premium Course</h3>
+                  <p className="text-sm text-amber-700">This is a premium course. Upgrade your membership to enroll.</p>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                className="bg-white text-amber-800 hover:bg-amber-100 border-amber-300"
+                onClick={() => window.location.href = "/pricing"}
+              >
+                Upgrade to Premium
+              </Button>
+            </div>
+          </div>
+        )}
+        
         <div className="container-wide py-12">
           <Tabs defaultValue="content" className="mb-8">
             <TabsList>

@@ -3,7 +3,10 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { PricingCard } from '@/components/ui-components/PricingCard';
-import { Check } from 'lucide-react';
+import { Check, Lock, User, Star } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PricingFeature {
   text: string;
@@ -17,35 +20,73 @@ interface PricingPlan {
   features: PricingFeature[];
   cta: string;
   popular?: boolean;
+  planType: 'basic' | 'premium';
 }
 
 const Pricing = () => {
+  const { user, profile, refreshProfile } = useAuth();
+
+  const handleUpgrade = async (planType: 'basic' | 'premium') => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to upgrade your plan",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ user_type: planType })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      // Refresh user profile to get the updated information
+      await refreshProfile();
+
+      toast({
+        title: `Upgraded to ${planType.charAt(0).toUpperCase() + planType.slice(1)}!`,
+        description: `Your account has been successfully upgraded to the ${planType} plan.`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Upgrade failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const pricingPlans: PricingPlan[] = [
     {
-      title: 'Free',
+      title: 'Basic',
       price: '$0',
       description: 'Basic access to community resources',
       features: [
         { text: 'Access to community forum', available: true },
         { text: 'Read-only access to learning resources', available: true },
-        { text: 'Limited course previews', available: true },
+        { text: 'Access to basic courses only', available: true },
         { text: 'Community support', available: true },
         { text: 'Course completion certificates', available: false },
-        { text: 'Unlimited access to all courses', available: false },
+        { text: 'Access to premium courses', available: false },
         { text: 'Mentor support', available: false },
         { text: 'Project reviews', available: false },
         { text: 'Career coaching', available: false },
       ],
       cta: 'Get Started',
+      planType: 'basic',
     },
     {
-      title: 'Pro',
+      title: 'Premium',
       price: '$29',
       description: 'Full access to all courses and community features',
       features: [
         { text: 'Access to community forum', available: true },
         { text: 'Full access to learning resources', available: true },
-        { text: 'Unlimited course access', available: true },
+        { text: 'Access to ALL courses (Basic & Premium)', available: true },
         { text: 'Community support', available: true },
         { text: 'Course completion certificates', available: true },
         { text: 'Access to project repositories', available: true },
@@ -55,13 +96,14 @@ const Pricing = () => {
       ],
       cta: 'Subscribe Now',
       popular: true,
+      planType: 'premium',
     },
     {
       title: 'Enterprise',
       price: '$99',
       description: 'Advanced features for professional development',
       features: [
-        { text: 'Everything in Pro plan', available: true },
+        { text: 'Everything in Premium plan', available: true },
         { text: 'Team management dashboard', available: true },
         { text: 'Custom learning paths', available: true },
         { text: 'Advanced analytics', available: true },
@@ -72,6 +114,7 @@ const Pricing = () => {
         { text: 'Career coaching', available: true },
       ],
       cta: 'Contact Sales',
+      planType: 'premium',
     },
   ];
 
@@ -106,6 +149,24 @@ const Pricing = () => {
       included: feature.available
     }));
 
+    // Determine if this is the user's current plan
+    const isCurrentPlan = profile?.user_type === plan.planType;
+    
+    // Determine CTA text and action based on user status
+    let ctaText = plan.cta;
+    let ctaAction = () => handleUpgrade(plan.planType);
+    let ctaDisabled = false;
+    
+    if (isCurrentPlan) {
+      ctaText = 'Current Plan';
+      ctaAction = () => {};
+      ctaDisabled = true;
+    } else if (plan.title === 'Enterprise') {
+      ctaText = 'Contact Sales';
+      ctaAction = () => window.location.href = '/contact';
+      ctaDisabled = false;
+    }
+
     return {
       key: index,
       title: plan.title,
@@ -113,9 +174,10 @@ const Pricing = () => {
       price: plan.price,
       period: "per month",
       features: mappedFeatures,
-      ctaText: plan.cta,
-      ctaAction: () => console.log(`${plan.title} plan selected`),
-      highlighted: plan.popular,
+      ctaText: ctaText,
+      ctaAction: ctaAction,
+      ctaDisabled: ctaDisabled,
+      highlighted: plan.popular || isCurrentPlan,
       delay: index * 100
     };
   };
@@ -128,6 +190,32 @@ const Pricing = () => {
           subtitle="Choose the plan that's right for you"
           align="center"
         />
+
+        {profile && (
+          <div className="max-w-md mx-auto mb-12 bg-muted/30 rounded-lg p-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-muted rounded-full p-3">
+                <User className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Your current plan</p>
+                <p className="font-semibold flex items-center">
+                  {profile.user_type === 'premium' ? (
+                    <>
+                      Premium 
+                      <Star className="h-4 w-4 text-amber-500 ml-1 inline" />
+                    </>
+                  ) : 'Basic'}
+                </p>
+              </div>
+            </div>
+            {profile.user_type === 'premium' && (
+              <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                Active
+              </span>
+            )}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {pricingPlans.map((plan, i) => (

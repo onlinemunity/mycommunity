@@ -1,4 +1,3 @@
-
 // Custom types for Supabase data
 // These types complement the auto-generated types without modifying them
 
@@ -9,6 +8,7 @@ export type Profile = {
   avatar_url: string | null;
   role: 'member' | 'admin';
   updated_at?: string;
+  user_type?: 'basic' | 'premium' | null;
 };
 
 export type Course = {
@@ -34,6 +34,7 @@ export type Course = {
   inhalte?: string | null;
   kursdauer?: string | null;
   zertifikat?: string | null;
+  course_type?: 'basic' | 'premium' | null;
 };
 
 export type Lecture = {

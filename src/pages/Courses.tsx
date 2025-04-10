@@ -4,7 +4,7 @@ import { CourseCard } from '@/components/ui-components/CourseCard';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/useTranslation';
-import { Search, Filter, BookOpen, Clock, Users, BadgeCheck, Loader2 } from 'lucide-react';
+import { Search, Filter, BookOpen, Clock, Users, BadgeCheck, Loader2, Lock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
@@ -161,6 +161,19 @@ const Courses = () => {
     { name: 'Verified Certificates', icon: <BadgeCheck className="h-5 w-5" /> },
   ];
 
+  // Add a function to render the course type badge
+  const renderCourseTypeBadge = (course: Course) => {
+    if (course.course_type === 'premium') {
+      return (
+        <div className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold flex items-center">
+          <Lock className="h-3 w-3 mr-1" />
+          Premium
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <Layout>
       <div className="page-transition">
@@ -222,6 +235,8 @@ const Courses = () => {
             
             <div className="mt-8 flex flex-col md:flex-row gap-8">
               <div className="w-full md:w-64 space-y-6">
+                
+                
                 <div className="bg-white rounded-xl border border-metal/30 p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-4">
                     <Filter className="h-5 w-5 text-accent1" />
@@ -229,6 +244,8 @@ const Courses = () => {
                   </div>
                   
                   <div className="space-y-4">
+                    
+                    
                     <div>
                       <h4 className="text-sm font-medium mb-2">{t('courses.filters.categories')}</h4>
                       <div className="space-y-2">
@@ -299,6 +316,8 @@ const Courses = () => {
               </div>
               
               <div className="flex-1">
+                
+                
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex gap-2">
                     <Badge 
@@ -345,23 +364,26 @@ const Courses = () => {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {coursesQuery.data?.map((course) => (
-                      <CourseCard
-                        key={course.id}
-                        id={course.id} // Pass the UUID explicitly
-                        title={course.title}
-                        description={course.description}
-                        image={course.image}
-                        rating={course.rating}
-                        instructor={course.instructor}
-                        duration={course.duration}
-                        level={course.level as "beginner" | "intermediate" | "advanced"}
-                        students={course.students}
-                        category={course.category}
-                        href={course.href}
-                      />
+                      <div key={course.id} className="relative">
+                        {renderCourseTypeBadge(course)}
+                        <CourseCard
+                          id={course.id}
+                          title={course.title}
+                          description={course.description}
+                          image={course.image}
+                          rating={course.rating}
+                          instructor={course.instructor}
+                          duration={course.duration}
+                          level={course.level as "beginner" | "intermediate" | "advanced"}
+                          students={course.students}
+                          category={course.category}
+                          href={course.href}
+                        />
+                      </div>
                     ))}
                   </div>
                 )}
+                
                 
                 {(coursesQuery.data?.length || 0) > 0 && (
                   <div className="mt-10 flex justify-center">
@@ -374,6 +396,7 @@ const Courses = () => {
             </div>
           </div>
         </section>
+        
         
         <section className="py-20 bg-gradient-to-br from-accent1/10 to-accent2/10">
           <div className="container-wide">

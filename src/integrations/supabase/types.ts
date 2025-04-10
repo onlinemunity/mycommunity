@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           allgemein: string | null
           category: string
+          course_type: string | null
           created_at: string | null
           description: string
           details: string | null
@@ -32,11 +33,11 @@ export type Database = {
           video_url: string | null
           zertifikat: string | null
           zielgruppe: string | null
-          course_type: string | null
         }
         Insert: {
           allgemein?: string | null
           category: string
+          course_type?: string | null
           created_at?: string | null
           description: string
           details?: string | null
@@ -56,11 +57,11 @@ export type Database = {
           video_url?: string | null
           zertifikat?: string | null
           zielgruppe?: string | null
-          course_type?: string | null
         }
         Update: {
           allgemein?: string | null
           category?: string
+          course_type?: string | null
           created_at?: string | null
           description?: string
           details?: string | null
@@ -80,7 +81,6 @@ export type Database = {
           video_url?: string | null
           zertifikat?: string | null
           zielgruppe?: string | null
-          course_type?: string | null
         }
         Relationships: []
       }
@@ -352,6 +352,7 @@ export type Database = {
           id: string
           role: string | null
           updated_at: string | null
+          user_type: string | null
           username: string | null
         }
         Insert: {
@@ -361,6 +362,7 @@ export type Database = {
           id: string
           role?: string | null
           updated_at?: string | null
+          user_type?: string | null
           username?: string | null
         }
         Update: {
@@ -370,6 +372,7 @@ export type Database = {
           id?: string
           role?: string | null
           updated_at?: string | null
+          user_type?: string | null
           username?: string | null
         }
         Relationships: []
