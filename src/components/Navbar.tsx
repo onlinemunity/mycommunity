@@ -1,17 +1,20 @@
 
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { useTranslation } from "../hooks/useTranslation";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useCart } from "@/context/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 export const Navbar = () => {
   const { t } = useTranslation();
   const { user, profile, signOut } = useAuth();
+  const { totalItems } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -99,9 +102,19 @@ export const Navbar = () => {
           )}
         </nav>
 
-        {/* Right side - Auth buttons & Language switcher */}
+        {/* Right side - Auth buttons, Cart & Language switcher */}
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitcher />
+          
+          {/* Cart Icon */}
+          <Link to="/cart" className="relative p-2 rounded-md hover:bg-secondary/80 transition-colors">
+            <ShoppingCart className="h-5 w-5" />
+            {totalItems > 0 && (
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-accent1">
+                {totalItems}
+              </Badge>
+            )}
+          </Link>
           
           {user ? (
             <div className="flex items-center gap-2">
@@ -136,9 +149,20 @@ export const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile menu button and cart icon */}
         <div className="flex items-center gap-2 md:hidden">
           <LanguageSwitcher />
+          
+          {/* Mobile Cart Icon */}
+          <Link to="/cart" className="relative p-2 rounded-md hover:bg-secondary/80 transition-colors">
+            <ShoppingCart className="h-5 w-5" />
+            {totalItems > 0 && (
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-accent1">
+                {totalItems}
+              </Badge>
+            )}
+          </Link>
+          
           {user && (
             <Link to="/dashboard">
               <Avatar className="h-8 w-8">

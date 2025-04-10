@@ -4,11 +4,19 @@ import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { TestimonialCard } from '@/components/ui-components/TestimonialCard';
 import { FeatureCard } from '@/components/ui-components/FeatureCard';
-import { Users, MessageSquare, Calendar, Award, Heart, Shield } from 'lucide-react';
+import { PricingCard } from '@/components/ui-components/PricingCard';
+import { Users, MessageSquare, Calendar, Award, Heart, Shield, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 const Academy = () => {
   const { t } = useTranslation();
+  const { addItem } = useCart();
+  const { profile } = useAuth();
   
   // Mock data for testimonials
   const testimonials = [
@@ -71,6 +79,52 @@ const Academy = () => {
       description: t('community.features.lifetime.description'),
     }
   ];
+  
+  // Mock data - pricing features
+  const pricingFeatures = {
+    yearly: [
+      { text: "Access to all premium courses", included: true },
+      { text: "Community forum access", included: true },
+      { text: "Monthly expert webinars", included: true },
+      { text: "Course completion certificates", included: true },
+      { text: "Mentor support", included: true },
+      { text: "Access to course source code", included: true },
+    ],
+    lifetime: [
+      { text: "Everything in Yearly plan", included: true },
+      { text: "Lifetime access to all content", included: true },
+      { text: "Future course updates", included: true },
+      { text: "Priority support", included: true },
+      { text: "Early access to new courses", included: true },
+      { text: "Exclusive member events", included: true },
+    ],
+  };
+  
+  // Add pricing plans to cart
+  const handleAddYearlyToCart = () => {
+    addItem({
+      id: 'yearly-membership',
+      type: 'yearly_membership',
+      name: 'Yearly Membership',
+      description: 'Full access to all courses and resources for one year',
+      price: 99
+    });
+  };
+  
+  const handleAddLifetimeToCart = () => {
+    addItem({
+      id: 'lifetime-membership',
+      type: 'lifetime_membership',
+      name: 'Lifetime Access',
+      description: 'Permanent access to all courses and resources',
+      price: 299
+    });
+  };
+  
+  // Check if user already has a membership
+  const isBasic = !profile?.user_type || profile.user_type === 'basic';
+  const isYearly = profile?.user_type === 'yearly';
+  const isLifetime = profile?.user_type === 'lifetime';
 
   return (
     <Layout>
@@ -88,12 +142,16 @@ const Academy = () => {
                 {t('academy.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <button className="button-primary">
-                  {t('academy.hero.joinButton')}
-                </button>
-                <button className="button-secondary">
-                  {t('academy.hero.learnMoreButton')}
-                </button>
+                <Link to="/courses">
+                  <Button className="button-primary">
+                    {t('academy.hero.joinButton')}
+                  </Button>
+                </Link>
+                <Link to="#pricing">
+                  <Button className="button-secondary">
+                    View Membership Options
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -122,8 +180,66 @@ const Academy = () => {
           </div>
         </section>
         
+        {/* Pricing Section */}
+        <section id="pricing" className="section-padding bg-muted/30">
+          <div className="container">
+            <SectionHeading
+              title="Membership Options"
+              subtitle="Choose the plan that's right for your learning journey"
+              align="center"
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-10">
+              <PricingCard
+                title="Yearly Membership"
+                description="Full access to all courses and resources for one year"
+                price="$99"
+                period="per year"
+                features={pricingFeatures.yearly}
+                ctaText={isYearly 
+                  ? "Current Plan" 
+                  : isLifetime 
+                    ? "Downgrade" 
+                    : "Subscribe Now"
+                }
+                ctaAction={handleAddYearlyToCart}
+                highlighted={isYearly}
+                badge={
+                  <Badge className="bg-accent1 text-white py-1 px-3">
+                    Most Popular
+                  </Badge>
+                }
+              />
+              <PricingCard
+                title="Lifetime Access"
+                description="One-time payment for unlimited lifetime access"
+                price="$299"
+                period="one-time payment"
+                features={pricingFeatures.lifetime}
+                ctaText={isLifetime ? "Current Plan" : "Get Lifetime Access"}
+                ctaAction={handleAddLifetimeToCart}
+                highlighted={isLifetime}
+                badge={
+                  <Badge className="bg-purple-600 text-white py-1 px-3">
+                    Best Value
+                  </Badge>
+                }
+              />
+            </div>
+            
+            <div className="text-center mt-10">
+              <Link to="/pricing">
+                <Button variant="outline" className="flex items-center gap-2">
+                  Compare All Plans
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+        
         {/* Testimonials section */}
-        <section className="section-padding bg-muted/30">
+        <section className="section-padding bg-background">
           <div className="container-wide">
             <SectionHeading
               title={t('community.testimonials.title')}
@@ -156,9 +272,18 @@ const Academy = () => {
               <p className="body-lg mb-8 text-muted-foreground">
                 {t('community.cta.subtitle')}
               </p>
-              <button className="button-primary">
-                {t('community.cta.button')}
-              </button>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Link to="/courses">
+                  <Button className="button-primary">
+                    {t('community.cta.button')}
+                  </Button>
+                </Link>
+                <Link to="/cart">
+                  <Button variant="outline">
+                    View Cart
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>

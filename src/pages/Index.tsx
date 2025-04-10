@@ -10,9 +10,13 @@ import { PricingCard } from "@/components/ui-components/PricingCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 const Index = () => {
   const { t } = useTranslation();
+  const { addItem } = useCart();
+  const { profile } = useAuth();
   const [showModal, setShowModal] = useState(false);
 
   // Mock data - testimonials
@@ -64,6 +68,32 @@ const Index = () => {
       { text: "Exklusive Events", included: true },
     ],
   };
+  
+  // Add pricing plans to cart
+  const handleAddYearlyToCart = () => {
+    addItem({
+      id: 'yearly-membership',
+      type: 'yearly_membership',
+      name: 'Yearly Membership',
+      description: 'Full access to all courses and resources for one year',
+      price: 99
+    });
+  };
+  
+  const handleAddLifetimeToCart = () => {
+    addItem({
+      id: 'lifetime-membership',
+      type: 'lifetime_membership',
+      name: 'Lifetime Access',
+      description: 'Permanent access to all courses and resources',
+      price: 299
+    });
+  };
+  
+  // Check if user already has a membership
+  const isBasic = !profile?.user_type || profile.user_type === 'basic';
+  const isYearly = profile?.user_type === 'yearly';
+  const isLifetime = profile?.user_type === 'lifetime';
 
   return (
     <Layout>
@@ -182,8 +212,9 @@ const Index = () => {
               price={t("homepage.pricing.plans.free.price")}
               period={t("homepage.pricing.plans.free.period")}
               features={pricingFeatures.free}
-              ctaText={t("homepage.pricing.plans.free.cta")}
+              ctaText={isBasic ? "Current Plan" : t("homepage.pricing.plans.free.cta")}
               ctaAction={() => {}}
+              highlighted={isBasic}
               delay={100}
             />
             <PricingCard
@@ -192,9 +223,14 @@ const Index = () => {
               price={t("homepage.pricing.plans.annual.price")}
               period={t("homepage.pricing.plans.annual.period")}
               features={pricingFeatures.annual}
-              ctaText={t("homepage.pricing.plans.annual.cta")}
-              ctaAction={() => {}}
-              highlighted={true}
+              ctaText={isYearly 
+                ? "Current Plan" 
+                : isLifetime 
+                  ? "Downgrade" 
+                  : t("homepage.pricing.plans.annual.cta")
+              }
+              ctaAction={handleAddYearlyToCart}
+              highlighted={isYearly || !profile?.user_type}
               badge={
                 <Badge className="bg-accent1 text-white py-1 px-3">
                   Popular
@@ -208,10 +244,19 @@ const Index = () => {
               price={t("homepage.pricing.plans.lifetime.price")}
               period={t("homepage.pricing.plans.lifetime.period")}
               features={pricingFeatures.lifetime}
-              ctaText={t("homepage.pricing.plans.lifetime.cta")}
-              ctaAction={() => {}}
+              ctaText={isLifetime ? "Current Plan" : t("homepage.pricing.plans.lifetime.cta")}
+              ctaAction={handleAddLifetimeToCart}
+              highlighted={isLifetime}
               delay={300}
             />
+          </div>
+          
+          <div className="flex justify-center mt-10">
+            <Link to="/pricing">
+              <Button variant="outline">
+                View All Membership Options
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

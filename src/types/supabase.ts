@@ -1,3 +1,4 @@
+
 // Custom types for Supabase data
 // These types complement the auto-generated types without modifying them
 
@@ -73,4 +74,40 @@ export type Enrollment = {
   enrolled_at: string;
   progress: number;
   course?: Course;
+};
+
+export type CartItem = {
+  id: string;
+  type: 'yearly_membership' | 'lifetime_membership';
+  price: number;
+  name: string;
+  description?: string;
+};
+
+export type Order = {
+  id: string;
+  user_id: string;
+  status: 'pending' | 'completed' | 'cancelled';
+  total_amount: number;
+  payment_method?: string | null;
+  created_at: string;
+  updated_at: string;
+  membership_type?: 'yearly' | 'lifetime' | null;
+  invoice_number?: string | null;
+  billing_name?: string | null;
+  billing_email?: string | null;
+  billing_address?: string | null;
+  billing_city?: string | null;
+  billing_state?: string | null;
+  billing_zip?: string | null;
+  billing_country?: string | null;
+  items?: OrderItem[];
+};
+
+export type OrderItem = {
+  id: string;
+  order_id: string;
+  item_type: 'yearly_membership' | 'lifetime_membership';
+  price: number;
+  created_at: string;
 };

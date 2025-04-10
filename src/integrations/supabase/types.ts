@@ -344,6 +344,95 @@ export type Database = {
           },
         ]
       }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_type: string
+          order_id: string
+          price: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_type: string
+          order_id: string
+          price: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_type?: string
+          order_id?: string
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          billing_address: string | null
+          billing_city: string | null
+          billing_country: string | null
+          billing_email: string | null
+          billing_name: string | null
+          billing_state: string | null
+          billing_zip: string | null
+          created_at: string
+          id: string
+          invoice_number: string | null
+          membership_type: string | null
+          payment_method: string | null
+          status: string
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          billing_address?: string | null
+          billing_city?: string | null
+          billing_country?: string | null
+          billing_email?: string | null
+          billing_name?: string | null
+          billing_state?: string | null
+          billing_zip?: string | null
+          created_at?: string
+          id?: string
+          invoice_number?: string | null
+          membership_type?: string | null
+          payment_method?: string | null
+          status: string
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          billing_address?: string | null
+          billing_city?: string | null
+          billing_country?: string | null
+          billing_email?: string | null
+          billing_name?: string | null
+          billing_state?: string | null
+          billing_zip?: string | null
+          created_at?: string
+          id?: string
+          invoice_number?: string | null
+          membership_type?: string | null
+          payment_method?: string | null
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

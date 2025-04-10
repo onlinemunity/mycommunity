@@ -1,89 +1,107 @@
 
-import React, { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from '@/components/ui/toaster';
+import { Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
+import { Toaster } from "./components/ui/toaster";
+import { LanguageProvider } from "./context/LanguageContext";
+import { AuthProvider } from "./context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CartProvider } from "./context/CartContext";
 
-import Index from '@/pages/Index';
-import About from '@/pages/About';
-import Academy from '@/pages/Academy';
-import Community from '@/pages/Community';
-import Courses from '@/pages/Courses';
-import CourseDetail from '@/pages/CourseDetail';
-import CourseDiscussions from '@/pages/CourseDiscussions';
-import Contact from '@/pages/Contact';
-import Pricing from '@/pages/Pricing';
+// Page imports
+import Index from "./pages/Index";
+import About from "./pages/About";
+import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
+import CourseDiscussions from "./pages/CourseDiscussions";
+import Community from "./pages/Community";
+import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
+import Academy from "./pages/Academy";
+import Pricing from "./pages/Pricing";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
-import AuthPage from '@/pages/auth/AuthPage';
-import AuthSuccess from '@/pages/auth/AuthSuccess';
-import Dashboard from '@/pages/dashboard/Dashboard';
-import Profile from '@/pages/dashboard/Profile';
-import MemberArea from '@/pages/dashboard/MemberArea';
-import MyCoursesPage from '@/pages/dashboard/MyCourses';
-import AdminArea from '@/pages/dashboard/AdminArea';
-import NotFound from '@/pages/NotFound';
+// Auth pages
+import AuthPage from "./pages/auth/AuthPage";
+import AuthSuccess from "./pages/auth/AuthSuccess";
 
-// Admin section
-import AdminDashboard from '@/pages/admin/AdminDashboard';
-import CoursesManagement from '@/pages/admin/CoursesManagement';
-import LecturesManagement from '@/pages/admin/LecturesManagement';
-import UsersManagement from '@/pages/admin/UsersManagement';
-import Settings from '@/pages/admin/Settings';
+// Dashboard pages
+import Dashboard from "./pages/dashboard/Dashboard";
+import MyCourses from "./pages/dashboard/MyCourses";
+import Profile from "./pages/dashboard/Profile";
+import MemberArea from "./pages/dashboard/MemberArea";
+import AdminArea from "./pages/dashboard/AdminArea";
 
-// Fix import statements to use default exports
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import AdminRoute from '@/components/auth/AdminRoute';
-import { AuthProvider } from '@/context/AuthContext';
-import { LanguageProvider } from '@/context/LanguageContext';
+// Admin pages
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import UsersManagement from "./pages/admin/UsersManagement";
+import CoursesManagement from "./pages/admin/CoursesManagement";
+import LecturesManagement from "./pages/admin/LecturesManagement";
+import Settings from "./pages/admin/Settings";
 
-const queryClient = new QueryClient();
+// Auth components
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AdminRoute from "./components/auth/AdminRoute";
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/academy" element={<Academy />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/courses/:courseId" element={<CourseDetail />} />
-              <Route path="/courses/:courseId/discussions" element={<CourseDiscussions />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/pricing" element={<Pricing />} />
-              
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/auth/success" element={<AuthSuccess />} />
-              
-              <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/dashboard/profile" element={<Profile />} />
-                <Route path="/dashboard/member" element={<MemberArea />} />
-                <Route path="/dashboard/courses" element={<MyCoursesPage />} />
-                <Route path="/dashboard/courses/:courseId" element={<MyCoursesPage />} />
-                <Route path="/dashboard/courses/:courseId/lecture/:lectureId" element={<MyCoursesPage />} />
-                <Route path="/dashboard/admin" element={<AdminArea />} />
-              </Route>
-              
-              {/* Admin Section Routes - Make sure these are OUTSIDE the ProtectedRoute */}
-              <Route element={<AdminRoute />}>
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/courses" element={<CoursesManagement />} />
-                <Route path="/admin/lectures" element={<LecturesManagement />} />
-                <Route path="/admin/users" element={<UsersManagement />} />
-                <Route path="/admin/settings" element={<Settings />} />
-              </Route>
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <Toaster />
-        </QueryClientProvider>
-      </AuthProvider>
-    </LanguageProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/courses/:id" element={<CourseDetail />} />
+                <Route path="/courses/:id/discussions" element={<CourseDiscussions />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/academy" element={<Academy />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                
+                {/* Auth routes */}
+                <Route path="/auth" element={<AuthPage />} />
+                <Route path="/auth/success" element={<AuthSuccess />} />
+
+                {/* Protected routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/dashboard/courses" element={<MyCourses />} />
+                  <Route path="/dashboard/profile" element={<Profile />} />
+                  <Route path="/dashboard/member" element={<MemberArea />} />
+                </Route>
+
+                {/* Admin routes */}
+                <Route element={<AdminRoute />}>
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/users" element={<UsersManagement />} />
+                  <Route path="/admin/courses" element={<CoursesManagement />} />
+                  <Route path="/admin/lectures" element={<LecturesManagement />} />
+                  <Route path="/admin/settings" element={<Settings />} />
+                </Route>
+
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <Toaster />
+            </CartProvider>
+          </AuthProvider>
+        </LanguageProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
