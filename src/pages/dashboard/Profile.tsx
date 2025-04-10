@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/context/AuthContext';
@@ -7,14 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, User } from 'lucide-react';
+import { Loader2, User, Star, ArrowRight } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const { t } = useTranslation();
   const { user, profile, refreshProfile } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: profile?.username || '',
     fullName: profile?.full_name || '',
@@ -73,6 +76,10 @@ const Profile = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleUpgradeClick = () => {
+    navigate('/pricing');
   };
 
   return (
@@ -176,49 +183,123 @@ const Profile = () => {
             </form>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('profile.accountDetails') || 'Account Details'}</CardTitle>
-              <CardDescription>
-                {t('profile.accountDetailsDesc') || 'Information about your account status and membership'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center pb-4 border-b">
-                <div>
-                  <p className="font-medium">{t('profile.memberSince') || 'Member Since'}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {user?.created_at
-                      ? new Date(user.created_at).toLocaleDateString()
-                      : '-'}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('profile.accountDetails') || 'Account Details'}</CardTitle>
+                <CardDescription>
+                  {t('profile.accountDetailsDesc') || 'Information about your account status and membership'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <div>
+                    <p className="font-medium">{t('profile.memberSince') || 'Member Since'}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {user?.created_at
+                        ? new Date(user.created_at).toLocaleDateString()
+                        : '-'}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <div>
+                    <p className="font-medium">{t('profile.accountStatus') || 'Account Status'}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {user?.email_confirmed_at ? 'Verified' : 'Unverified'}
+                    </p>
+                  </div>
+                  <div className={`px-2 py-1 rounded-full text-xs ${
+                    user?.email_confirmed_at ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {user?.email_confirmed_at ? 'Active' : 'Pending'}
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <div>
+                    <p className="font-medium">{t('profile.membershipType') || 'Membership Type'}</p>
+                    <p className="text-sm text-muted-foreground flex items-center">
+                      {profile?.user_type === 'premium' ? (
+                        <>
+                          Premium <Star className="h-4 w-4 text-amber-500 ml-1" />
+                        </>
+                      ) : 'Basic'}
+                    </p>
+                  </div>
+                  <div className={`px-2 py-1 rounded-full text-xs ${
+                    profile?.user_type === 'premium' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'
+                  }`}>
+                    {profile?.user_type === 'premium' ? 'Premium' : 'Basic'}
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">{t('profile.accountType') || 'Account Type'}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {profile?.role === 'admin' ? 'Administrator' : 'Member'}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {profile?.user_type !== 'premium' && (
+              <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Star className="h-5 w-5 text-amber-500 mr-2" />
+                    {t('profile.upgradeMembership') || 'Upgrade Your Membership'}
+                  </CardTitle>
+                  <CardDescription>
+                    {t('profile.upgradeDesc') || 'Get access to premium courses and exclusive content'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm mb-4">
+                    {t('profile.upgradeMessage') || 'Upgrade to Premium to unlock all courses and features'}
                   </p>
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-center pb-4 border-b">
-                <div>
-                  <p className="font-medium">{t('profile.accountStatus') || 'Account Status'}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {user?.email_confirmed_at ? 'Verified' : 'Unverified'}
-                  </p>
-                </div>
-                <div className={`px-2 py-1 rounded-full text-xs ${
-                  user?.email_confirmed_at ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {user?.email_confirmed_at ? 'Active' : 'Pending'}
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">{t('profile.accountType') || 'Account Type'}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {profile?.role === 'admin' ? 'Administrator' : 'Member'}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                  <ul className="space-y-2 mb-4">
+                    <li className="flex items-start text-sm">
+                      <div className="rounded-full bg-amber-200 p-1 mr-2 mt-0.5">
+                        <svg className="h-3 w-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      {t('profile.premiumFeature1') || 'Access to all premium courses'}
+                    </li>
+                    <li className="flex items-start text-sm">
+                      <div className="rounded-full bg-amber-200 p-1 mr-2 mt-0.5">
+                        <svg className="h-3 w-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      {t('profile.premiumFeature2') || 'Mentor support and guidance'}
+                    </li>
+                    <li className="flex items-start text-sm">
+                      <div className="rounded-full bg-amber-200 p-1 mr-2 mt-0.5">
+                        <svg className="h-3 w-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      {t('profile.premiumFeature3') || 'Course completion certificates'}
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Button 
+                    onClick={handleUpgradeClick} 
+                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
+                  >
+                    {t('profile.upgradeCta') || 'Upgrade to Premium'} 
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
     </DashboardLayout>
