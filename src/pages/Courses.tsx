@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { CourseCard } from '@/components/ui-components/CourseCard';
@@ -13,6 +14,26 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+
+// Define the features array
+const features = [
+  {
+    name: 'Expert-Led Courses',
+    icon: <BookOpen className="h-5 w-5 text-primary" />,
+  },
+  {
+    name: 'Flexible Learning',
+    icon: <Clock className="h-5 w-5 text-primary" />,
+  },
+  {
+    name: 'Community Support',
+    icon: <Users className="h-5 w-5 text-primary" />,
+  },
+  {
+    name: 'Certification',
+    icon: <BadgeCheck className="h-5 w-5 text-primary" />,
+  },
+];
 
 const Courses = () => {
   const { t } = useTranslation();
