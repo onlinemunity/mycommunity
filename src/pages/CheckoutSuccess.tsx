@@ -38,7 +38,20 @@ const CheckoutSuccess = () => {
 
           if (error) throw error;
           
-          setOrder(data);
+          // Ensure status is a valid enum value
+          if (data) {
+            const validStatus = ['completed', 'pending', 'cancelled'].includes(data.status) 
+              ? data.status as 'completed' | 'pending' | 'cancelled'
+              : 'pending';
+            
+            // Cast the data to Order type with the validated status
+            const typedOrder: Order = {
+              ...data,
+              status: validStatus
+            };
+            
+            setOrder(typedOrder);
+          }
         } catch (error: any) {
           console.error('Error fetching order:', error);
           toast({
@@ -77,6 +90,14 @@ const CheckoutSuccess = () => {
             .eq('id', orderId);
             
           if (error) throw error;
+          
+          // Update local state to reflect changes
+          if (order) {
+            setOrder({
+              ...order,
+              status: 'completed'
+            });
+          }
           
           toast({
             title: 'Payment Successful',
