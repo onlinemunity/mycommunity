@@ -93,20 +93,7 @@ const MyCoursesPage = () => {
 
       //////////////////
       
-      const { data: enrollments, error: enrollmentsError } = await supabase
-        .from('enrollments')
-        .select(`
-          id,
-          progress,
-          course_id,
-          course:courses(*)
-        `)
-        .eq('user_id', user.id);
-      
-      if (enrollmentsError) {
-        console.error('Error fetching enrollments:', enrollmentsError);
-        throw enrollmentsError;
-      }
+     
 
       console.log('Enrollments fetched:', enrollments);
 
