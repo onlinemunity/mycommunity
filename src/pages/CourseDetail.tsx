@@ -10,13 +10,15 @@ import { CourseSidebar } from '@/components/courses/CourseSidebar';
 import { CourseInstructor } from '@/components/courses/CourseInstructor';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Course } from '@/types/supabase';
+import { toast } from '@/components/ui/use-toast';
 
 const CourseDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
 
-  const { data: course, isLoading, error } = useQuery({
+  const { data: courseData, isLoading, error } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
       console.log("Fetching course with href:", id);
@@ -55,9 +57,21 @@ const CourseDetail = () => {
     },
   });
 
+  // Transform the fetched data to match the Course type
+  const course: Course | undefined = courseData ? {
+    ...courseData,
+    // Make sure level is one of the expected string literals
+    level: (courseData.level?.toLowerCase() as "beginner" | "intermediate" | "advanced") || "beginner"
+  } : undefined;
+
   useEffect(() => {
     if (error) {
       console.error('Error fetching course:', error);
+      toast({
+        title: "Course not found",
+        description: "The requested course could not be found.",
+        variant: "destructive"
+      });
       navigate('/not-found', { replace: true });
     }
   }, [error, navigate]);
