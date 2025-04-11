@@ -1,4 +1,3 @@
-
 import { Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 import { Toaster } from "./components/ui/toaster";
@@ -20,6 +19,7 @@ import Academy from "./pages/Academy";
 import Pricing from "./pages/Pricing";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import CheckoutSuccess from './pages/CheckoutSuccess';
 
 // Auth pages
 import AuthPage from "./pages/auth/AuthPage";
@@ -72,6 +72,7 @@ function App() {
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout/success" element={<CheckoutSuccess />} />
                 
                 {/* Auth routes */}
                 <Route path="/auth" element={<AuthPage />} />

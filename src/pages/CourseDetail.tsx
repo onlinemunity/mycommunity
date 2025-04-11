@@ -61,7 +61,9 @@ const CourseDetail = () => {
   const course: Course | undefined = courseData ? {
     ...courseData,
     // Make sure level is one of the expected string literals
-    level: (courseData.level?.toLowerCase() as "beginner" | "intermediate" | "advanced") || "beginner"
+    level: (courseData.level?.toLowerCase() as "beginner" | "intermediate" | "advanced") || "beginner",
+    // Make sure course_type is one of the expected string literals
+    course_type: (courseData.course_type as "basic" | "premium") || null
   } : undefined;
 
   useEffect(() => {
@@ -111,7 +113,7 @@ const CourseDetail = () => {
                   <CourseContent course={course} />
                 </TabsContent>
                 <TabsContent value="content" className="p-0">
-                  <CourseContent course={course} showContent />
+                  <CourseContent course={course} />
                 </TabsContent>
                 <TabsContent value="instructor" className="p-0">
                   <CourseInstructor course={course} />

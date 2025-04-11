@@ -4,7 +4,6 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { 
   Card, 
   CardContent, 
@@ -57,6 +56,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
+  const [orderId, setOrderId] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -86,7 +86,7 @@ const Checkout = () => {
     item.type === 'yearly_membership' || item.type === 'lifetime_membership'
   )?.type.split('_')[0] as 'yearly' | 'lifetime' | undefined;
 
-  const handleSubmit = async (values: FormValues) => {
+  const createOrder = async (values: FormValues) => {
     if (!user) {
       toast({
         title: "Please sign in",
@@ -97,23 +97,18 @@ const Checkout = () => {
       return;
     }
 
-    if (step === 1) {
-      setStep(2);
-      return;
-    }
-
     try {
       setIsSubmitting(true);
 
       // Create invoice number
       const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`;
 
-      // Create order in the database
+      // Create order in the database with 'pending' status
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
           user_id: user.id,
-          status: 'completed',
+          status: 'pending', // Set as pending until payment is completed
           total_amount: totalPrice,
           payment_method: 'credit_card',
           membership_type: membershipType,
@@ -144,27 +139,67 @@ const Checkout = () => {
 
       if (itemsError) throw itemsError;
 
-      // Update user profile with the new membership type
-      if (membershipType) {
-        let expiresAt = null;
-        if (membershipType === 'yearly') {
-          const oneYearFromNow = new Date();
-          oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-          expiresAt = oneYearFromNow.toISOString();
-        }
+      setOrderId(order.id);
+      
+      // Move to payment step
+      if (step === 1) {
+        setStep(2);
+      }
+      
+      return order.id;
+    } catch (error: any) {
+      console.error('Order creation error:', error);
+      toast({
+        title: "Failed to create order",
+        description: error.message || "There was an error creating your order. Please try again.",
+        variant: "destructive"
+      });
+      return null;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-        const { error: profileError } = await supabase
-          .from('profiles')
+  const processPayment = async (values: FormValues) => {
+    try {
+      setIsSubmitting(true);
+
+      // In a real app, this would connect to Stripe API
+      // For our demo, we'll simulate a successful payment
+      
+      // Update order status to completed
+      if (orderId) {
+        const { error: updateError } = await supabase
+          .from('orders')
           .update({ 
-            user_type: membershipType,
-            membership_expires_at: expiresAt
+            status: 'completed' 
           })
-          .eq('id', user.id);
+          .eq('id', orderId);
 
-        if (profileError) throw profileError;
+        if (updateError) throw updateError;
 
-        // Refresh profile to get updated membership info
-        await refreshProfile();
+        // Update user profile with the new membership type if applicable
+        if (membershipType) {
+          let expiresAt = null;
+          if (membershipType === 'yearly') {
+            const oneYearFromNow = new Date();
+            oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+            expiresAt = oneYearFromNow.toISOString();
+          }
+
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({ 
+              user_type: membershipType,
+              membership_expires_at: expiresAt
+            })
+            .eq('id', user?.id);
+
+          if (profileError) throw profileError;
+
+          // Refresh profile to get updated membership info
+          await refreshProfile();
+        }
       }
 
       // Clear the cart
@@ -173,21 +208,32 @@ const Checkout = () => {
       // Show success message
       toast({
         title: "Order completed successfully!",
-        description: "Your order has been processed and your membership has been activated."
+        description: "Your order has been processed successfully."
       });
 
-      // Redirect to success page or dashboard
-      navigate('/dashboard');
+      // Redirect to success page
+      navigate('/checkout/success');
 
     } catch (error: any) {
-      console.error('Checkout error:', error);
+      console.error('Payment processing error:', error);
       toast({
-        title: "Checkout failed",
-        description: error.message || "There was an error processing your order. Please try again.",
+        title: "Payment failed",
+        description: error.message || "There was an error processing your payment. Please try again.",
         variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSubmit = async (values: FormValues) => {
+    if (step === 1) {
+      const createdOrderId = await createOrder(values);
+      if (createdOrderId) {
+        setStep(2);
+      }
+    } else {
+      await processPayment(values);
     }
   };
 
