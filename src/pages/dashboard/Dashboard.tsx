@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, Users, BookOpen, Calendar } from 'lucide-react';
+import { OrderHistory } from '@/components/dashboard/OrderHistory';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -62,6 +63,8 @@ const Dashboard = () => {
             </Card>
           ))}
         </div>
+
+        <OrderHistory />
 
         <div className="grid gap-4 md:grid-cols-2">
           <Card>

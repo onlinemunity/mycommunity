@@ -22,11 +22,24 @@ const CourseDetail = () => {
   const { data: course, isLoading, error } = useQuery({
     queryKey: ['course', courseId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // First try to get the course by href
+      let { data, error } = await supabase
         .from('courses')
         .select('*')
         .eq('href', courseId)
         .maybeSingle();
+
+      // If no course found by href, try finding it by id
+      if (!data && !error) {
+        const { data: courseById, error: idError } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('id', courseId)
+          .maybeSingle();
+        
+        if (idError) throw idError;
+        data = courseById;
+      }
 
       if (error) throw error;
       return data as Course;
@@ -48,9 +61,10 @@ const CourseDetail = () => {
       <Layout>
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           <h2 className="text-2xl font-bold mb-4">Course not found</h2>
-          <p className="text-muted-foreground">The course you're looking for doesn't exist or has been removed.</p>
-          <p>{course?.title}</p>
-          <p>{course?.href}</p>
+          <p className="text-muted-foreground mb-8">The course you're looking for doesn't exist or has been removed.</p>
+          <Button onClick={() => navigate('/courses')}>
+            Browse All Courses
+          </Button>
         </div>
       </Layout>
     );
