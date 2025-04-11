@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { useCart } from '@/context/CartContext';
@@ -86,6 +87,35 @@ const Checkout = () => {
     item.type === 'yearly_membership' || item.type === 'lifetime_membership'
   )?.type.split('_')[0] as 'yearly' | 'lifetime' | undefined;
 
+  const updateUserProfile = async (values: FormValues) => {
+    if (!user) return;
+    
+    try {
+      // Update user profile with billing details
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          full_name: values.fullName
+        })
+        .eq('id', user.id);
+
+      if (profileError) throw profileError;
+      
+      // Refresh profile to get updated info
+      await refreshProfile();
+      
+      return true;
+    } catch (error: any) {
+      console.error('Profile update error:', error);
+      toast({
+        title: "Failed to update profile",
+        description: error.message || "There was an error updating your profile.",
+        variant: "destructive"
+      });
+      return false;
+    }
+  };
+
   const createOrder = async (values: FormValues) => {
     if (!user) {
       toast({
@@ -141,11 +171,6 @@ const Checkout = () => {
 
       setOrderId(order.id);
       
-      // Move to payment step
-      if (step === 1) {
-        setStep(2);
-      }
-      
       return order.id;
     } catch (error: any) {
       console.error('Order creation error:', error);
@@ -160,80 +185,24 @@ const Checkout = () => {
     }
   };
 
-  const processPayment = async (values: FormValues) => {
-    try {
-      setIsSubmitting(true);
-
-      // In a real app, this would connect to Stripe API
-      // For our demo, we'll simulate a successful payment
-      
-      // Update order status to completed
-      if (orderId) {
-        const { error: updateError } = await supabase
-          .from('orders')
-          .update({ 
-            status: 'completed' 
-          })
-          .eq('id', orderId);
-
-        if (updateError) throw updateError;
-
-        // Update user profile with the new membership type if applicable
-        if (membershipType) {
-          let expiresAt = null;
-          if (membershipType === 'yearly') {
-            const oneYearFromNow = new Date();
-            oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-            expiresAt = oneYearFromNow.toISOString();
-          }
-
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .update({ 
-              user_type: membershipType,
-              membership_expires_at: expiresAt
-            })
-            .eq('id', user?.id);
-
-          if (profileError) throw profileError;
-
-          // Refresh profile to get updated membership info
-          await refreshProfile();
-        }
-      }
-
-      // Clear the cart
-      clearCart();
-
-      // Show success message
-      toast({
-        title: "Order completed successfully!",
-        description: "Your order has been processed successfully."
-      });
-
-      // Redirect to success page
-      navigate('/checkout/success');
-
-    } catch (error: any) {
-      console.error('Payment processing error:', error);
-      toast({
-        title: "Payment failed",
-        description: error.message || "There was an error processing your payment. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleSubmit = async (values: FormValues) => {
-    if (step === 1) {
-      const createdOrderId = await createOrder(values);
-      if (createdOrderId) {
-        setStep(2);
-      }
-    } else {
-      await processPayment(values);
+    // First update the user profile
+    const profileUpdated = await updateUserProfile(values);
+    if (!profileUpdated) return;
+
+    // Then create the order
+    const createdOrderId = await createOrder(values);
+    if (createdOrderId) {
+      // Redirect to success page with the order ID
+      navigate(`/checkout/success?orderId=${createdOrderId}`);
+      
+      // Clear the cart after successful order creation
+      clearCart();
+      
+      toast({
+        title: "Order created successfully",
+        description: "Your course has been booked. Please proceed to payment.",
+      });
     }
   };
 
@@ -261,181 +230,109 @@ const Checkout = () => {
             <div className="md:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>
-                    {step === 1 ? 'Billing Information' : 'Payment Information'}
-                  </CardTitle>
-                  <CardDescription>
-                    {step === 1 
-                      ? 'Enter your billing address details'
-                      : 'Enter your payment details securely'
-                    }
-                  </CardDescription>
+                  <CardTitle>Billing Information</CardTitle>
+                  <CardDescription>Enter your billing address details</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                      {step === 1 ? (
-                        <>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name="fullName"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Full Name</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="John Doe" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="email"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Email</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="email@example.com" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <FormField
-                            control={form.control}
-                            name="address"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Address</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="123 Main St" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name="city"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>City</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="New York" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="state"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>State/Province</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="NY" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name="zipCode"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Zip/Postal Code</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="10001" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="country"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Country</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="United States" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </>
-                      ) : (
-                        <div className="space-y-4">
-                          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3 mb-4">
-                            <Lock className="h-5 w-5 text-amber-600 mt-0.5" />
-                            <div>
-                              <p className="text-sm text-amber-800 font-medium">Demo Mode Payment</p>
-                              <p className="text-sm text-amber-700">
-                                This is a demo application. No real payment will be processed.
-                                You can use any test card details.
-                              </p>
-                            </div>
-                          </div>
-                          <FormField
-                            control={form.control}
-                            name="cardNumber"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Card Number</FormLabel>
-                                <FormControl>
-                                  <div className="relative">
-                                    <Input 
-                                      placeholder="4242 4242 4242 4242" 
-                                      {...field} 
-                                      className="pl-10"
-                                    />
-                                    <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                  </div>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name="cardExpiry"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Expiry Date</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="MM/YY" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="cardCvc"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>CVC</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="123" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </div>
-                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="fullName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Full Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="John Doe" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input placeholder="email@example.com" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Address</FormLabel>
+                            <FormControl>
+                              <Input placeholder="123 Main St" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="city"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>City</FormLabel>
+                              <FormControl>
+                                <Input placeholder="New York" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="state"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>State/Province</FormLabel>
+                              <FormControl>
+                                <Input placeholder="NY" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="zipCode"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Zip/Postal Code</FormLabel>
+                              <FormControl>
+                                <Input placeholder="10001" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="country"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Country</FormLabel>
+                              <FormControl>
+                                <Input placeholder="United States" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                       <div className="pt-2">
                         <Button 
                           type="submit" 
@@ -447,10 +344,8 @@ const Checkout = () => {
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                               Processing...
                             </>
-                          ) : step === 1 ? (
-                            'Continue to Payment'
                           ) : (
-                            'Complete Purchase'
+                            'Continue to Payment'
                           )}
                         </Button>
                       </div>

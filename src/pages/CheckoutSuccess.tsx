@@ -1,22 +1,103 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { CheckCircle2, ArrowRight, CreditCard } from 'lucide-react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { Order } from '@/types/supabase';
+import { toast } from '@/components/ui/use-toast';
 
 const CheckoutSuccess = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const orderId = searchParams.get('orderId');
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
   
   // If no user is authenticated, redirect to home
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user) {
       navigate('/');
+      return;
     }
-  }, [user, navigate]);
+
+    // Fetch order details if we have an orderId
+    if (orderId) {
+      const fetchOrder = async () => {
+        try {
+          setLoading(true);
+          const { data, error } = await supabase
+            .from('orders')
+            .select('*, items:order_items(*)')
+            .eq('id', orderId)
+            .single();
+
+          if (error) throw error;
+          
+          setOrder(data);
+        } catch (error: any) {
+          console.error('Error fetching order:', error);
+          toast({
+            title: 'Error',
+            description: 'Failed to load order details',
+            variant: 'destructive',
+          });
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchOrder();
+    } else {
+      setLoading(false);
+    }
+  }, [user, navigate, orderId]);
+
+  const handlePayNow = () => {
+    // In a real application, this would redirect to a Stripe payment page
+    toast({
+      title: 'Payment',
+      description: 'Redirecting to payment gateway...',
+    });
+    
+    // Simulate successful payment after delay
+    setTimeout(() => {
+      // Update order status to completed
+      const updateOrder = async () => {
+        if (!orderId) return;
+        
+        try {
+          const { error } = await supabase
+            .from('orders')
+            .update({ status: 'completed' })
+            .eq('id', orderId);
+            
+          if (error) throw error;
+          
+          toast({
+            title: 'Payment Successful',
+            description: 'Your payment has been processed successfully',
+          });
+          
+          // Redirect to dashboard after successful payment
+          navigate('/dashboard');
+        } catch (error: any) {
+          console.error('Error updating order:', error);
+          toast({
+            title: 'Error',
+            description: 'Failed to process payment',
+            variant: 'destructive',
+          });
+        }
+      };
+      
+      updateOrder();
+    }, 2000);
+  };
 
   if (!user) return null;
 
@@ -29,25 +110,29 @@ const CheckoutSuccess = () => {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="h-8 w-8 text-green-600" />
               </div>
-              <CardTitle className="text-2xl">Order Confirmed!</CardTitle>
+              <CardTitle className="text-2xl">Course Booked!</CardTitle>
             </CardHeader>
             <CardContent className="pb-6">
               <p className="text-muted-foreground mb-4">
-                Your order has been successfully processed. You now have access to your purchased content.
+                Your order has been successfully created. Please complete the payment to gain access to your purchased content.
               </p>
-              <div className="text-sm border rounded-lg p-4 bg-muted/30 text-left mb-6">
-                <p className="font-medium mb-1">Order details:</p>
-                <p>A confirmation email has been sent to your email address.</p>
-              </div>
+              {order && (
+                <div className="text-sm border rounded-lg p-4 bg-muted/30 text-left mb-6">
+                  <p className="font-medium mb-1">Order details:</p>
+                  <p className="mb-1">Order Number: {order.invoice_number}</p>
+                  <p className="mb-1">Total: ${order.total_amount}</p>
+                  <p>Status: <span className="capitalize">{order.status}</span></p>
+                </div>
+              )}
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
-              <Button asChild className="w-full">
+              <Button onClick={handlePayNow} className="w-full bg-accent1 hover:bg-accent1/90">
+                <CreditCard className="mr-2 h-4 w-4" /> Pay Now
+              </Button>
+              <Button variant="outline" asChild className="w-full">
                 <Link to="/dashboard">
                   Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
-              </Button>
-              <Button variant="outline" asChild className="w-full">
-                <Link to="/courses">Browse More Courses</Link>
               </Button>
             </CardFooter>
           </Card>
