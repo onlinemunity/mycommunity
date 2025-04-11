@@ -38,32 +38,31 @@ const CheckoutSuccess = () => {
 
           if (error) throw error;
           
-          // Ensure status is a valid enum value
           if (data) {
+            // Ensure status is a valid enum value
             const validStatus = ['completed', 'pending', 'cancelled'].includes(data.status) 
               ? data.status as 'completed' | 'pending' | 'cancelled'
               : 'pending';
-
-            // Hier neu
-            const validItemTypes = ["yearly_membership", "lifetime_membership"] as const;
-              items: data.items
-              .filter(item => validItemTypes.includes(item.item_type as any))
-                .map(item => ({
-                  ...item,
-                  item_type: item.item_type as "yearly_membership" | "lifetime_membership"
-                }))
-
             
             // Validate membership_type to ensure it's a valid enum value
             const validMembershipType = ['yearly', 'lifetime'].includes(data.membership_type) 
               ? data.membership_type as 'yearly' | 'lifetime'
               : null;
             
-            // Cast the data to Order type with the validated status and membership_type
+            // Validate item_type in items to ensure they are valid enum values
+            const validItems = data.items?.map(item => ({
+              ...item,
+              item_type: ['yearly_membership', 'lifetime_membership'].includes(item.item_type)
+                ? item.item_type as 'yearly_membership' | 'lifetime_membership'
+                : 'yearly_membership' // Default value if invalid
+            }));
+            
+            // Cast the data to Order type with the validated fields
             const typedOrder: Order = {
               ...data,
               status: validStatus,
-              membership_type: validMembershipType
+              membership_type: validMembershipType,
+              items: validItems
             };
             
             setOrder(typedOrder);

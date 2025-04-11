@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -56,7 +56,6 @@ const Checkout = () => {
   const { user, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [step, setStep] = useState(1);
   const [orderId, setOrderId] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
@@ -75,12 +74,42 @@ const Checkout = () => {
     }
   });
 
-  // Redirect if cart is empty
-  React.useEffect(() => {
+  // Check if user is logged in, if not redirect to auth page
+  useEffect(() => {
+    if (!user) {
+      toast({
+        title: "Please sign in",
+        description: "You need to be signed in to complete checkout",
+        variant: "destructive"
+      });
+      navigate('/auth?redirect=checkout');
+      return;
+    }
+    
+    // Redirect if cart is empty
     if (items.length === 0) {
       navigate('/cart');
     }
-  }, [items, navigate]);
+  }, [user, items, navigate]);
+
+  // Populate form with user profile data if available
+  useEffect(() => {
+    if (user) {
+      const fetchProfile = async () => {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+          
+        if (!error && data) {
+          form.setValue('fullName', data.full_name || '');
+        }
+      };
+      
+      fetchProfile();
+    }
+  }, [user, form]);
 
   // Get membership type from cart
   const membershipType = items.find(item => 
@@ -206,7 +235,7 @@ const Checkout = () => {
     }
   };
 
-  if (items.length === 0) {
+  if (items.length === 0 && !user) {
     return null; // Will redirect in useEffect
   }
 
@@ -345,7 +374,7 @@ const Checkout = () => {
                               Processing...
                             </>
                           ) : (
-                            'Continue to Payment'
+                            'Checkout Now'
                           )}
                         </Button>
                       </div>
