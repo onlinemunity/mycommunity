@@ -44,10 +44,16 @@ const CheckoutSuccess = () => {
               ? data.status as 'completed' | 'pending' | 'cancelled'
               : 'pending';
             
-            // Cast the data to Order type with the validated status
+            // Validate membership_type to ensure it's a valid enum value
+            const validMembershipType = ['yearly', 'lifetime'].includes(data.membership_type) 
+              ? data.membership_type as 'yearly' | 'lifetime'
+              : null;
+            
+            // Cast the data to Order type with the validated status and membership_type
             const typedOrder: Order = {
               ...data,
-              status: validStatus
+              status: validStatus,
+              membership_type: validMembershipType
             };
             
             setOrder(typedOrder);
