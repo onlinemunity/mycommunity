@@ -39,6 +39,59 @@ const MyCoursesPage = () => {
       if (!user) return [];
       
       console.log('Fetching enrolled courses for user:', user.id);
+
+    //////////////////////
+
+       const { data: courseData, isLoading, error } = useQuery({
+    queryKey: ['course', id],
+    queryFn: async () => {
+      console.log("Fetching course with href:", id);
+      
+      // Try to fetch by href first (most common case)
+      const { data: courseByHref, error: hrefError } = await supabase
+        .from('enrollments')
+        .select(`
+          id,
+          progress,
+          course_id,
+          course:courses(*)
+        `)
+        .eq('user_id', user.id);
+
+      
+      if (courseByHref) {
+        console.log("Found course by href:", courseByHref);
+        return courseByHref;
+      }
+      
+      // If not found by href, try by uuid (fallback)
+      const { data: courseById, error: idError } = await supabase
+        .from('enrollments')
+        .select(`
+          id,
+          progress,
+          course_id,
+          course:courses(*)
+        `)
+        .eq('user_id', user.id);
+
+      
+      if (courseById) {
+        console.log("Found course by id:", courseById);
+        return courseById;
+      }
+      
+      // If not found by either method, throw error
+      if (!courseByHref && !courseById) {
+        console.error("Course not found for id/href:", id);
+        console.error("Href error:", hrefError);
+        console.error("ID error:", idError);
+        throw new Error("Course not found");
+      }
+    },
+  });
+
+      //////////////////
       
       const { data: enrollments, error: enrollmentsError } = await supabase
         .from('enrollments')
