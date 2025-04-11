@@ -337,7 +337,7 @@ const Checkout = () => {
                         <Button 
                           type="submit" 
                           className="w-full button-primary"
-                         
+                         disabled={isSubmitting}
                         >
                           {isSubmitting ? (
                             <>
