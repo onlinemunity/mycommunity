@@ -43,6 +43,16 @@ const CheckoutSuccess = () => {
             const validStatus = ['completed', 'pending', 'cancelled'].includes(data.status) 
               ? data.status as 'completed' | 'pending' | 'cancelled'
               : 'pending';
+
+            // Hier neu
+            const validItemTypes = ["yearly_membership", "lifetime_membership"] as const;
+              items: data.items
+              .filter(item => validItemTypes.includes(item.item_type as any))
+                .map(item => ({
+                  ...item,
+                  item_type: item.item_type as "yearly_membership" | "lifetime_membership"
+                }))
+
             
             // Validate membership_type to ensure it's a valid enum value
             const validMembershipType = ['yearly', 'lifetime'].includes(data.membership_type) 
