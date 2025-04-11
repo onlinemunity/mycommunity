@@ -3,8 +3,10 @@ import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, Users, BookOpen, Calendar } from 'lucide-react';
+import { Activity, Users, BookOpen, Calendar, Receipt } from 'lucide-react';
 import { OrderHistory } from '@/components/dashboard/OrderHistory';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -63,6 +65,46 @@ const Dashboard = () => {
             </Card>
           ))}
         </div>
+        
+        {/* Add prominent card to direct users to membership options */}
+        <Card className="bg-primary/5 border-primary/20">
+          <CardHeader>
+            <CardTitle>{t('dashboard.membership') || 'Your Membership'}</CardTitle>
+            <CardDescription>
+              {t('dashboard.membershipDesc') || 'Manage your membership and subscription'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <p className="text-lg font-medium">
+                  {profile?.user_type === 'lifetime' ? 'Lifetime Access' : 
+                   profile?.user_type === 'yearly' ? 'Yearly Membership' : 
+                   'Basic Plan'}
+                </p>
+                {profile?.user_type === 'yearly' && profile?.membership_expires_at && (
+                  <p className="text-sm text-muted-foreground">
+                    Expires: {new Date(profile.membership_expires_at).toLocaleDateString()}
+                  </p>
+                )}
+                {!profile?.user_type || profile?.user_type === 'basic' ? (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Upgrade to get full access to all courses and features
+                  </p>
+                ) : (
+                  <p className="text-sm text-emerald-600 mt-1">
+                    You have full access to all courses and features
+                  </p>
+                )}
+              </div>
+              {(!profile?.user_type || profile?.user_type === 'basic') && (
+                <Button asChild>
+                  <Link to="/pricing">Upgrade Membership</Link>
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <OrderHistory />
 

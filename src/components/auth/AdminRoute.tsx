@@ -19,6 +19,17 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
     }
   }, [user, isLoading, refreshProfile]);
 
+  // Add enhanced debug information
+  useEffect(() => {
+    console.log('AdminRoute - Debug Info:', { 
+      isAdmin, 
+      profileRole: profile?.role,
+      userId: user?.id,
+      isLoading,
+      currentPath: location.pathname
+    });
+  }, [isAdmin, profile?.role, user?.id, isLoading, location.pathname]);
+
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -27,14 +38,11 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
     );
   }
 
-  // Add enhanced debug information
-  console.log('AdminRoute - Debug Info:', { 
-    isAdmin, 
-    profileRole: profile?.role,
-    userId: user?.id,
-    isLoading,
-    currentPath: location.pathname
-  });
+  // If user is not authenticated, redirect to auth page
+  if (!user) {
+    console.log('Redirecting from admin route because user is not authenticated');
+    return <Navigate to="/auth?redirect=admin" replace />;
+  }
 
   if (!isAdmin) {
     console.log('Redirecting from admin route because user is not an admin');

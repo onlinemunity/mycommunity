@@ -1,15 +1,15 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { PricingCard } from '@/components/ui-components/PricingCard';
-import { Check, Lock, User, Star, Calendar } from 'lucide-react';
+import { Check, Lock, User, Star, Calendar, ShoppingCart } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
+import { CartItem } from '@/types/supabase';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
 
 interface PricingFeature {
   text: string;
@@ -28,74 +28,54 @@ interface PricingPlan {
 
 const Pricing = () => {
   const { user, profile, refreshProfile } = useAuth();
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'yearly' | 'lifetime' | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { addItem } = useCart();
+  const navigate = useNavigate();
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
 
-  const handleUpgrade = async (planType: 'basic' | 'yearly' | 'lifetime') => {
+  const handleSelectPlan = async (planType: 'basic' | 'yearly' | 'lifetime') => {
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to upgrade your plan",
-        variant: "destructive",
-      });
+      setShowLoginDialog(true);
       return;
     }
 
-    // For free plan, we can directly apply
+    // For free plan, apply directly
     if (planType === 'basic') {
-      applyMembership(planType);
-    } else {
-      // For paid plans, show confirmation dialog
-      setSelectedPlan(planType);
-      setShowConfirmDialog(true);
-    }
-  };
-
-  const applyMembership = async (planType: 'basic' | 'yearly' | 'lifetime') => {
-    if (!user) return;
-    
-    setIsProcessing(true);
-    try {
-      // Set expiration date for yearly membership (1 year from now)
-      let expiresAt = null;
-      if (planType === 'yearly') {
-        const oneYearFromNow = new Date();
-        oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-        expiresAt = oneYearFromNow.toISOString();
+      try {
+        // Add code to handle downgrade to basic plan if needed
+        toast({
+          title: "Basic plan selected",
+          description: "You've selected the basic plan.",
+        });
+      } catch (error: any) {
+        toast({
+          title: "Error selecting plan",
+          description: error.message || "There was an error selecting the plan.",
+          variant: "destructive",
+        });
       }
-
-      // Update the profile with the new user_type
-      const { error } = await supabase
-        .from('profiles')
-        .update({ 
-          user_type: planType,
-          membership_expires_at: expiresAt
-        })
-        .eq('id', user.id);
-
-      if (error) throw error;
-
-      // Refresh user profile to get the updated information
-      await refreshProfile();
-
-      toast({
-        title: `Upgraded to ${planType.charAt(0).toUpperCase() + planType.slice(1)}!`,
-        description: planType === 'basic' 
-          ? 'Your account has been downgraded to the basic plan.'
-          : `Your account has been successfully upgraded to the ${planType} plan.`,
-      });
-      
-      setShowConfirmDialog(false);
-    } catch (error: any) {
-      toast({
-        title: "Upgrade failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setIsProcessing(false);
+      return;
     }
+
+    // For paid plans, add to cart
+    const priceMap = {
+      yearly: 99,
+      lifetime: 299
+    };
+
+    const cartItem: CartItem = {
+      id: planType,
+      name: planType === 'yearly' ? 'Yearly Membership' : 'Lifetime Access',
+      description: planType === 'yearly' 
+        ? 'Full access to all courses and resources for one year' 
+        : 'Lifetime access to all courses and resources',
+      price: priceMap[planType],
+      type: `${planType}_membership`
+    };
+
+    addItem(cartItem);
+    
+    // Navigate to cart
+    navigate('/cart');
   };
 
   const pricingPlans: PricingPlan[] = [
@@ -192,13 +172,16 @@ const Pricing = () => {
     
     // Determine CTA text and action based on user status
     let ctaText = plan.cta;
-    let ctaAction = async () => handleUpgrade(plan.planType);
+    let ctaAction = async () => handleSelectPlan(plan.planType);
     let ctaDisabled = false;
     
     if (isCurrentPlan) {
       ctaText = 'Current Plan';
       ctaAction = async () => {}; // Empty async function to satisfy Promise<void> return type
       ctaDisabled = true;
+    } else if (plan.planType !== 'basic') {
+      // For paid plans, change CTA text to indicate cart action
+      ctaText = `Add to Cart`;
     }
 
     // Special badge for plans
@@ -229,7 +212,8 @@ const Pricing = () => {
       ctaDisabled: ctaDisabled,
       highlighted: plan.popular || isCurrentPlan,
       badge: badge,
-      delay: index * 100
+      delay: index * 100,
+      ctaIcon: plan.planType !== 'basic' && !isCurrentPlan ? <ShoppingCart className="h-4 w-4 mr-2" /> : undefined
     };
   };
 
@@ -315,60 +299,31 @@ const Pricing = () => {
           </div>
         </div>
 
-        {/* Confirmation dialog for upgrading */}
-        <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        {/* Login dialog */}
+        <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Confirm Membership Upgrade</DialogTitle>
+              <DialogTitle>Sign in Required</DialogTitle>
               <DialogDescription>
-                {selectedPlan === 'yearly' ? (
-                  <>You're about to upgrade to the Yearly Membership plan for $99 per year.</>
-                ) : (
-                  <>You're about to purchase Lifetime Access for a one-time payment of $299.</>
-                )}
+                You need to be signed in to select a membership plan.
               </DialogDescription>
             </DialogHeader>
-            <div className="py-4">
-              <div className="rounded-lg bg-muted p-4 text-sm">
-                <p className="font-medium mb-2">Your selected plan includes:</p>
-                <ul className="space-y-1">
-                  {pricingPlans.find(p => p.planType === selectedPlan)?.features
-                    .filter(f => f.available)
-                    .map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                        <span>{feature.text}</span>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-              <p className="text-sm text-muted-foreground mt-4">
-                In a real application, this would connect to a payment processor like Stripe.
-                For this demo, we'll simulate the payment and upgrade your account directly.
-              </p>
-            </div>
-            <DialogFooter className="flex-col sm:flex-row gap-2">
+            <div className="flex justify-end gap-2 mt-4">
               <Button 
                 variant="outline" 
-                onClick={() => setShowConfirmDialog(false)}
-                disabled={isProcessing}
+                onClick={() => setShowLoginDialog(false)}
               >
                 Cancel
               </Button>
               <Button 
-                onClick={() => selectedPlan && applyMembership(selectedPlan)}
-                disabled={isProcessing}
+                onClick={() => {
+                  setShowLoginDialog(false);
+                  navigate('/auth?redirect=pricing');
+                }}
               >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  'Confirm and Pay'
-                )}
+                Sign in
               </Button>
-            </DialogFooter>
+            </div>
           </DialogContent>
         </Dialog>
       </div>
