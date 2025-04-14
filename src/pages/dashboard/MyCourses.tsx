@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
@@ -57,11 +58,25 @@ const MyCoursesPage = () => {
       }
 
       console.log('Enrollments fetched:', enrollments);
+      
+      if (!enrollments || enrollments.length === 0) {
+        return [];
+      }
 
       const courseIds = enrollments.map((enrollment: any) => enrollment.course_id);
       
-      if (courseIds.length === 0) {
-        return [];
+      // Also fetch courses by href to handle course URLs
+      let coursesByHref = [];
+      if (courseId) {
+        const { data: hrefCourses, error: hrefError } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('href', courseId)
+          .limit(1);
+          
+        if (!hrefError && hrefCourses && hrefCourses.length > 0) {
+          coursesByHref = hrefCourses;
+        }
       }
 
       const { data: lecturesData, error: lecturesError } = await supabase
@@ -108,7 +123,8 @@ const MyCoursesPage = () => {
         return acc;
       }, {});
 
-      return enrollments.map((enrollment: any) => {
+      // Process enrollments
+      const processedCourses = enrollments.map((enrollment: any) => {
         const courseLectures = lecturesByCourse[enrollment.course_id] || [];
         
         let finalLectures = courseLectures;
@@ -189,6 +205,39 @@ const MyCoursesPage = () => {
           course_type: enrollment.course.course_type
         } as CourseData;
       });
+      
+      // If a course is specified in the URL but not in enrollments, check if it exists
+      if (courseId && !processedCourses.find(c => c.id === courseId) && coursesByHref.length > 0) {
+        const courseFromHref = coursesByHref[0];
+        
+        // Check if user is enrolled in this course
+        const enrollmentExists = enrollments.some((e: any) => e.course_id === courseFromHref.id);
+        
+        if (!enrollmentExists) {
+          // User is not enrolled in this course but trying to access it
+          console.log('User not enrolled in course:', courseId);
+          
+          // Instead of returning an array without the course, we'll add it to the 
+          // processed courses array so it's available in the UI but with a not-enrolled flag
+          const notEnrolledCourse = {
+            id: courseFromHref.href,
+            title: courseFromHref.title,
+            description: courseFromHref.description,
+            progress: 0,
+            courseId: courseFromHref.id,
+            enrollmentId: "",  // Empty as user is not enrolled
+            lectures: [],
+            video_url: courseFromHref.video_url,
+            duration: courseFromHref.duration,
+            course_type: courseFromHref.course_type,
+            notEnrolled: true  // Flag to indicate user is not enrolled
+          } as CourseData & { notEnrolled: boolean };
+          
+          processedCourses.push(notEnrolledCourse);
+        }
+      }
+      
+      return processedCourses;
     },
     enabled: !!user,
   });
@@ -313,16 +362,40 @@ const MyCoursesPage = () => {
     console.log('Current lecture ID:', lectureId);
     console.log('Enrolled courses:', enrolledCourses);
     
-    if (courseId && enrolledCourses && enrolledCourses.length > 0 && !enrolledCourses.find(c => c.id === courseId)) {
-      console.error('Course not found:', courseId);
+    if (!user) {
       toast({
-        title: "Course not found",
-        description: "The course you're looking for couldn't be found or you're not enrolled in it.",
+        title: "Sign in required",
+        description: "Please sign in to access your courses",
         variant: "destructive",
       });
-      navigate('/dashboard/courses', { replace: true });
+      navigate('/auth?redirect=' + encodeURIComponent(window.location.pathname), { replace: true });
+      return;
     }
-  }, [courseId, lectureId, enrolledCourses, navigate]);
+    
+    if (courseId && enrolledCourses && enrolledCourses.length > 0) {
+      const selectedCourse = enrolledCourses.find(c => c.id === courseId);
+      
+      if (selectedCourse && (selectedCourse as any).notEnrolled) {
+        toast({
+          title: "Course not enrolled",
+          description: "You need to enroll in this course first to access it.",
+          variant: "destructive",
+        });
+        navigate('/courses/' + courseId, { replace: true });
+        return;
+      }
+      
+      if (!selectedCourse) {
+        console.error('Course not found:', courseId);
+        toast({
+          title: "Course not found",
+          description: "The course you're looking for couldn't be found or you're not enrolled in it.",
+          variant: "destructive",
+        });
+        navigate('/dashboard/courses', { replace: true });
+      }
+    }
+  }, [courseId, lectureId, enrolledCourses, navigate, user]);
 
   if (isLoading) {
     return (

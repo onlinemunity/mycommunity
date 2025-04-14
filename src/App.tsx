@@ -1,3 +1,4 @@
+
 import { Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 import { Toaster } from "./components/ui/toaster";
@@ -82,6 +83,8 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/dashboard/courses" element={<MyCourses />} />
+                  <Route path="/dashboard/courses/:courseId" element={<MyCourses />} />
+                  <Route path="/dashboard/courses/:courseId/lecture/:lectureId" element={<MyCourses />} />
                   <Route path="/dashboard/profile" element={<Profile />} />
                   <Route path="/dashboard/member" element={<MemberArea />} />
                 </Route>
