@@ -74,6 +74,12 @@ const Pricing = () => {
 
     addItem(cartItem);
     
+    // Show success toast
+    toast({
+      title: "Added to cart",
+      description: `${cartItem.name} has been added to your cart.`,
+    });
+    
     // Navigate to cart
     navigate('/cart');
   };
@@ -159,32 +165,26 @@ const Pricing = () => {
     },
   ];
 
-  // Helper function to map our PricingPlan format to PricingCard props
   const mapPlanToCardProps = (plan: PricingPlan, index: number) => {
-    // Convert our features to the format expected by PricingCard
     const mappedFeatures = plan.features.map(feature => ({
       text: feature.text,
       included: feature.available
     }));
 
-    // Determine if this is the user's current plan
     const isCurrentPlan = profile?.user_type === plan.planType;
     
-    // Determine CTA text and action based on user status
     let ctaText = plan.cta;
     let ctaAction = async () => handleSelectPlan(plan.planType);
     let ctaDisabled = false;
     
     if (isCurrentPlan) {
       ctaText = 'Current Plan';
-      ctaAction = async () => {}; // Empty async function to satisfy Promise<void> return type
+      ctaAction = async () => {};
       ctaDisabled = true;
     } else if (plan.planType !== 'basic') {
-      // For paid plans, change CTA text to indicate cart action
       ctaText = `Add to Cart`;
     }
 
-    // Special badge for plans
     let badge = null;
     if (plan.planType === 'yearly') {
       badge = (
@@ -217,7 +217,6 @@ const Pricing = () => {
     };
   };
 
-  // Format membership expiration date
   const formatExpirationDate = (dateString?: string | null) => {
     if (!dateString) return null;
     
@@ -299,7 +298,6 @@ const Pricing = () => {
           </div>
         </div>
 
-        {/* Login dialog */}
         <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>

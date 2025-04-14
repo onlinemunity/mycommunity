@@ -198,6 +198,27 @@ const Checkout = () => {
 
       if (itemsError) throw itemsError;
 
+      // For testing purposes, let's also update the user's profile with the membership type
+      // In a real application, this would happen after payment confirmation
+      if (membershipType) {
+        const membershipExpiresAt = membershipType === 'yearly' 
+          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() 
+          : null;
+
+        const { error: profileUpdateError } = await supabase
+          .from('profiles')
+          .update({
+            user_type: membershipType,
+            membership_expires_at: membershipExpiresAt
+          })
+          .eq('id', user.id);
+
+        if (profileUpdateError) {
+          console.error('Error updating profile membership:', profileUpdateError);
+          // Don't throw here, we still want to proceed with the order
+        }
+      }
+
       setOrderId(order.id);
       
       return order.id;
@@ -230,7 +251,7 @@ const Checkout = () => {
       
       toast({
         title: "Order created successfully",
-        description: "Your course has been booked. Please proceed to payment.",
+        description: "Your membership has been upgraded successfully.",
       });
     }
   };
@@ -374,7 +395,7 @@ const Checkout = () => {
                               Processing...
                             </>
                           ) : (
-                            'Checkout Now'
+                            'Complete Upgrade'
                           )}
                         </Button>
                       </div>

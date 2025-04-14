@@ -13,10 +13,27 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ShoppingCart, Trash2, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from '@/components/ui/use-toast';
 
 const Cart = () => {
   const { items, removeItem, clearCart, totalPrice } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "You need to be signed in to proceed to checkout.",
+        variant: "destructive"
+      });
+      navigate('/auth?redirect=cart');
+      return;
+    }
+    
+    navigate('/checkout');
+  };
 
   return (
     <Layout>
@@ -108,7 +125,7 @@ const Cart = () => {
                   <CardFooter>
                     <Button 
                       className="w-full button-primary"
-                      onClick={() => navigate('/checkout')}
+                      onClick={handleCheckout}
                     >
                       Proceed to Checkout
                       <ArrowRight className="ml-2 h-4 w-4" />
