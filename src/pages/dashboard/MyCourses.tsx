@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { CourseTable } from '@/components/dashboard/courses/CourseTable';
 import { CourseTable2 } from '@/components/dashboard/courses/CourseTable2';
@@ -32,23 +32,16 @@ const MyCoursesPage = () => {
   const { t } = useTranslation();
   const { courseId, lectureId } = useParams();
   const { user, profile } = useAuth();
+  const navigate = useNavigate();
 
-  const { data: enrolledCourses, isLoading, refetch } = useQuery({
+  const { data: enrolledCourses, isLoading, refetch, error } = useQuery({
     queryKey: ['enrolledCourses', user?.id],
     queryFn: async () => {
       if (!user) return [];
       
       console.log('Fetching enrolled courses for user:', user.id);
 
-    //////////////////////
-
-       const { data: courseData, isLoading, error } = useQuery({
-    queryKey: ['course', id],
-    queryFn: async () => {
-      console.log("Fetching course with href:", id);
-      
-      // Try to fetch by href first (most common case)
-      const { data: courseByHref, error: hrefError } = await supabase
+      const { data: enrollments, error: enrollmentsError } = await supabase
         .from('enrollments')
         .select(`
           id,
@@ -57,43 +50,11 @@ const MyCoursesPage = () => {
           course:courses(*)
         `)
         .eq('user_id', user.id);
-
       
-      if (courseByHref) {
-        console.log("Found course by href:", courseByHref);
-        return courseByHref;
+      if (enrollmentsError) {
+        console.error('Error fetching enrollments:', enrollmentsError);
+        throw enrollmentsError;
       }
-      
-      // If not found by href, try by uuid (fallback)
-      const { data: courseById, error: idError } = await supabase
-        .from('enrollments')
-        .select(`
-          id,
-          progress,
-          course_id,
-          course:courses(*)
-        `)
-        .eq('user_id', user.id);
-
-      
-      if (courseById) {
-        console.log("Found course by id:", courseById);
-        return courseById;
-      }
-      
-      // If not found by either method, throw error
-      if (!courseByHref && !courseById) {
-        console.error("Course not found for id/href:", id);
-        console.error("Href error:", hrefError);
-        console.error("ID error:", idError);
-        throw new Error("Course not found");
-      }
-    },
-  });
-
-      //////////////////
-      
-     
 
       console.log('Enrollments fetched:', enrollments);
 
@@ -351,13 +312,35 @@ const MyCoursesPage = () => {
     console.log('Current course ID:', courseId);
     console.log('Current lecture ID:', lectureId);
     console.log('Enrolled courses:', enrolledCourses);
-  }, [courseId, lectureId, enrolledCourses]);
+    
+    if (courseId && enrolledCourses && enrolledCourses.length > 0 && !enrolledCourses.find(c => c.id === courseId)) {
+      console.error('Course not found:', courseId);
+      toast({
+        title: "Course not found",
+        description: "The course you're looking for couldn't be found or you're not enrolled in it.",
+        variant: "destructive",
+      });
+      navigate('/dashboard/courses', { replace: true });
+    }
+  }, [courseId, lectureId, enrolledCourses, navigate]);
 
   if (isLoading) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-[60vh]">
           <Loader2 className="h-8 w-8 animate-spin text-accent1" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="flex flex-col items-center justify-center h-[60vh]">
+          <h2 className="text-xl font-bold mb-4">Error Loading Courses</h2>
+          <p className="text-muted-foreground mb-6">There was a problem loading your courses. Please try again later.</p>
+          <Button onClick={() => refetch()}>Try Again</Button>
         </div>
       </DashboardLayout>
     );
@@ -381,6 +364,18 @@ const MyCoursesPage = () => {
             }}
             onComplete={handleCompleteLecture}
           />
+        </DashboardLayout>
+      );
+    } else {
+      return (
+        <DashboardLayout>
+          <div className="flex flex-col items-center justify-center h-[60vh]">
+            <h2 className="text-xl font-bold mb-4">Lecture Not Found</h2>
+            <p className="text-muted-foreground mb-6">The lecture you're looking for couldn't be found.</p>
+            <Button onClick={() => navigate(`/dashboard/courses/${courseId}`)}>
+              Back to Course
+            </Button>
+          </div>
         </DashboardLayout>
       );
     }
@@ -408,6 +403,18 @@ const MyCoursesPage = () => {
               <h2 className="text-xl font-semibold mb-4">{t('dashboard.courses.lecturesList')}</h2>
               <CourseTable course={selectedCourse} />
             </div>
+          </div>
+        </DashboardLayout>
+      );
+    } else {
+      return (
+        <DashboardLayout>
+          <div className="flex flex-col items-center justify-center h-[60vh]">
+            <h2 className="text-xl font-bold mb-4">Course Not Found</h2>
+            <p className="text-muted-foreground mb-6">The course you're looking for couldn't be found or you're not enrolled in it.</p>
+            <Button onClick={() => navigate('/dashboard/courses')}>
+              View All Courses
+            </Button>
           </div>
         </DashboardLayout>
       );

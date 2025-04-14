@@ -442,6 +442,7 @@ export type Database = {
           membership_expires_at: string | null
           role: string | null
           updated_at: string | null
+          user_id: string | null
           user_type: string | null
           username: string | null
         }
@@ -453,6 +454,7 @@ export type Database = {
           membership_expires_at?: string | null
           role?: string | null
           updated_at?: string | null
+          user_id?: string | null
           user_type?: string | null
           username?: string | null
         }
@@ -464,6 +466,7 @@ export type Database = {
           membership_expires_at?: string | null
           role?: string | null
           updated_at?: string | null
+          user_id?: string | null
           user_type?: string | null
           username?: string | null
         }
