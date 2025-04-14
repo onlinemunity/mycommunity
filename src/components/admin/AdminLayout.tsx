@@ -15,7 +15,8 @@ import {
   Shield,
   Home,
   GraduationCap,
-  Server
+  Server,
+  ShoppingCart
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -59,6 +60,11 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       name: 'Users',
       path: '/admin/users',
       icon: <Users size={20} />,
+    },
+    {
+      name: 'Orders',
+      path: '/admin/orders',
+      icon: <ShoppingCart size={20} />,
     },
     {
       name: 'Settings',

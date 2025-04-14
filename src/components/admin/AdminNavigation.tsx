@@ -7,7 +7,8 @@ import {
   BookOpen, 
   VideoIcon, 
   Users, 
-  Settings
+  Settings,
+  ShoppingCart
 } from 'lucide-react';
 
 const navItems = [
@@ -30,6 +31,11 @@ const navItems = [
     name: 'Users',
     path: '/admin/users',
     icon: <Users size={18} />,
+  },
+  {
+    name: 'Orders',
+    path: '/admin/orders',
+    icon: <ShoppingCart size={18} />,
   },
   {
     name: 'Settings',

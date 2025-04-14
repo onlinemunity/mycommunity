@@ -38,6 +38,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UsersManagement from "./pages/admin/UsersManagement";
 import CoursesManagement from "./pages/admin/CoursesManagement";
 import LecturesManagement from "./pages/admin/LecturesManagement";
+import OrdersManagement from "./pages/admin/OrdersManagement";
 import Settings from "./pages/admin/Settings";
 
 // Auth components
@@ -87,6 +88,7 @@ function App() {
                   <Route path="/dashboard/courses/:courseId/lecture/:lectureId" element={<MyCourses />} />
                   <Route path="/dashboard/profile" element={<Profile />} />
                   <Route path="/dashboard/member" element={<MemberArea />} />
+                  <Route path="/dashboard/admin" element={<AdminArea />} />
                 </Route>
 
                 {/* Admin routes */}
@@ -95,6 +97,7 @@ function App() {
                   <Route path="/admin/users" element={<UsersManagement />} />
                   <Route path="/admin/courses" element={<CoursesManagement />} />
                   <Route path="/admin/lectures" element={<LecturesManagement />} />
+                  <Route path="/admin/orders" element={<OrdersManagement />} />
                   <Route path="/admin/settings" element={<Settings />} />
                 </Route>
 

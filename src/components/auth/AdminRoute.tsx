@@ -45,7 +45,7 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
   }
 
   if (!isAdmin) {
-    console.log('Redirecting from admin route because user is not an admin');
+    console.log('Redirecting from admin route because user is not an admin', { role: profile?.role });
     // Redirect to the dashboard instead of trying to redirect to subpaths
     return <Navigate to={redirectPath} replace />;
   }
