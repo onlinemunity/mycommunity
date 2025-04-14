@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { CourseCard } from '@/components/ui-components/CourseCard';
@@ -15,7 +14,6 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-// Define the features array
 const features = [
   {
     name: 'Expert-Led Courses',
@@ -440,7 +438,6 @@ const Courses = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {coursesQuery.data?.map((course) => (
                       <div key={course.id} className="relative">
-                        {renderCourseTypeBadge(course)}
                         <CourseCard
                           id={course.id}
                           title={course.title}
@@ -453,6 +450,7 @@ const Courses = () => {
                           students={course.students}
                           category={course.category}
                           href={course.href}
+                          course_type={course.course_type}
                         />
                       </div>
                     ))}

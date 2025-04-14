@@ -1,5 +1,6 @@
+
 import { ReactNode, useEffect, useState } from "react";
-import { Clock, Users, Star, BookOpen } from "lucide-react";
+import { Clock, Users, Star, BookOpen, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
@@ -24,6 +25,7 @@ interface CourseCardProps {
   className?: string;
   animated?: boolean;
   delay?: number;
+  course_type?: string;
 }
 
 export const CourseCard = ({
@@ -43,6 +45,7 @@ export const CourseCard = ({
   className,
   animated = true,
   delay = 0,
+  course_type,
 }: CourseCardProps) => {
   const { user } = useAuth();
   const [enrollmentProgress, setEnrollmentProgress] = useState<number | null>(null);
@@ -143,6 +146,13 @@ export const CourseCard = ({
         >
           {getLevelLabel()}
         </Badge>
+        
+        {course_type === 'premium' && (
+          <div className="absolute top-12 left-3 bg-amber-100 text-amber-800 px-3 py-1 rounded-full flex items-center space-x-1">
+            <Crown className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
+            <span className="text-xs font-medium">Premium</span>
+          </div>
+        )}
         
         {isEnrolled && (
           <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 text-white">
