@@ -141,8 +141,8 @@ export const OrderHistory = () => {
                 <div className="text-sm">
                   <p className="mb-1">
                     <span className="font-medium">Membership Type:</span>{' '}
-                    {order.membership_type === 'yearly' ? 'Yearly Membership' : 
-                     order.membership_type === 'lifetime' ? 'Lifetime Membership' : 'Unknown'}
+                    {order.membership_type === 'premium' ? 'Premium Membership' : 
+                     order.membership_type === 'pro' ? 'Pro Membership' : 'Basic'}
                   </p>
                   <p className="mb-1">
                     <span className="font-medium">Billing Name:</span> {order.billing_name || 'N/A'}

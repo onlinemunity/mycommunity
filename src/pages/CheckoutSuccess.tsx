@@ -45,16 +45,16 @@ const CheckoutSuccess = () => {
               : 'pending';
             
             // Validate membership_type to ensure it's a valid enum value
-            const validMembershipType = ['yearly', 'lifetime'].includes(data.membership_type) 
-              ? data.membership_type as 'yearly' | 'lifetime'
+            const validMembershipType = ['basic', 'premium', 'pro'].includes(data.membership_type) 
+              ? data.membership_type as 'basic' | 'premium' | 'pro'
               : null;
             
             // Validate item_type in items to ensure they are valid enum values
             const validItems = data.items?.map(item => ({
               ...item,
-              item_type: ['yearly_membership', 'lifetime_membership'].includes(item.item_type)
-                ? item.item_type as 'yearly_membership' | 'lifetime_membership'
-                : 'yearly_membership' // Default value if invalid
+              item_type: ['premium_membership', 'pro_membership'].includes(item.item_type)
+                ? item.item_type as 'premium_membership' | 'pro_membership'
+                : 'premium_membership' // Default value if invalid
             }));
             
             // Cast the data to Order type with the validated fields
@@ -105,7 +105,7 @@ const CheckoutSuccess = () => {
               {order && (
                 <div className="text-sm border rounded-lg p-4 bg-muted/30 text-left mb-6">
                   <p className="font-medium mb-1">Order details:</p>
-                  <p className="mb-1">Order Number: {order.invoice_number}</p>
+                  <p className="mb-1">Order Number: {order.invoice_number || "N/A"}</p>
                   <p className="mb-1">Total: ${order.total_amount}</p>
                   <p>Status: <span className="capitalize">{order.status}</span></p>
                 </div>

@@ -46,8 +46,8 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
   const canEnroll = () => {
     if (!profile || !course.course_type) return true; // Default to allowing enrollment if types not set
     
-    if (profile.user_type === 'yearly' || profile.user_type === 'lifetime') {
-      return true; // Yearly or lifetime members can enroll in any course
+    if (profile.user_type === 'premium' || profile.user_type === 'pro') {
+      return true; // Premium or Pro members can enroll in any course
     }
     
     // Basic users can only enroll in basic courses
@@ -115,7 +115,7 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
   };
 
   const isPremiumCourse = course.course_type === 'premium';
-  const userCanAccessPremium = profile?.user_type === 'yearly' || profile?.user_type === 'lifetime';
+  const userCanAccessPremium = profile?.user_type === 'premium' || profile?.user_type === 'pro';
 
   const features = [
     'Full lifetime access',
@@ -126,7 +126,7 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
 
   if (isPremiumCourse) {
     features.push('Premium course content');
-    if (profile?.user_type === 'yearly') {
+    if (profile?.user_type === 'pro') {
       features.push('Access to live events');
     }
   }
@@ -192,13 +192,13 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
           </Button>
         )}
 
-        {isPremiumCourse && profile?.user_type === 'yearly' && (
+        {profile?.user_type === 'pro' && (
           <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
             <div className="flex items-start gap-2">
               <Calendar className="h-5 w-5 text-emerald-600 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-emerald-800">Yearly Member Benefits</p>
-                <p className="text-xs text-emerald-700">Your yearly membership includes access to all premium courses and live events.</p>
+                <p className="text-sm font-medium text-emerald-800">Pro Member Benefits</p>
+                <p className="text-xs text-emerald-700">Your pro membership includes access to all premium courses and live events.</p>
               </div>
             </div>
           </div>
@@ -213,13 +213,13 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
           ))}
         </div>
 
-        {isPremiumCourse && profile?.user_type === 'lifetime' && (
+        {profile?.user_type === 'premium' && (
           <div className="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-3">
             <div className="flex items-start gap-2">
               <Star className="h-5 w-5 text-purple-600 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-purple-800">Lifetime Access</p>
-                <p className="text-xs text-purple-700">You have unlimited access to all premium courses, but live events are only available with yearly membership.</p>
+                <p className="text-sm font-medium text-purple-800">Premium Access</p>
+                <p className="text-xs text-purple-700">You have access to all premium courses, but live events are only available with Pro membership.</p>
               </div>
             </div>
           </div>

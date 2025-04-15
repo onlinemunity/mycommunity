@@ -72,6 +72,16 @@ const OrdersManagement = () => {
       // For each order, get the user details separately
       const ordersWithUserDetails: OrderWithUserDetails[] = await Promise.all(
         ordersData.map(async (order) => {
+          // Validate status to ensure it's a valid type
+          const validatedStatus = ['pending', 'processing', 'paid', 'completed', 'cancelled'].includes(order.status) 
+            ? order.status as Order['status']
+            : 'pending' as const;
+          
+          // Validate membership_type
+          const validatedMembershipType = ['basic', 'premium', 'pro'].includes(order.membership_type as string) 
+            ? order.membership_type as 'basic' | 'premium' | 'pro' | null
+            : null;
+
           // Fetch user profile details
           try {
             const { data: profileData, error: profileError } = await supabase
@@ -84,18 +94,24 @@ const OrdersManagement = () => {
               console.error('Error fetching profile for user ID:', order.user_id, profileError);
               return {
                 ...order,
+                status: validatedStatus,
+                membership_type: validatedMembershipType,
                 user_details: null
               };
             }
             
             return {
               ...order,
+              status: validatedStatus,
+              membership_type: validatedMembershipType,
               user_details: profileData
             };
           } catch (error) {
             console.error('Unexpected error fetching profile:', error);
             return {
               ...order,
+              status: validatedStatus,
+              membership_type: validatedMembershipType,
               user_details: null
             };
           }
@@ -119,7 +135,7 @@ const OrdersManagement = () => {
     fetchOrders();
   }, []);
 
-  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+  const updateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
     try {
       const { error } = await supabase
         .from('orders')
