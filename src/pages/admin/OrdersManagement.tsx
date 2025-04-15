@@ -62,13 +62,19 @@ const OrdersManagement = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
+      console.log('Fetching orders...');
       // First fetch all orders
       const { data: ordersData, error: ordersError } = await supabase
         .from('orders')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (ordersError) throw ordersError;
+      if (ordersError) {
+        console.error('Error fetching orders:', ordersError);
+        throw ordersError;
+      }
+      
+      console.log('Orders fetched:', ordersData);
       
       if (!ordersData || ordersData.length === 0) {
         setOrders([]);
@@ -80,22 +86,41 @@ const OrdersManagement = () => {
       const ordersWithUserDetails: OrderWithUserDetails[] = await Promise.all(
         ordersData.map(async (order) => {
           // Fetch user profile details
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('username, full_name')
-            .eq('id', order.user_id)
-            .single();
+          try {
+            const { data: profileData, error: profileError } = await supabase
+              .from('profiles')
+              .select('username, full_name')
+              .eq('id', order.user_id)
+              .single();
 
-          return {
-            ...order,
-            user_details: profileError ? null : profileData
-          };
+            if (profileError) {
+              console.error('Error fetching profile for user ID:', order.user_id, profileError);
+              return {
+                ...order,
+                user_details: null
+              };
+            }
+
+            console.log('Profile fetched for order:', order.id, profileData);
+            
+            return {
+              ...order,
+              user_details: profileData
+            };
+          } catch (error) {
+            console.error('Unexpected error fetching profile:', error);
+            return {
+              ...order,
+              user_details: null
+            };
+          }
         })
       );
 
+      console.log('Orders with user details:', ordersWithUserDetails);
       setOrders(ordersWithUserDetails);
     } catch (error: any) {
-      console.error('Error fetching orders:', error.message);
+      console.error('Error in fetchOrders:', error.message);
       toast({
         title: 'Error',
         description: 'Failed to load orders. Please try again.',
