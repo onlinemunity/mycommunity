@@ -45,8 +45,9 @@ type Order = {
   billing_country: string | null;
 };
 
+// Modified to make username and full_name nullable to match database schema
 type OrderWithUserDetails = Order & {
-  profiles: {
+  user_details?: {
     username: string | null;
     full_name: string | null;
   } | null;
@@ -61,26 +62,38 @@ const OrdersManagement = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      // First fetch all orders
+      const { data: ordersData, error: ordersError } = await supabase
         .from('orders')
-        .select(`
-          *,
-          profiles:user_id (
-            username,
-            full_name
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (ordersError) throw ordersError;
       
-      // Explicitly type and transform the data to match OrderWithUserDetails
-      const typedOrders: OrderWithUserDetails[] = data ? data.map(order => ({
-        ...order,
-        profiles: order.profiles || null
-      })) : [];
-      
-      setOrders(typedOrders);
+      if (!ordersData || ordersData.length === 0) {
+        setOrders([]);
+        setLoading(false);
+        return;
+      }
+
+      // For each order, get the user details separately
+      const ordersWithUserDetails: OrderWithUserDetails[] = await Promise.all(
+        ordersData.map(async (order) => {
+          // Fetch user profile details
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('username, full_name')
+            .eq('id', order.user_id)
+            .single();
+
+          return {
+            ...order,
+            user_details: profileError ? null : profileData
+          };
+        })
+      );
+
+      setOrders(ordersWithUserDetails);
     } catch (error: any) {
       console.error('Error fetching orders:', error.message);
       toast({
@@ -150,8 +163,8 @@ const OrdersManagement = () => {
       !searchQuery || 
       (order.billing_name && order.billing_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (order.billing_email && order.billing_email.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (order.profiles?.username && order.profiles.username.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (order.profiles?.full_name && order.profiles.full_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (order.user_details?.username && order.user_details.username.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (order.user_details?.full_name && order.user_details.full_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       order.id.includes(searchQuery);
     
     const matchesStatus = !statusFilter || order.status.toLowerCase() === statusFilter.toLowerCase();
@@ -162,10 +175,6 @@ const OrdersManagement = () => {
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'PPP');
   };
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
 
   return (
     <AdminLayout>
@@ -240,9 +249,9 @@ const OrdersManagement = () => {
                         <div className="flex items-center">
                           <User className="h-4 w-4 mr-2 text-muted-foreground" />
                           <div>
-                            <div>{order.billing_name || order.profiles?.full_name || 'Unknown'}</div>
+                            <div>{order.billing_name || order.user_details?.full_name || 'Unknown'}</div>
                             <div className="text-xs text-muted-foreground">
-                              {order.billing_email || order.profiles?.username || 'No email'}
+                              {order.billing_email || order.user_details?.username || 'No email'}
                             </div>
                           </div>
                         </div>
