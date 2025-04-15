@@ -18,34 +18,24 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Search, Check, PackageCheck, Calendar, RefreshCw, User, CreditCard } from 'lucide-react';
+import { Search, Check, PackageCheck, Calendar, RefreshCw, User, CreditCard, MoreHorizontal } from 'lucide-react';
 import { format } from 'date-fns';
+import { Order } from '@/types/supabase';
 
-type Order = {
-  id: string;
-  user_id: string;
-  total_amount: number;
-  created_at: string;
-  status: string;
-  payment_method: string | null;
-  membership_type: string | null;
-  invoice_number: string | null;
-  billing_name: string | null;
-  billing_email: string | null;
-  billing_address: string | null;
-  billing_city: string | null;
-  billing_state: string | null;
-  billing_zip: string | null;
-  billing_country: string | null;
-};
-
-// Modified to make username and full_name nullable to match database schema
 type OrderWithUserDetails = Order & {
   user_details?: {
     username: string | null;
@@ -62,7 +52,6 @@ const OrdersManagement = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      console.log('Fetching orders...');
       // First fetch all orders
       const { data: ordersData, error: ordersError } = await supabase
         .from('orders')
@@ -73,8 +62,6 @@ const OrdersManagement = () => {
         console.error('Error fetching orders:', ordersError);
         throw ordersError;
       }
-      
-      console.log('Orders fetched:', ordersData);
       
       if (!ordersData || ordersData.length === 0) {
         setOrders([]);
@@ -100,8 +87,6 @@ const OrdersManagement = () => {
                 user_details: null
               };
             }
-
-            console.log('Profile fetched for order:', order.id, profileData);
             
             return {
               ...order,
@@ -117,7 +102,6 @@ const OrdersManagement = () => {
         })
       );
 
-      console.log('Orders with user details:', ordersWithUserDetails);
       setOrders(ordersWithUserDetails);
     } catch (error: any) {
       console.error('Error in fetchOrders:', error.message);
@@ -170,6 +154,7 @@ const OrdersManagement = () => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'completed':
+      case 'paid':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'pending':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
@@ -199,6 +184,21 @@ const OrdersManagement = () => {
 
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'PPP');
+  };
+
+  const formatMembershipType = (type: string | null) => {
+    if (!type) return "N/A";
+    
+    switch (type.toLowerCase()) {
+      case "basic":
+        return "Basic (Free)";
+      case "premium":
+        return "Premium";
+      case "pro":
+        return "Pro";
+      default:
+        return type;
+    }
   };
 
   return (
@@ -233,6 +233,7 @@ const OrdersManagement = () => {
                 <SelectItem value="">All Statuses</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="processing">Processing</SelectItem>
+                <SelectItem value="paid">Paid</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
@@ -291,7 +292,7 @@ const OrdersManagement = () => {
                       <TableCell>
                         {order.membership_type ? (
                           <Badge variant="outline" className="capitalize">
-                            {order.membership_type} Membership
+                            {formatMembershipType(order.membership_type)}
                           </Badge>
                         ) : (
                           <Badge variant="outline">
@@ -305,20 +306,33 @@ const OrdersManagement = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Select
-                          defaultValue={order.status}
-                          onValueChange={(value) => updateOrderStatus(order.id, value)}
-                        >
-                          <SelectTrigger className="w-[120px]">
-                            <SelectValue placeholder="Change status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="processing">Processing</SelectItem>
-                            <SelectItem value="completed">Completed</SelectItem>
-                            <SelectItem value="cancelled">Cancelled</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Actions</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-background border">
+                            <DropdownMenuLabel>Update Status</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => updateOrderStatus(order.id, 'pending')}>
+                              Set as Pending
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => updateOrderStatus(order.id, 'processing')}>
+                              Set as Processing
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => updateOrderStatus(order.id, 'paid')}>
+                              Set as Paid
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => updateOrderStatus(order.id, 'completed')}>
+                              Set as Completed
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => updateOrderStatus(order.id, 'cancelled')}>
+                              Set as Cancelled
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -355,9 +369,9 @@ const OrdersManagement = () => {
                     <Check className="h-5 w-5 text-green-500" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Completed</p>
+                    <p className="text-sm font-medium text-muted-foreground">Completed/Paid</p>
                     <p className="text-2xl font-bold">
-                      {orders.filter(o => o.status.toLowerCase() === 'completed').length}
+                      {orders.filter(o => ['completed', 'paid'].includes(o.status.toLowerCase())).length}
                     </p>
                   </div>
                 </div>
