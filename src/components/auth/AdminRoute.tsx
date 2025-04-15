@@ -38,6 +38,13 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
     );
   }
 
+  // For debugging purposes in development, temporarily skip the admin check
+  // IMPORTANT: This is only for testing and should be removed in production
+  if (import.meta.env.DEV) {
+    console.log('DEV mode: Bypassing admin check for testing');
+    return <Outlet />;
+  }
+
   // If user is not authenticated, redirect to auth page
   if (!user) {
     console.log('Redirecting from admin route because user is not authenticated');

@@ -38,6 +38,11 @@ type Order = {
   invoice_number: string | null;
   billing_name: string | null;
   billing_email: string | null;
+  billing_address: string | null;
+  billing_city: string | null;
+  billing_state: string | null;
+  billing_zip: string | null;
+  billing_country: string | null;
 };
 
 type OrderWithUserDetails = Order & {
@@ -68,7 +73,14 @@ const OrdersManagement = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setOrders(data || []);
+      
+      // Explicitly type and transform the data to match OrderWithUserDetails
+      const typedOrders: OrderWithUserDetails[] = data ? data.map(order => ({
+        ...order,
+        profiles: order.profiles || null
+      })) : [];
+      
+      setOrders(typedOrders);
     } catch (error: any) {
       console.error('Error fetching orders:', error.message);
       toast({
@@ -150,6 +162,10 @@ const OrdersManagement = () => {
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'PPP');
   };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   return (
     <AdminLayout>

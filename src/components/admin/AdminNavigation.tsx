@@ -47,7 +47,13 @@ const navItems = [
 export const AdminNavigation = () => {
   const location = useLocation();
   
-  console.log('AdminNavigation - Current path:', location.pathname);
+  // Updated isActive check to handle exact matches and sub-paths
+  const isActive = (path: string) => {
+    if (path === '/admin') {
+      return location.pathname === '/admin';
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <nav className="flex overflow-x-auto pb-2 mb-6 border-b">
@@ -58,7 +64,7 @@ export const AdminNavigation = () => {
             to={item.path}
             className={cn(
               'flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors',
-              location.pathname === item.path
+              isActive(item.path)
                 ? 'bg-primary/10 text-primary'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
             )}

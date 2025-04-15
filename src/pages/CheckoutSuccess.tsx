@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle2, ArrowRight, CreditCard } from 'lucide-react';
+import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -85,56 +85,6 @@ const CheckoutSuccess = () => {
     }
   }, [user, navigate, orderId]);
 
-  const handlePayNow = () => {
-    // In a real application, this would redirect to a Stripe payment page
-    toast({
-      title: 'Payment',
-      description: 'Redirecting to payment gateway...',
-    });
-    
-    // Simulate successful payment after delay
-    setTimeout(() => {
-      // Update order status to completed
-      const updateOrder = async () => {
-        if (!orderId) return;
-        
-        try {
-          const { error } = await supabase
-            .from('orders')
-            .update({ status: 'completed' })
-            .eq('id', orderId);
-            
-          if (error) throw error;
-          
-          // Update local state to reflect changes
-          if (order) {
-            setOrder({
-              ...order,
-              status: 'completed'
-            });
-          }
-          
-          toast({
-            title: 'Payment Successful',
-            description: 'Your payment has been processed successfully',
-          });
-          
-          // Redirect to dashboard after successful payment
-          navigate('/dashboard');
-        } catch (error: any) {
-          console.error('Error updating order:', error);
-          toast({
-            title: 'Error',
-            description: 'Failed to process payment',
-            variant: 'destructive',
-          });
-        }
-      };
-      
-      updateOrder();
-    }, 2000);
-  };
-
   if (!user) return null;
 
   return (
@@ -146,11 +96,11 @@ const CheckoutSuccess = () => {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="h-8 w-8 text-green-600" />
               </div>
-              <CardTitle className="text-2xl">Course Booked!</CardTitle>
+              <CardTitle className="text-2xl">Order Placed!</CardTitle>
             </CardHeader>
             <CardContent className="pb-6">
               <p className="text-muted-foreground mb-4">
-                Your order has been successfully created. Please complete the payment to gain access to your purchased content.
+                Your order has been successfully created. Your membership has been temporarily upgraded. A payment system will be implemented soon.
               </p>
               {order && (
                 <div className="text-sm border rounded-lg p-4 bg-muted/30 text-left mb-6">
@@ -162,9 +112,6 @@ const CheckoutSuccess = () => {
               )}
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
-              <Button onClick={handlePayNow} className="w-full bg-accent1 hover:bg-accent1/90">
-                <CreditCard className="mr-2 h-4 w-4" /> Pay Now
-              </Button>
               <Button variant="outline" asChild className="w-full">
                 <Link to="/dashboard">
                   Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />

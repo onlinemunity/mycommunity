@@ -43,10 +43,7 @@ const formSchema = z.object({
   city: z.string().min(2, 'City is required'),
   state: z.string().min(2, 'State/Province is required'),
   zipCode: z.string().min(3, 'Zip/Postal code is required'),
-  country: z.string().min(2, 'Country is required'),
-  cardNumber: z.string().min(10, 'Please enter a valid card number'),
-  cardExpiry: z.string().min(5, 'Please enter a valid expiry date'),
-  cardCvc: z.string().min(3, 'Please enter a valid CVC')
+  country: z.string().min(2, 'Country is required')
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -56,7 +53,6 @@ const Checkout = () => {
   const { user, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderId, setOrderId] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -67,10 +63,7 @@ const Checkout = () => {
       city: '',
       state: '',
       zipCode: '',
-      country: '',
-      cardNumber: '',
-      cardExpiry: '',
-      cardCvc: ''
+      country: ''
     }
   });
 
@@ -198,7 +191,7 @@ const Checkout = () => {
 
       if (itemsError) throw itemsError;
 
-      // For testing purposes, let's also update the user's profile with the membership type
+      // For testing purposes, update the user's profile with the membership type
       // In a real application, this would happen after payment confirmation
       if (membershipType) {
         const membershipExpiresAt = membershipType === 'yearly' 
@@ -219,8 +212,6 @@ const Checkout = () => {
         }
       }
 
-      setOrderId(order.id);
-      
       return order.id;
     } catch (error: any) {
       console.error('Order creation error:', error);
@@ -251,7 +242,7 @@ const Checkout = () => {
       
       toast({
         title: "Order created successfully",
-        description: "Your membership has been upgraded successfully.",
+        description: "Your order has been placed successfully.",
       });
     }
   };
@@ -387,7 +378,7 @@ const Checkout = () => {
                         <Button 
                           type="submit" 
                           className="w-full button-primary"
-                         disabled={isSubmitting}
+                          disabled={isSubmitting}
                         >
                           {isSubmitting ? (
                             <>
