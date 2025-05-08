@@ -226,7 +226,7 @@ const Courses = () => {
                       category={safeCourse.category || ''}
                       href={`/courses/${safeCourse.href}`}
                       course_type={safeCourse.course_type}
-                      onClick={() => navigate(`/courses/${safeCourse.href}`)}
+                      onClick={() => navigate(`/${safeCourse.href}`)}
                       onEnrollClick={() => handleEnrollClick(safeCourse)}
                       isPremium={safeCourse.course_type === 'premium'}
                       isLocked={safeCourse.course_type === 'premium' && !hasPremiumAccess}
