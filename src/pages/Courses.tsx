@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
 import { CourseCard } from '@/components/ui-components/CourseCard';
-import { Sidebar } from '@/components/ui-components/Sidebar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -15,12 +15,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { Course } from '@/types/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 
 const Courses = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('newest');
   const navigate = useNavigate();
+  const { user, profile } = useAuth();
 
   // Fetch courses
   const { data: courses, isLoading } = useQuery({
@@ -36,7 +38,12 @@ const Courses = () => {
     },
   });
 
-  const { user, profile } = useAuth();
+  // Filter courses by search query and category
+  const filteredCourses = courses?.filter(course => {
+    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || course.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  }) || [];
 
   // Check for premium membership
   const isAuthenticated = !!user;
@@ -72,13 +79,6 @@ const Courses = () => {
     navigate(`/courses/${course.href}`);
   };
 
-  // Filter courses by search query and category
-  const filteredCourses = courses?.filter(course => {
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || course.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  }) || [];
-
   // Sort courses
   const sortedCourses = [...filteredCourses].sort((a, b) => {
     if (sortOrder === 'newest') {
@@ -90,6 +90,14 @@ const Courses = () => {
   });
 
   const filteredAndSortedCourses = sortedCourses;
+  
+  // Helper function to safely type cast the course level
+  const safelyTypeCastCourseLevel = (level: string): "beginner" | "intermediate" | "advanced" => {
+    const validLevels: ("beginner" | "intermediate" | "advanced")[] = ["beginner", "intermediate", "advanced"];
+    return validLevels.includes(level.toLowerCase() as any) 
+      ? level.toLowerCase() as "beginner" | "intermediate" | "advanced" 
+      : "beginner";
+  };
 
   return (
     <Layout>
@@ -100,55 +108,55 @@ const Courses = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
-          <Sidebar>
+          <div className="h-full">
             <ScrollArea className="h-[550px] w-full rounded-md border p-2">
               <div className="pb-4">
                 <h4 className="mb-1 font-medium">Category</h4>
                 <div className="grid gap-1">
                   <Button
                     variant="outline"
-                    className="justify-start rounded-md px-3.5 py-2 font-normal"
+                    className={cn("justify-start rounded-md px-3.5 py-2 font-normal", 
+                      categoryFilter === 'all' ? "bg-accent text-accent-foreground" : "")}
                     onClick={() => setCategoryFilter('all')}
-                    active={categoryFilter === 'all'}
                   >
                     All Categories
                   </Button>
                   <Button
                     variant="outline"
-                    className="justify-start rounded-md px-3.5 py-2 font-normal"
+                    className={cn("justify-start rounded-md px-3.5 py-2 font-normal", 
+                      categoryFilter === 'Web Development' ? "bg-accent text-accent-foreground" : "")}
                     onClick={() => setCategoryFilter('Web Development')}
-                    active={categoryFilter === 'Web Development'}
                   >
                     Web Development
                   </Button>
                   <Button
                     variant="outline"
-                    className="justify-start rounded-md px-3.5 py-2 font-normal"
+                    className={cn("justify-start rounded-md px-3.5 py-2 font-normal", 
+                      categoryFilter === 'Mobile Development' ? "bg-accent text-accent-foreground" : "")}
                     onClick={() => setCategoryFilter('Mobile Development')}
-                    active={categoryFilter === 'Mobile Development'}
                   >
                     Mobile Development
                   </Button>
                   <Button
                     variant="outline"
-                    className="justify-start rounded-md px-3.5 py-2 font-normal"
+                    className={cn("justify-start rounded-md px-3.5 py-2 font-normal", 
+                      categoryFilter === 'Data Science' ? "bg-accent text-accent-foreground" : "")}
                     onClick={() => setCategoryFilter('Data Science')}
-                    active={categoryFilter === 'Data Science'}
                   >
                     Data Science
                   </Button>
                   <Button
                     variant="outline"
-                    className="justify-start rounded-md px-3.5 py-2 font-normal"
+                    className={cn("justify-start rounded-md px-3.5 py-2 font-normal", 
+                      categoryFilter === 'Design' ? "bg-accent text-accent-foreground" : "")}
                     onClick={() => setCategoryFilter('Design')}
-                    active={categoryFilter === 'Design'}
                   >
                     Design
                   </Button>
                 </div>
               </div>
             </ScrollArea>
-          </Sidebar>
+          </div>
 
           <div className="space-y-8">
             {showPremiumBanner && (
@@ -192,25 +200,32 @@ const Courses = () => {
               </div>
             ) : filteredAndSortedCourses.length > 0 ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredAndSortedCourses.map((course) => (
-                  <CourseCard
-                    key={course.id}
-                    title={course.title}
-                    description={course.description}
-                    image={course.image}
-                    rating={course.rating}
-                    students={course.students}
-                    duration={course.duration}
-                    level={course.level}
-                    instructor={course.instructor}
-                    href={`/courses/${course.href}`}
-                    onClick={() => navigate(`/courses/${course.href}`)}
-                    isPremium={course.course_type === 'premium'}
-                    isLocked={course.course_type === 'premium' && !hasPremiumAccess}
-                    onEnrollClick={() => handleEnrollClick(course)}
-                    delayAnimation={true}
-                  />
-                ))}
+                {filteredAndSortedCourses.map((course) => {
+                  const safeCourse: Course = {
+                    ...course,
+                    level: safelyTypeCastCourseLevel(course.level || 'beginner'),
+                  };
+                  
+                  return (
+                    <CourseCard
+                      key={safeCourse.id}
+                      title={safeCourse.title}
+                      description={safeCourse.description}
+                      image={safeCourse.image}
+                      rating={safeCourse.rating}
+                      students={safeCourse.students}
+                      duration={safeCourse.duration}
+                      level={safeCourse.level}
+                      instructor={safeCourse.instructor}
+                      href={`/courses/${safeCourse.href}`}
+                      onClick={() => navigate(`/courses/${safeCourse.href}`)}
+                      isPremium={safeCourse.course_type === 'premium'}
+                      isLocked={safeCourse.course_type === 'premium' && !hasPremiumAccess}
+                      onEnrollClick={() => handleEnrollClick(safeCourse)}
+                      delayAnimation={true}
+                    />
+                  );
+                })}
               </div>
             ) : (
               <div className="grid h-32 place-items-center">
