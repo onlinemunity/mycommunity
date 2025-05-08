@@ -30,6 +30,7 @@ interface CourseCardProps {
   onEnrollClick?: () => void;
   isPremium?: boolean;
   isLocked?: boolean;
+  delayAnimation?: boolean;
 }
 
 export const CourseCard = ({
@@ -54,6 +55,7 @@ export const CourseCard = ({
   onEnrollClick,
   isPremium,
   isLocked,
+  delayAnimation,
 }: CourseCardProps) => {
   const { user } = useAuth();
   const [enrollmentProgress, setEnrollmentProgress] = useState<number | null>(null);
@@ -121,9 +123,12 @@ export const CourseCard = ({
     return labels[level];
   };
 
+  // Fix the double courses path issue by ensuring href starts without a slash
+  const cleanHref = href.startsWith('/') ? href.substring(1) : href;
+  
   return (
     <Link
-      to={user && isEnrolled ? `/dashboard/courses/${href}` : `/courses/${href}`}
+      to={user && isEnrolled ? `/dashboard/courses/${cleanHref}` : `/courses/${cleanHref}`}
       className={cn(
         "group block overflow-hidden rounded-xl border border-metal/30 bg-white hover:shadow-elevated transition-all duration-300",
         animated && "animate-scale-in",

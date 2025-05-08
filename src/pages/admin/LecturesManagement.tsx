@@ -15,9 +15,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/use-toast';
-import { Plus, Pencil, Trash2, Search, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Loader2, ListFilter } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type Lecture = Tables<'lectures'>;
 type Course = Tables<'courses'>;
@@ -41,6 +42,7 @@ const LecturesManagement = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedLecture, setSelectedLecture] = useState<LectureFormData | null>(null);
+  const [courseFilter, setCourseFilter] = useState<string>('all');
   const [formData, setFormData] = useState<LectureFormData>({
     title: '',
     description: '',
@@ -207,9 +209,12 @@ const LecturesManagement = () => {
     }));
   };
 
-  const filteredLectures = lectures.filter(lecture =>
-    lecture.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter lectures by course and search term
+  const filteredLectures = lectures.filter(lecture => {
+    const matchesCourse = courseFilter === 'all' || lecture.course_id === courseFilter;
+    const matchesSearch = lecture.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCourse && matchesSearch;
+  });
 
   const getCourseTitle = (courseId: string) => {
     const course = courses.find(c => c.id === courseId);
@@ -368,6 +373,28 @@ const LecturesManagement = () => {
           </div>
         </div>
         
+        {/* Add course filter */}
+        <div className="flex items-center gap-3">
+          <ListFilter className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-medium">Filter by course:</span>
+          <Select value={courseFilter} onValueChange={setCourseFilter}>
+            <SelectTrigger className="w-[250px]">
+              <SelectValue placeholder="Select a course" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Courses</SelectItem>
+              <SelectGroup>
+                <SelectLabel>Courses</SelectLabel>
+                {courses.map(course => (
+                  <SelectItem key={course.id} value={course.id}>
+                    {course.title}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        
         <Card>
           <CardContent className="p-0">
             <Table>
@@ -384,7 +411,7 @@ const LecturesManagement = () => {
                 {filteredLectures.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      {searchQuery ? 'No lectures matching your search' : 'No lectures found. Create your first lecture!'}
+                      {searchQuery || courseFilter !== 'all' ? 'No lectures matching your filters' : 'No lectures found. Create your first lecture!'}
                     </TableCell>
                   </TableRow>
                 ) : (

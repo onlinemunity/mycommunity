@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import {
   Card,
@@ -30,10 +30,11 @@ import { Input } from '@/components/ui/input';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Order } from '@/types/supabase';
-import { Loader2, MoreHorizontal, Search } from 'lucide-react';
+import { Loader2, MoreHorizontal, Search, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 // Order status options
 const orderStatuses = [
@@ -49,30 +50,53 @@ const OrdersManagement = () => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [debugInfo, setDebugInfo] = useState<string | null>(null);
 
-  // Fetch orders
-  const { data: orders, isLoading } = useQuery({
+  // Enhanced fetch orders with debug info
+  const { data: orders, isLoading, error } = useQuery({
     queryKey: ['admin', 'orders'],
     queryFn: async () => {
       console.log('Fetching orders...');
-      // Fetch orders with user profiles
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          items:order_items(*),
-          profile:profiles(username, full_name, email)
-        `)
-        .order('created_at', { ascending: false });
+      try {
+        // Debug: First check if the orders table exists and has data
+        const { count, error: countError } = await supabase
+          .from('orders')
+          .select('*', { count: 'exact', head: true });
+          
+        if (countError) {
+          console.error('Error checking orders count:', countError);
+          setDebugInfo(`Error checking orders count: ${countError.message}`);
+          throw countError;
+        }
         
-      if (error) {
-        console.error('Error fetching orders:', error);
-        throw error;
+        console.log(`Found ${count} orders in database`);
+        setDebugInfo(`Found ${count} orders in database`);
+        
+        // Fetch orders with user profiles
+        const { data, error } = await supabase
+          .from('orders')
+          .select(`
+            *,
+            items:order_items(*),
+            profile:profiles(username, full_name, email)
+          `)
+          .order('created_at', { ascending: false });
+          
+        if (error) {
+          console.error('Error fetching orders:', error);
+          setDebugInfo(`Error fetching orders: ${error.message}`);
+          throw error;
+        }
+        
+        console.log('Fetched orders:', data);
+        return data || [];
+      } catch (err: any) {
+        console.error('Exception in fetchOrders:', err);
+        setDebugInfo(`Exception in fetchOrders: ${err.message}`);
+        throw err;
       }
-      
-      console.log('Fetched orders:', data);
-      return data || [];
     },
+    refetchOnWindowFocus: false,
   });
 
   // Mutation to update order status
@@ -152,6 +176,42 @@ const OrdersManagement = () => {
     }
   };
 
+  // Function to generate test data
+  const generateTestOrder = async () => {
+    try {
+      const testOrder = {
+        user_id: '00000000-0000-0000-0000-000000000000', // Placeholder user ID
+        total_amount: 99.99,
+        status: 'pending',
+        billing_name: 'Test User',
+        billing_email: 'test@example.com',
+        invoice_number: `INV-${Math.floor(Math.random() * 10000)}`,
+        membership_type: 'premium'
+      };
+
+      const { data, error } = await supabase
+        .from('orders')
+        .insert([testOrder])
+        .select();
+
+      if (error) throw error;
+
+      toast({
+        title: 'Test Order Created',
+        description: 'A test order has been successfully created.',
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
+    } catch (error: any) {
+      console.error('Error creating test order:', error);
+      toast({
+        title: 'Error',
+        description: `Failed to create test order: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -161,6 +221,17 @@ const OrdersManagement = () => {
             View and manage all customer orders
           </p>
         </div>
+        
+        {/* Debug Alert */}
+        {(error || debugInfo) && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Debug Information</AlertTitle>
+            <AlertDescription>
+              {error ? String(error) : debugInfo}
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
@@ -190,6 +261,10 @@ const OrdersManagement = () => {
                   ))}
                 </SelectContent>
               </Select>
+              
+              <Button variant="outline" onClick={generateTestOrder}>
+                Generate Test Order
+              </Button>
             </div>
             
             <div className="text-sm text-muted-foreground">
@@ -286,7 +361,10 @@ const OrdersManagement = () => {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-muted-foreground">No orders found matching the criteria</p>
+                  <p className="text-muted-foreground mb-4">No orders found matching the criteria</p>
+                  <Button onClick={generateTestOrder} variant="outline">
+                    Create Test Order Data
+                  </Button>
                 </div>
               )}
             </CardContent>
