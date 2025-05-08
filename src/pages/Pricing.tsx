@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
@@ -23,7 +24,7 @@ interface PricingPlan {
   features: PricingFeature[];
   cta: string;
   popular?: boolean;
-  planType: 'basic' | 'yearly' | 'lifetime';
+  planType: 'basic' | 'premium' | 'pro';
 }
 
 const Pricing = () => {
@@ -32,7 +33,7 @@ const Pricing = () => {
   const navigate = useNavigate();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
 
-  const handleSelectPlan = async (planType: 'basic' | 'yearly' | 'lifetime') => {
+  const handleSelectPlan = async (planType: 'basic' | 'premium' | 'pro') => {
     if (!user) {
       setShowLoginDialog(true);
       return;
@@ -58,18 +59,18 @@ const Pricing = () => {
 
     // For paid plans, add to cart
     const priceMap = {
-      yearly: 99,
-      lifetime: 299
+      premium: 99,
+      pro: 299
     };
 
     const cartItem: CartItem = {
       id: planType,
-      name: planType === 'yearly' ? 'Yearly Membership' : 'Lifetime Access',
-      description: planType === 'yearly' 
+      name: planType === 'premium' ? 'Premium Membership' : 'Pro Membership',
+      description: planType === 'premium' 
         ? 'Full access to all courses and resources for one year' 
-        : 'Lifetime access to all courses and resources',
+        : 'Full access to all courses, resources, and live sessions',
       price: priceMap[planType],
-      type: `${planType}_membership`
+      type: `${planType}_membership` as 'premium_membership' | 'pro_membership'
     };
 
     addItem(cartItem);
@@ -104,28 +105,9 @@ const Pricing = () => {
       planType: 'basic',
     },
     {
-      title: 'Yearly Membership',
+      title: 'Premium Membership',
       price: '$99',
-      description: 'Full access to all courses and live events',
-      features: [
-        { text: 'Access to community forum', available: true },
-        { text: 'Full access to learning resources', available: true },
-        { text: 'Access to ALL courses (Basic & Premium)', available: true },
-        { text: 'Community support', available: true },
-        { text: 'Course completion certificates', available: true },
-        { text: 'Access to project repositories', available: true },
-        { text: 'Mentor support', available: true },
-        { text: 'Project reviews', available: true },
-        { text: 'Live events and sessions', available: true },
-      ],
-      cta: 'Subscribe Yearly',
-      popular: true,
-      planType: 'yearly',
-    },
-    {
-      title: 'Lifetime Access',
-      price: '$299',
-      description: 'Permanent access to all courses',
+      description: 'Full access to all courses and learning resources',
       features: [
         { text: 'Access to community forum', available: true },
         { text: 'Full access to learning resources', available: true },
@@ -137,8 +119,27 @@ const Pricing = () => {
         { text: 'Project reviews', available: true },
         { text: 'Live events and sessions', available: false },
       ],
-      cta: 'Get Lifetime Access',
-      planType: 'lifetime',
+      cta: 'Subscribe Premium',
+      popular: true,
+      planType: 'premium',
+    },
+    {
+      title: 'Pro Membership',
+      price: '$299',
+      description: 'Premium access with live events and sessions',
+      features: [
+        { text: 'Access to community forum', available: true },
+        { text: 'Full access to learning resources', available: true },
+        { text: 'Access to ALL courses (Basic & Premium)', available: true },
+        { text: 'Community support', available: true },
+        { text: 'Course completion certificates', available: true },
+        { text: 'Access to project repositories', available: true },
+        { text: 'Mentor support', available: true },
+        { text: 'Project reviews', available: true },
+        { text: 'Live events and sessions', available: true },
+      ],
+      cta: 'Get Pro Access',
+      planType: 'pro',
     },
   ];
 
@@ -186,13 +187,13 @@ const Pricing = () => {
     }
 
     let badge = null;
-    if (plan.planType === 'yearly') {
+    if (plan.planType === 'premium') {
       badge = (
         <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 rounded-full">
           Most Popular
         </span>
       );
-    } else if (plan.planType === 'lifetime') {
+    } else if (plan.planType === 'pro') {
       badge = (
         <span className="px-2.5 py-0.5 text-xs font-semibold bg-purple-100 text-purple-800 rounded-full">
           Best Value
@@ -205,7 +206,7 @@ const Pricing = () => {
       title: plan.title,
       description: plan.description,
       price: plan.price,
-      period: plan.planType === 'yearly' ? "per year" : plan.planType === 'basic' ? "free forever" : "one-time payment",
+      period: plan.planType === 'premium' ? "per year" : plan.planType === 'basic' ? "free forever" : "one-time payment",
       features: mappedFeatures,
       ctaText: ctaText,
       ctaAction: ctaAction,
@@ -246,19 +247,19 @@ const Pricing = () => {
               <div>
                 <p className="text-sm text-muted-foreground">Your current plan</p>
                 <p className="font-semibold flex items-center">
-                  {profile.user_type === 'lifetime' ? (
+                  {profile.user_type === 'pro' ? (
                     <>
-                      Lifetime Access
+                      Pro Membership
                       <Star className="h-4 w-4 text-purple-500 ml-1 inline" />
                     </>
-                  ) : profile.user_type === 'yearly' ? (
+                  ) : profile.user_type === 'premium' ? (
                     <>
-                      Yearly Membership
+                      Premium Membership
                       <Star className="h-4 w-4 text-emerald-500 ml-1 inline" />
                     </>
                   ) : 'Basic'}
                 </p>
-                {profile.user_type === 'yearly' && profile.membership_expires_at && (
+                {profile.user_type === 'premium' && profile.membership_expires_at && (
                   <p className="text-xs text-muted-foreground flex items-center mt-1">
                     <Calendar className="h-3 w-3 mr-1" />
                     Expires: {formatExpirationDate(profile.membership_expires_at)}
@@ -266,7 +267,7 @@ const Pricing = () => {
                 )}
               </div>
             </div>
-            {(profile.user_type === 'yearly' || profile.user_type === 'lifetime') && (
+            {(profile.user_type === 'premium' || profile.user_type === 'pro') && (
               <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                 Active
               </span>

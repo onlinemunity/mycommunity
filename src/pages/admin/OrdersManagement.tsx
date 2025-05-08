@@ -11,7 +11,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -28,11 +27,10 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Order } from '@/types/supabase';
-import { Loader2, MoreHorizontal, ChevronDown, Search } from 'lucide-react';
+import { Loader2, MoreHorizontal, Search } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -56,6 +54,7 @@ const OrdersManagement = () => {
   const { data: orders, isLoading } = useQuery({
     queryKey: ['admin', 'orders'],
     queryFn: async () => {
+      console.log('Fetching orders...');
       // Fetch orders with user profiles
       const { data, error } = await supabase
         .from('orders')
@@ -71,6 +70,7 @@ const OrdersManagement = () => {
         throw error;
       }
       
+      console.log('Fetched orders:', data);
       return data || [];
     },
   });
@@ -148,7 +148,7 @@ const OrdersManagement = () => {
       case 'basic':
         return 'Basic';
       default:
-        return 'Unknown';
+        return type || 'Unknown';
     }
   };
 
@@ -244,7 +244,7 @@ const OrdersManagement = () => {
                             {formatMembershipType(order.membership_type)}
                           </TableCell>
                           <TableCell className="text-right">
-                            ${order.total_amount.toFixed(2)}
+                            ${order.total_amount?.toFixed(2) || '0.00'}
                           </TableCell>
                           <TableCell>
                             {getStatusBadge(order.status)}

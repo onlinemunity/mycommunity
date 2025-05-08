@@ -34,7 +34,7 @@ const Index = () => {
       rating: 5,
     },
     {
-      quote: "Die Lifetime-Mitgliedschaft war die beste Investition in meine Karriere. Sehr empfehlenswert!",
+      quote: "Die Pro-Mitgliedschaft war die beste Investition in meine Karriere. Sehr empfehlenswert!",
       author: "Julia Becker",
       role: "UX Designer",
       rating: 5,
@@ -70,30 +70,30 @@ const Index = () => {
   };
   
   // Add pricing plans to cart
-  const handleAddYearlyToCart = () => {
+  const handleAddPremiumToCart = () => {
     addItem({
-      id: 'yearly-membership',
-      type: 'yearly_membership',
-      name: 'Yearly Membership',
+      id: 'premium-membership',
+      type: 'premium_membership',
+      name: 'Premium Membership',
       description: 'Full access to all courses and resources for one year',
       price: 99
     });
   };
   
-  const handleAddLifetimeToCart = () => {
+  const handleAddProToCart = () => {
     addItem({
-      id: 'lifetime-membership',
-      type: 'lifetime_membership',
-      name: 'Lifetime Access',
-      description: 'Permanent access to all courses and resources',
+      id: 'pro-membership',
+      type: 'pro_membership',
+      name: 'Pro Access',
+      description: 'Full access to all courses, resources and live sessions',
       price: 299
     });
   };
   
   // Check if user already has a membership
   const isBasic = !profile?.user_type || profile.user_type === 'basic';
-  const isYearly = profile?.user_type === 'yearly';
-  const isLifetime = profile?.user_type === 'lifetime';
+  const isPremium = profile?.user_type === 'premium';
+  const isPro = profile?.user_type === 'pro';
 
   return (
     <Layout>
@@ -223,14 +223,14 @@ const Index = () => {
               price={t("homepage.pricing.plans.annual.price")}
               period={t("homepage.pricing.plans.annual.period")}
               features={pricingFeatures.annual}
-              ctaText={isYearly 
+              ctaText={isPremium 
                 ? "Current Plan" 
-                : isLifetime 
+                : isPro 
                   ? "Downgrade" 
                   : t("homepage.pricing.plans.annual.cta")
               }
-              ctaAction={handleAddYearlyToCart}
-              highlighted={isYearly || !profile?.user_type}
+              ctaAction={handleAddPremiumToCart}
+              highlighted={isPremium || !profile?.user_type}
               badge={
                 <Badge className="bg-accent1 text-white py-1 px-3">
                   Popular
@@ -244,9 +244,9 @@ const Index = () => {
               price={t("homepage.pricing.plans.lifetime.price")}
               period={t("homepage.pricing.plans.lifetime.period")}
               features={pricingFeatures.lifetime}
-              ctaText={isLifetime ? "Current Plan" : t("homepage.pricing.plans.lifetime.cta")}
-              ctaAction={handleAddLifetimeToCart}
-              highlighted={isLifetime}
+              ctaText={isPro ? "Current Plan" : t("homepage.pricing.plans.lifetime.cta")}
+              ctaAction={handleAddProToCart}
+              highlighted={isPro}
               delay={300}
             />
           </div>

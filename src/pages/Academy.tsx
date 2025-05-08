@@ -1,292 +1,287 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { SectionHeading } from '@/components/ui-components/SectionHeading';
-import { TestimonialCard } from '@/components/ui-components/TestimonialCard';
-import { FeatureCard } from '@/components/ui-components/FeatureCard';
-import { PricingCard } from '@/components/ui-components/PricingCard';
-import { Users, MessageSquare, Calendar, Award, Heart, Shield, ArrowRight } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
-import { Link } from 'react-router-dom';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useCart } from '@/context/CartContext';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowRight, Check, Star } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
+import { toast } from '@/components/ui/use-toast';
+
+const academyFeatures = [
+  { text: "Full Access to ALL Courses", basic: false, premium: true, pro: true },
+  { text: "Community Forum Access", basic: true, premium: true, pro: true },
+  { text: "Mentor Support", basic: false, premium: true, pro: true },
+  { text: "Project Reviews", basic: false, premium: true, pro: true },
+  { text: "Certificate of Completion", basic: false, premium: true, pro: true },
+  { text: "Live Sessions & Workshops", basic: false, premium: false, pro: true },
+  { text: "Priority Support", basic: false, premium: false, pro: true },
+  { text: "Career Guidance", basic: false, premium: false, pro: true },
+];
 
 const Academy = () => {
-  const { t } = useTranslation();
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const { addItem } = useCart();
-  const { profile } = useAuth();
   
-  // Mock data for testimonials
-  const testimonials = [
-    {
-      id: 1,
-      name: 'Laura Schmidt',
-      role: 'Community Member',
-      image: '/placeholder.svg',
-      quote: "Being part of this community has transformed my learning journey. The support and connections I've made are invaluable.",
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: 'Marco Perez',
-      role: 'Premium Member',
-      image: '/placeholder.svg',
-      quote: "The community discussions and exclusive events have accelerated my growth. Totally worth the investment!",
-      rating: 5,
-    },
-    {
-      id: 3,
-      name: 'Sophia Chen',
-      role: 'Lifetime Member',
-      image: '/placeholder.svg',
-      quote: "As a lifetime member, I've seen this community evolve and grow. The value keeps increasing and the network is priceless.",
-      rating: 5,
+  const isAuthenticated = !!user;
+  const userPlan = profile?.user_type || 'basic';
+
+  const handlePurchasePremium = () => {
+    if (!isAuthenticated) {
+      navigate('/auth?redirect=academy');
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to continue with your membership purchase.",
+      });
+      return;
     }
-  ];
-  
-  // Academy features
-  const features = [
-    {
-      icon: <Users size={24} />,
-      title: t('community.features.networking.title'),
-      description: t('community.features.networking.description'),
-    },
-    {
-      icon: <MessageSquare size={24} />,
-      title: t('community.features.discussions.title'),
-      description: t('community.features.discussions.description'),
-    },
-    {
-      icon: <Calendar size={24} />,
-      title: t('community.features.events.title'),
-      description: t('community.features.events.description'),
-    },
-    {
-      icon: <Award size={24} />,
-      title: t('community.features.exclusiveContent.title'),
-      description: t('community.features.exclusiveContent.description'),
-    },
-    {
-      icon: <Heart size={24} />,
-      title: t('community.features.support.title'),
-      description: t('community.features.support.description'),
-    },
-    {
-      icon: <Shield size={24} />,
-      title: t('community.features.lifetime.title'),
-      description: t('community.features.lifetime.description'),
-    }
-  ];
-  
-  // Mock data - pricing features
-  const pricingFeatures = {
-    yearly: [
-      { text: "Access to all premium courses", included: true },
-      { text: "Community forum access", included: true },
-      { text: "Monthly expert webinars", included: true },
-      { text: "Course completion certificates", included: true },
-      { text: "Mentor support", included: true },
-      { text: "Access to course source code", included: true },
-    ],
-    lifetime: [
-      { text: "Everything in Yearly plan", included: true },
-      { text: "Lifetime access to all content", included: true },
-      { text: "Future course updates", included: true },
-      { text: "Priority support", included: true },
-      { text: "Early access to new courses", included: true },
-      { text: "Exclusive member events", included: true },
-    ],
-  };
-  
-  // Add pricing plans to cart
-  const handleAddYearlyToCart = () => {
+    
     addItem({
-      id: 'yearly-membership',
-      type: 'yearly_membership',
-      name: 'Yearly Membership',
+      id: 'premium-membership',
+      type: 'premium_membership',
+      name: 'Premium Membership',
       description: 'Full access to all courses and resources for one year',
       price: 99
     });
-  };
-  
-  const handleAddLifetimeToCart = () => {
-    addItem({
-      id: 'lifetime-membership',
-      type: 'lifetime_membership',
-      name: 'Lifetime Access',
-      description: 'Permanent access to all courses and resources',
-      price: 299
+    
+    navigate('/cart');
+    
+    toast({
+      title: "Added to cart",
+      description: "Premium membership has been added to your cart.",
     });
   };
   
-  // Check if user already has a membership
-  const isBasic = !profile?.user_type || profile.user_type === 'basic';
-  const isYearly = profile?.user_type === 'yearly';
-  const isLifetime = profile?.user_type === 'lifetime';
+  const handlePurchasePro = () => {
+    if (!isAuthenticated) {
+      navigate('/auth?redirect=academy');
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to continue with your membership purchase.",
+      });
+      return;
+    }
+    
+    addItem({
+      id: 'pro-membership',
+      type: 'pro_membership',
+      name: 'Pro Membership',
+      description: 'Full access to all courses, resources and live events',
+      price: 299
+    });
+    
+    navigate('/cart');
+    
+    toast({
+      title: "Added to cart",
+      description: "Pro membership has been added to your cart.",
+    });
+  };
+
+  const isPremium = userPlan === 'premium';
+  const isPro = userPlan === 'pro';
 
   return (
     <Layout>
       <div className="page-transition">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-b from-white to-blue-50 py-20">
-          <div className="container-wide">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="heading-xl mb-6">
-                <span className="text-gradient">
-                  {t('academy.hero.title')}
-                </span>
-              </h1>
-              <p className="body-lg mb-8 text-muted-foreground">
-                {t('academy.hero.subtitle')}
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/courses">
-                  <Button className="button-primary">
-                    {t('academy.hero.joinButton')}
-                  </Button>
-                </Link>
-                <Link to="#pricing">
-                  <Button className="button-secondary">
-                    View Membership Options
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="section-padding bg-background">
-          <div className="container-wide">
-            <SectionHeading
-              title={t('community.features.title')}
-              subtitle={t('community.features.subtitle')}
-              align="center"
-            />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-              {features.map((feature, index) => (
-                <FeatureCard
-                  key={index}
-                  icon={feature.icon}
-                  title={feature.title}
-                  description={feature.description}
-                  delay={index * 100}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* Pricing Section */}
-        <section id="pricing" className="section-padding bg-muted/30">
+        <div className="bg-gradient-to-b from-accent2/5 to-accent1/5 py-16 md:py-32">
           <div className="container">
-            <SectionHeading
-              title="Membership Options"
-              subtitle="Choose the plan that's right for your learning journey"
-              align="center"
-            />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-10">
-              <PricingCard
-                title="Yearly Membership"
-                description="Full access to all courses and resources for one year"
-                price="$99"
-                period="per year"
-                features={pricingFeatures.yearly}
-                ctaText={isYearly 
-                  ? "Current Plan" 
-                  : isLifetime 
-                    ? "Downgrade" 
-                    : "Subscribe Now"
-                }
-                ctaAction={handleAddYearlyToCart}
-                highlighted={isYearly}
-                badge={
-                  <Badge className="bg-accent1 text-white py-1 px-3">
-                    Most Popular
-                  </Badge>
-                }
-              />
-              <PricingCard
-                title="Lifetime Access"
-                description="One-time payment for unlimited lifetime access"
-                price="$299"
-                period="one-time payment"
-                features={pricingFeatures.lifetime}
-                ctaText={isLifetime ? "Current Plan" : "Get Lifetime Access"}
-                ctaAction={handleAddLifetimeToCart}
-                highlighted={isLifetime}
-                badge={
-                  <Badge className="bg-purple-600 text-white py-1 px-3">
-                    Best Value
-                  </Badge>
-                }
-              />
-            </div>
-            
-            <div className="text-center mt-10">
-              <Link to="/pricing">
-                <Button variant="outline" className="flex items-center gap-2">
-                  Compare All Plans
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-        
-        {/* Testimonials section */}
-        <section className="section-padding bg-background">
-          <div className="container-wide">
-            <SectionHeading
-              title={t('community.testimonials.title')}
-              subtitle={t('community.testimonials.subtitle')}
-              align="center"
-            />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-              {testimonials.map((testimonial) => (
-                <TestimonialCard
-                  key={testimonial.id}
-                  author={testimonial.name}
-                  role={testimonial.role}
-                  quote={testimonial.quote}
-                  avatar={testimonial.image}
-                  rating={testimonial.rating}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-br from-accent1/10 to-accent2/10">
-          <div className="container-wide">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="heading-lg mb-6">
-                {t('community.cta.title')}
-              </h2>
-              <p className="body-lg mb-8 text-muted-foreground">
-                {t('community.cta.subtitle')}
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/courses">
-                  <Button className="button-primary">
-                    {t('community.cta.button')}
-                  </Button>
-                </Link>
-                <Link to="/cart">
-                  <Button variant="outline">
-                    View Cart
-                  </Button>
-                </Link>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <Badge className="mb-4">Premium Learning</Badge>
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                  Unlock Your Full Learning Potential
+                </h1>
+                <p className="text-xl text-muted-foreground mb-8">
+                  Get unlimited access to all premium courses, resources, and expert mentorship to accelerate your learning journey.
+                </p>
+                {!isPremium && !isPro && (
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      size="lg" 
+                      className="button-primary"
+                      onClick={handlePurchasePremium}
+                    >
+                      Become a Premium Member
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="lg" 
+                      variant="secondary"
+                      onClick={handlePurchasePro}
+                    >
+                      Go Pro
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+                {(isPremium || isPro) && (
+                  <div>
+                    <Button 
+                      size="lg" 
+                      className="button-primary"
+                      onClick={() => navigate('/dashboard/courses')}
+                    >
+                      Access Your Premium Courses
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div className="relative">
+                <AspectRatio ratio={16/9} className="rounded-xl overflow-hidden shadow-2xl border">
+                  <img
+                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
+                    alt="Academy learning experience"
+                    className="object-cover w-full h-full"
+                  />
+                </AspectRatio>
+                <div className="absolute -bottom-6 -right-6 rounded-lg bg-background py-2 px-4 shadow-lg border">
+                  <div className="flex items-center gap-1">
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <span className="text-sm font-medium ml-1">4.9/5</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+
+        <div className="container py-16 md:py-24">
+          <SectionHeading
+            title="Choose Your Membership Level"
+            subtitle="Different plans for different learning needs"
+            align="center"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            {/* Basic Plan */}
+            <Card className={`border ${userPlan === 'basic' ? 'border-accent1' : ''}`}>
+              <CardHeader>
+                <CardTitle className="flex justify-between items-center">
+                  <span>Basic</span>
+                  <span className="text-2xl font-bold">Free</span>
+                </CardTitle>
+                <CardDescription>Community access & basic courses</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {academyFeatures.map((feature, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-start gap-2 ${!feature.basic ? 'text-muted-foreground' : ''}`}
+                  >
+                    {feature.basic ? (
+                      <Check className="h-4 w-4 mt-1 text-emerald-500" />
+                    ) : (
+                      <span className="h-4 w-4 mt-1 block"></span>
+                    )}
+                    <span>{feature.text}</span>
+                  </div>
+                ))}
+              </CardContent>
+              <CardFooter>
+                {userPlan === 'basic' ? (
+                  <Button className="w-full" variant="outline" disabled>
+                    Current Plan
+                  </Button>
+                ) : (
+                  <Button className="w-full" variant="outline">
+                    Downgrade to Basic
+                  </Button>
+                )}
+              </CardFooter>
+            </Card>
+
+            {/* Premium Plan */}
+            <Card className={`border ${userPlan === 'premium' ? 'border-accent1' : ''}`}>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <Badge variant="secondary">Most Popular</Badge>
+                  <span className="text-2xl font-bold">$99</span>
+                </div>
+                <CardTitle>Premium</CardTitle>
+                <CardDescription>Full access to all courses & mentoring</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {academyFeatures.map((feature, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-start gap-2 ${!feature.premium ? 'text-muted-foreground' : ''}`}
+                  >
+                    {feature.premium ? (
+                      <Check className="h-4 w-4 mt-1 text-emerald-500" />
+                    ) : (
+                      <span className="h-4 w-4 mt-1 block"></span>
+                    )}
+                    <span>{feature.text}</span>
+                  </div>
+                ))}
+              </CardContent>
+              <CardFooter>
+                {userPlan === 'premium' ? (
+                  <Button className="w-full" variant="default" disabled>
+                    Current Plan
+                  </Button>
+                ) : isPro ? (
+                  <Button className="w-full" variant="default" onClick={handlePurchasePremium}>
+                    Downgrade to Premium
+                  </Button>
+                ) : (
+                  <Button className="w-full" variant="default" onClick={handlePurchasePremium}>
+                    Get Premium Access
+                  </Button>
+                )}
+              </CardFooter>
+            </Card>
+
+            {/* Pro Plan */}
+            <Card className={`border ${userPlan === 'pro' ? 'border-accent1' : ''}`}>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <Badge variant="default">Best Value</Badge>
+                  <span className="text-2xl font-bold">$299</span>
+                </div>
+                <CardTitle>Pro</CardTitle>
+                <CardDescription>Everything plus live events & priority support</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {academyFeatures.map((feature, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-start gap-2 ${!feature.pro ? 'text-muted-foreground' : ''}`}
+                  >
+                    {feature.pro ? (
+                      <Check className="h-4 w-4 mt-1 text-emerald-500" />
+                    ) : (
+                      <span className="h-4 w-4 mt-1 block"></span>
+                    )}
+                    <span>{feature.text}</span>
+                  </div>
+                ))}
+              </CardContent>
+              <CardFooter>
+                {userPlan === 'pro' ? (
+                  <Button className="w-full" variant="secondary" disabled>
+                    Current Plan
+                  </Button>
+                ) : (
+                  <Button className="w-full" variant="secondary" onClick={handlePurchasePro}>
+                    Get Pro Access
+                  </Button>
+                )}
+              </CardFooter>
+            </Card>
+          </div>
+        </div>
       </div>
     </Layout>
   );
