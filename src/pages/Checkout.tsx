@@ -85,6 +85,13 @@ const Checkout = () => {
     }
   }, [user, items, navigate]);
 
+  // Debug checkout process
+  useEffect(() => {
+    console.log('Checkout Debug - Cart Items:', items);
+    console.log('Checkout Debug - User:', user?.id);
+    console.log('Checkout Debug - Total Price:', totalPrice);
+  }, [items, user, totalPrice]);
+
   // Populate form with user profile data if available
   useEffect(() => {
     if (user) {
@@ -118,9 +125,10 @@ const Checkout = () => {
   })();
 
   const updateUserProfile = async (values: FormValues) => {
-    if (!user) return;
+    if (!user) return false;
     
     try {
+      console.log('Updating user profile with billing details');
       // Update user profile with billing details
       const { error: profileError } = await supabase
         .from('profiles')
@@ -154,12 +162,12 @@ const Checkout = () => {
         variant: "destructive"
       });
       navigate('/auth?redirect=checkout');
-      return;
+      return null;
     }
 
     try {
-      setIsSubmitting(true);
-
+      console.log('Creating order with membership type:', membershipType);
+      
       // Create invoice number
       const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`;
 
@@ -184,7 +192,12 @@ const Checkout = () => {
         .select()
         .single();
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        console.error('Order creation error:', orderError);
+        throw orderError;
+      }
+
+      console.log('Order created successfully:', order);
 
       // Create order items
       const orderItems = items.map(item => ({
@@ -197,7 +210,10 @@ const Checkout = () => {
         .from('order_items')
         .insert(orderItems);
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Order items error:', itemsError);
+        throw itemsError;
+      }
 
       // For testing purposes, update the user's profile with the membership type
       // In a real application, this would happen after payment confirmation
@@ -206,6 +222,8 @@ const Checkout = () => {
           ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() 
           : null;
 
+        console.log('Updating profile with membership:', membershipType);
+        
         const { error: profileUpdateError } = await supabase
           .from('profiles')
           .update({
@@ -218,6 +236,9 @@ const Checkout = () => {
           console.error('Error updating profile membership:', profileUpdateError);
           // Don't throw here, we still want to proceed with the order
         }
+        
+        // Refresh the profile to get updated membership info
+        await refreshProfile();
       }
 
       return order.id;
@@ -229,19 +250,30 @@ const Checkout = () => {
         variant: "destructive"
       });
       return null;
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   const handleSubmit = async (values: FormValues) => {
-    // First update the user profile
-    const profileUpdated = await updateUserProfile(values);
-    if (!profileUpdated) return;
+    console.log('Starting checkout process...');
+    setIsSubmitting(true);
+    
+    try {
+      // First update the user profile
+      const profileUpdated = await updateUserProfile(values);
+      if (!profileUpdated) {
+        setIsSubmitting(false);
+        return;
+      }
 
-    // Then create the order
-    const createdOrderId = await createOrder(values);
-    if (createdOrderId) {
+      // Then create the order
+      const createdOrderId = await createOrder(values);
+      if (!createdOrderId) {
+        setIsSubmitting(false);
+        return;
+      }
+      
+      console.log('Order created successfully with ID:', createdOrderId);
+      
       // Redirect to success page with the order ID
       navigate(`/checkout/success?orderId=${createdOrderId}`);
       
@@ -252,6 +284,9 @@ const Checkout = () => {
         title: "Order created successfully",
         description: "Your order has been placed successfully.",
       });
+    } catch (error) {
+      console.error('Checkout process error:', error);
+      setIsSubmitting(false);
     }
   };
 

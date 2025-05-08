@@ -12,12 +12,13 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
   const { isAdmin, isLoading, refreshProfile, profile, user } = useAuth();
   const location = useLocation();
 
-  // Refresh profile when component mounts to ensure we have the latest roles
+  // Refresh profile when component mounts or path changes to ensure we have the latest roles
   useEffect(() => {
     if (user && !isLoading) {
+      console.log('AdminRoute - Refreshing profile on mount/path change');
       refreshProfile();
     }
-  }, [user, isLoading, refreshProfile]);
+  }, [user, isLoading, location.pathname, refreshProfile]);
 
   // Add enhanced debug information
   useEffect(() => {
@@ -41,7 +42,7 @@ const AdminRoute = ({ redirectPath = "/dashboard" }: AdminRouteProps) => {
   // If user is not authenticated, redirect to auth page
   if (!user) {
     console.log('Redirecting from admin route because user is not authenticated');
-    return <Navigate to="/auth?redirect=admin" replace />;
+    return <Navigate to={`/auth?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
 
   if (!isAdmin) {

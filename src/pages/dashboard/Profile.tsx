@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, User, Star, ArrowRight, Calendar } from 'lucide-react';
+import { Loader2, User, Star, ArrowRight, Calendar, ShieldCheck, RefreshCw } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -17,12 +17,24 @@ const Profile = () => {
   const { t } = useTranslation();
   const { user, profile, refreshProfile } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: profile?.username || '',
     fullName: profile?.full_name || '',
     avatarUrl: profile?.avatar_url || '',
   });
+
+  // Effect to update form when profile changes
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        username: profile.username || '',
+        fullName: profile.full_name || '',
+        avatarUrl: profile.avatar_url || '',
+      });
+    }
+  }, [profile]);
 
   // Format membership expiration date
   const formatExpirationDate = (dateString?: string | null) => {
@@ -51,6 +63,14 @@ const Profile = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleRefreshProfile = async () => {
+    setIsRefreshing(true);
+    await refreshProfile();
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 500);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,19 +118,19 @@ const Profile = () => {
   const getMembershipBadge = () => {
     if (profile?.user_type === 'pro') {
       return (
-        <div className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
+        <div className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
           Pro
         </div>
       );
     } else if (profile?.user_type === 'premium') {
       return (
-        <div className="px-2 py-1 rounded-full text-xs bg-emerald-100 text-emerald-800">
+        <div className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
           Premium
         </div>
       );
     } else {
       return (
-        <div className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+        <div className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
           Basic
         </div>
       );
@@ -120,21 +140,39 @@ const Profile = () => {
   // Get membership icon
   const getMembershipIcon = () => {
     if (profile?.user_type === 'pro') {
-      return <Star className="h-4 w-4 text-purple-500 ml-1" />;
+      return <Star className="h-4 w-4 text-purple-600" />;
     } else if (profile?.user_type === 'premium') {
-      return <Star className="h-4 w-4 text-emerald-500 ml-1" />;
+      return <Star className="h-4 w-4 text-emerald-600" />;
     }
     return null;
   };
 
+  // Check if profile role is admin
+  const isAdmin = profile?.role === 'admin';
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t('profile.title') || 'Your Profile'}</h1>
-          <p className="text-muted-foreground">
-            {t('profile.subtitle') || 'Manage your account information and preferences'}
-          </p>
+        <div className="flex justify-between items-start flex-wrap gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">{t('profile.title') || 'Your Profile'}</h1>
+            <p className="text-muted-foreground">
+              {t('profile.subtitle') || 'Manage your account information and preferences'}
+            </p>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefreshProfile}
+            disabled={isRefreshing}
+          >
+            {isRefreshing ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-1" />
+            ) : (
+              <RefreshCw className="h-4 w-4 mr-1" />
+            )}
+            Refresh Profile
+          </Button>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -231,7 +269,10 @@ const Profile = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>{t('profile.accountDetails') || 'Account Details'}</CardTitle>
+                <div className="flex justify-between items-center">
+                  <CardTitle>{t('profile.accountDetails') || 'Account Details'}</CardTitle>
+                  {getMembershipBadge()}
+                </div>
                 <CardDescription>
                   {t('profile.accountDetailsDesc') || 'Information about your account status and membership'}
                 </CardDescription>
@@ -255,7 +296,7 @@ const Profile = () => {
                       {user?.email_confirmed_at ? 'Verified' : 'Unverified'}
                     </p>
                   </div>
-                  <div className={`px-2 py-1 rounded-full text-xs ${
+                  <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
                     user?.email_confirmed_at ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                   }`}>
                     {user?.email_confirmed_at ? 'Active' : 'Pending'}
@@ -264,17 +305,18 @@ const Profile = () => {
                 
                 <div className="flex justify-between items-center pb-4 border-b">
                   <div>
-                    <p className="font-medium">{t('profile.membershipType') || 'Membership Type'}</p>
-                    <p className="text-sm text-muted-foreground flex items-center">
+                    <div className="font-medium flex items-center gap-1.5">
+                      {t('profile.membershipType') || 'Membership Type'}
+                      {getMembershipIcon()}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1 flex items-center">
                       {profile?.user_type === 'pro' ? (
-                        <>
-                          Pro Membership <Star className="h-4 w-4 text-purple-500 ml-1" />
-                        </>
+                        <>Pro Membership</>
                       ) : profile?.user_type === 'premium' ? (
-                        <>
-                          Premium Membership <Star className="h-4 w-4 text-emerald-500 ml-1" />
-                        </>
-                      ) : 'Basic'}
+                        <>Premium Membership</>
+                      ) : (
+                        <>Basic</>
+                      )}
                     </p>
                     {profile?.user_type === 'premium' && profile.membership_expires_at && (
                       <p className="text-xs text-muted-foreground flex items-center mt-1">
@@ -283,16 +325,23 @@ const Profile = () => {
                       </p>
                     )}
                   </div>
-                  {getMembershipBadge()}
                 </div>
                 
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="font-medium">{t('profile.accountType') || 'Account Type'}</p>
+                    <p className="font-medium flex items-center gap-2">
+                      {t('profile.accountType') || 'Account Type'}
+                      {isAdmin && <ShieldCheck className="h-4 w-4 text-amber-600" />}
+                    </p>
                     <p className="text-sm text-muted-foreground">
-                      {profile?.role === 'admin' ? 'Administrator' : 'Member'}
+                      {isAdmin ? 'Administrator' : 'Member'}
                     </p>
                   </div>
+                  {isAdmin && (
+                    <div className="px-2 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                      Admin
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

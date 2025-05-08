@@ -1,376 +1,476 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+import { 
+  Table, 
+  TableHeader, 
+  TableRow, 
+  TableHead, 
+  TableBody, 
+  TableCell 
 } from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from '@/components/ui/use-toast';
+import { Search, Loader2, FileText, Info, CalendarRange, Filter } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Order } from '@/types/supabase';
-import { Loader2, MoreHorizontal, Search, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/components/ui/use-toast';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-
-// Order status options
-const orderStatuses = [
-  { value: 'all', label: 'All Orders' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'processing', label: 'Processing' },
-  { value: 'paid', label: 'Paid' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'cancelled', label: 'Cancelled' },
-];
 
 const OrdersManagement = () => {
-  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [debugInfo, setDebugInfo] = useState<string | null>(null);
-
-  // Enhanced fetch orders with debug info
-  const { data: orders, isLoading, error } = useQuery({
-    queryKey: ['admin', 'orders'],
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
+  
+  // Fetch orders
+  const { data: orders, isLoading, error, refetch } = useQuery({
+    queryKey: ['admin-orders'],
     queryFn: async () => {
-      console.log('Fetching orders...');
-      try {
-        // Debug: First check if the orders table exists and has data
-        const { count, error: countError } = await supabase
-          .from('orders')
-          .select('*', { count: 'exact', head: true });
-          
-        if (countError) {
-          console.error('Error checking orders count:', countError);
-          setDebugInfo(`Error checking orders count: ${countError.message}`);
-          throw countError;
-        }
-        
-        console.log(`Found ${count} orders in database`);
-        setDebugInfo(`Found ${count} orders in database`);
-        
-        // Fetch orders with user profiles
-        const { data, error } = await supabase
-          .from('orders')
-          .select(`
-            *,
-            items:order_items(*),
-            profile:profiles(username, full_name, email)
-          `)
-          .order('created_at', { ascending: false });
-          
-        if (error) {
-          console.error('Error fetching orders:', error);
-          setDebugInfo(`Error fetching orders: ${error.message}`);
-          throw error;
-        }
-        
-        console.log('Fetched orders:', data);
-        return data || [];
-      } catch (err: any) {
-        console.error('Exception in fetchOrders:', err);
-        setDebugInfo(`Exception in fetchOrders: ${err.message}`);
-        throw err;
-      }
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          items:order_items(*)
+        `)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      console.log('Orders data:', data);
+      return data as Order[] || [];
     },
-    refetchOnWindowFocus: false,
   });
 
-  // Mutation to update order status
-  const updateOrderStatus = useMutation({
-    mutationFn: async ({ orderId, status }: { orderId: string; status: string }) => {
+  // Filter orders
+  const filteredOrders = orders?.filter(order => {
+    const matchesSearch = 
+      (order.invoice_number && order.invoice_number.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (order.billing_email && order.billing_email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (order.billing_name && order.billing_name.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+    
+    return matchesSearch && matchesStatus;
+  }) || [];
+
+  // Handle status change
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
+    try {
       const { error } = await supabase
         .from('orders')
-        .update({ status })
+        .update({ status: newStatus })
         .eq('id', orderId);
         
       if (error) throw error;
-      return { orderId, status };
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
+      
+      await refetch();
+      
       toast({
-        title: 'Order Updated',
-        description: 'Order status has been successfully updated',
+        title: "Status updated",
+        description: `Order status has been updated to ${newStatus}`,
       });
-    },
-    onError: (error) => {
-      console.error('Error updating order status:', error);
+    } catch (err) {
       toast({
-        title: 'Update Failed',
-        description: 'Failed to update order status',
-        variant: 'destructive',
+        title: "Update failed",
+        description: "Failed to update order status",
+        variant: "destructive",
       });
-    },
-  });
-
-  // Handle order status change
-  const handleStatusChange = (orderId: string, status: string) => {
-    updateOrderStatus.mutate({ orderId, status });
+    }
   };
 
-  // Filter orders by status and search term
-  const filteredOrders = orders?.filter(order => {
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-    const matchesSearch = 
-      !searchTerm || 
-      (order.invoice_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       order.billing_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       order.billing_email?.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    return matchesStatus && matchesSearch;
-  });
+  // View order details
+  const handleViewDetails = (order: Order) => {
+    setSelectedOrder(order);
+    setShowOrderDetails(true);
+  };
 
-  // Format order status for display
+  // Format date
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return "N/A";
+    return format(new Date(dateString), "PPP p");
+  };
+
+  // Get status badge
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'pending':
-        return <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200">Pending</Badge>;
-      case 'processing':
-        return <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200">Processing</Badge>;
-      case 'paid':
-        return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">Paid</Badge>;
       case 'completed':
-        return <Badge variant="outline" className="bg-emerald-100 text-emerald-800 border-emerald-200">Completed</Badge>;
+        return <Badge className="bg-green-500">Completed</Badge>;
+      case 'pending':
+        return <Badge className="bg-yellow-500">Pending</Badge>;
+      case 'processing':
+        return <Badge className="bg-blue-500">Processing</Badge>;
       case 'cancelled':
-        return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">Cancelled</Badge>;
+        return <Badge className="bg-red-500">Cancelled</Badge>;
+      case 'paid':
+        return <Badge className="bg-green-500">Paid</Badge>;
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge>{status}</Badge>;
     }
   };
 
-  // Format membership type for display
-  const formatMembershipType = (type: string | null | undefined) => {
-    switch (type) {
-      case 'premium':
-        return 'Premium Membership';
-      case 'pro':
-        return 'Pro Membership';
-      case 'basic':
-        return 'Basic';
-      default:
-        return type || 'Unknown';
-    }
-  };
-
-  // Function to generate test data
-  const generateTestOrder = async () => {
+  // Create test order function - for debugging only
+  const createTestOrder = async () => {
     try {
-      const testOrder = {
-        user_id: '00000000-0000-0000-0000-000000000000', // Placeholder user ID
-        total_amount: 99.99,
-        status: 'pending',
-        billing_name: 'Test User',
-        billing_email: 'test@example.com',
-        invoice_number: `INV-${Math.floor(Math.random() * 10000)}`,
-        membership_type: 'premium'
-      };
+      // Get any user for testing
+      const { data: usersData } = await supabase
+        .from('profiles')
+        .select('id')
+        .limit(1);
 
-      const { data, error } = await supabase
+      if (!usersData || usersData.length === 0) {
+        toast({
+          title: "No users found",
+          description: "Cannot create test order without users",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const userId = usersData[0].id;
+      const invoiceNumber = `TEST-${Date.now().toString().slice(-8)}`;
+
+      // Create the order
+      const { data: orderData, error: orderError } = await supabase
         .from('orders')
-        .insert([testOrder])
-        .select();
+        .insert({
+          user_id: userId,
+          total_amount: 49.99,
+          status: 'pending',
+          payment_method: 'credit_card',
+          membership_type: 'premium',
+          invoice_number: invoiceNumber,
+          billing_name: 'Test User',
+          billing_email: 'test@example.com',
+          billing_address: '123 Test St',
+          billing_city: 'Test City',
+          billing_state: 'TS',
+          billing_zip: '12345',
+          billing_country: 'Testland'
+        })
+        .select()
+        .single();
 
-      if (error) throw error;
+      if (orderError) throw orderError;
 
+      // Create order item
+      const { error: itemError } = await supabase
+        .from('order_items')
+        .insert({
+          order_id: orderData.id,
+          item_type: 'premium_membership',
+          price: 49.99
+        });
+
+      if (itemError) throw itemError;
+
+      await refetch();
+      
       toast({
-        title: 'Test Order Created',
-        description: 'A test order has been successfully created.',
+        title: "Test order created",
+        description: "A test order has been created successfully",
       });
-
-      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
     } catch (error: any) {
-      console.error('Error creating test order:', error);
       toast({
-        title: 'Error',
-        description: `Failed to create test order: ${error.message}`,
-        variant: 'destructive',
+        title: "Error creating test order",
+        description: error.message,
+        variant: "destructive",
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex h-[calc(100vh-120px)] items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="text-center py-10">
+          <h2 className="text-2xl font-bold text-red-500 mb-2">Error loading orders</h2>
+          <p className="text-muted-foreground">Please try refreshing the page.</p>
+          <Button onClick={() => refetch()} className="mt-4">
+            Try Again
+          </Button>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Orders Management</h1>
-          <p className="text-muted-foreground">
-            View and manage all customer orders
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-bold">Orders Management</h2>
+            <p className="text-muted-foreground">Track and manage all customer orders</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={() => refetch()} variant="outline" size="sm" className="h-9">
+              <Loader2 className="mr-2 h-4 w-4" />
+              Refresh
+            </Button>
+            <Button onClick={createTestOrder} variant="outline" size="sm" className="h-9">
+              <FileText className="mr-2 h-4 w-4" />
+              Create Test Order
+            </Button>
+          </div>
         </div>
         
-        {/* Debug Alert */}
-        {(error || debugInfo) && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Debug Information</AlertTitle>
-            <AlertDescription>
-              {error ? String(error) : debugInfo}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search orders..." 
-                  className="pl-8 w-full sm:w-[300px]"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+        {/* Filters */}
+        <div className="flex flex-col md:flex-row items-start gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by invoice, email or name..."
+              className="pl-8"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4" /> 
+                <span>Status: {statusFilter === 'all' ? 'All' : statusFilter}</span>
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        
+        {/* Orders table */}
+        <Card>
+          <CardHeader className="px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Orders</CardTitle>
+                <CardDescription>
+                  {filteredOrders.length} {filteredOrders.length === 1 ? 'order' : 'orders'} found
+                </CardDescription>
+              </div>
+              {orders && orders.length > 0 && filteredOrders.length === 0 && (
+                <Badge variant="outline">No matching orders</Badge>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            {orders && orders.length > 0 ? (
+              <div className="overflow-hidden rounded-b-lg">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Invoice</TableHead>
+                      <TableHead>Customer</TableHead>
+                      <TableHead className="hidden md:table-cell">Date</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Membership</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredOrders.length > 0 ? (
+                      filteredOrders.map((order) => (
+                        <TableRow key={order.id}>
+                          <TableCell className="font-medium">{order.invoice_number || 'N/A'}</TableCell>
+                          <TableCell>
+                            <div>
+                              <div>{order.billing_name || 'N/A'}</div>
+                              <div className="text-xs text-muted-foreground">{order.billing_email || 'N/A'}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            {formatDate(order.created_at)}
+                          </TableCell>
+                          <TableCell>${order.total_amount?.toFixed(2) || '0.00'}</TableCell>
+                          <TableCell>
+                            {getStatusBadge(order.status || 'pending')}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline">
+                              {order.membership_type ? order.membership_type.charAt(0).toUpperCase() + order.membership_type.slice(1) : 'N/A'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-2">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handleViewDetails(order)}
+                              >
+                                <Info className="h-4 w-4" />
+                              </Button>
+                              <Select 
+                                value={order.status || 'pending'}
+                                onValueChange={(value) => handleStatusChange(order.id, value)}
+                              >
+                                <SelectTrigger className="h-8 w-24">
+                                  <SelectValue placeholder="Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="pending">Pending</SelectItem>
+                                  <SelectItem value="processing">Processing</SelectItem>
+                                  <SelectItem value="paid">Paid</SelectItem>
+                                  <SelectItem value="completed">Completed</SelectItem>
+                                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
+                          No orders match your filters. Try adjusting your search criteria.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
+                  <FileText className="h-6 w-6 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium mb-1">No Orders Yet</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  There are no orders in the system yet.
+                </p>
+                <Button onClick={createTestOrder} variant="outline" size="sm">
+                  Create Test Order
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* Order details dialog */}
+      {selectedOrder && (
+        <Dialog open={showOrderDetails} onOpenChange={setShowOrderDetails}>
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>Order Details</DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-6">
+              <div className="flex flex-wrap justify-between gap-4">
+                <div>
+                  <div className="text-sm font-semibold">Invoice</div>
+                  <div className="text-xl font-bold">{selectedOrder.invoice_number || 'N/A'}</div>
+                  <div className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
+                    <CalendarRange className="h-3.5 w-3.5" />
+                    {formatDate(selectedOrder.created_at)}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold mb-1">Status</div>
+                  {getStatusBadge(selectedOrder.status || 'pending')}
+                </div>
               </div>
               
-              <Select
-                value={statusFilter}
-                onValueChange={setStatusFilter}
-              >
-                <SelectTrigger className="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {orderStatuses.map((status) => (
-                    <SelectItem key={status.value} value={status.value}>
-                      {status.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              <Button variant="outline" onClick={generateTestOrder}>
-                Generate Test Order
-              </Button>
-            </div>
-            
-            <div className="text-sm text-muted-foreground">
-              {filteredOrders ? `${filteredOrders.length} orders` : 'Loading...'}
-            </div>
-          </div>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle>Orders</CardTitle>
-              <CardDescription>
-                Manage customer orders and update their status
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <div className="flex justify-center items-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold">Customer Info</h3>
+                  <div className="bg-muted/40 p-3 rounded-md space-y-2 text-sm">
+                    <div>
+                      <span className="font-medium">Name:</span> {selectedOrder.billing_name || 'N/A'}
+                    </div>
+                    <div>
+                      <span className="font-medium">Email:</span> {selectedOrder.billing_email || 'N/A'}
+                    </div>
+                  </div>
                 </div>
-              ) : filteredOrders && filteredOrders.length > 0 ? (
-                <div className="rounded-md border">
+                
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold">Billing Details</h3>
+                  <div className="bg-muted/40 p-3 rounded-md space-y-2 text-sm">
+                    <div>
+                      {selectedOrder.billing_address || 'N/A'}{selectedOrder.billing_address ? ',' : ''}
+                      <br />
+                      {selectedOrder.billing_city || 'N/A'}{selectedOrder.billing_city && selectedOrder.billing_state ? ', ' : ''}
+                      {selectedOrder.billing_state || ''}
+                      <br />
+                      {selectedOrder.billing_zip || 'N/A'}{selectedOrder.billing_zip && selectedOrder.billing_country ? ', ' : ''}
+                      {selectedOrder.billing_country || ''}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-sm font-semibold mb-3">Order Details</h3>
+                <div className="border rounded-md overflow-hidden">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Order #</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Membership</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead>Item</TableHead>
+                        <TableHead className="text-right">Price</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredOrders.map((order) => (
-                        <TableRow key={order.id}>
-                          <TableCell className="font-medium">
-                            {order.invoice_number || order.id.substring(0, 8)}
-                          </TableCell>
-                          <TableCell>
-                            {format(new Date(order.created_at), 'MMM dd, yyyy')}
-                          </TableCell>
-                          <TableCell>
-                            <div className="font-medium">
-                              {order.billing_name || (order.profile as any)?.full_name || 'N/A'}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              {order.billing_email || (order.profile as any)?.email || 'N/A'}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            {formatMembershipType(order.membership_type)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            ${order.total_amount?.toFixed(2) || '0.00'}
-                          </TableCell>
-                          <TableCell>
-                            {getStatusBadge(order.status)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                  <span className="sr-only">Open menu</span>
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuLabel>Update Status</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => handleStatusChange(order.id, 'pending')}>
-                                  Set as Pending
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleStatusChange(order.id, 'processing')}>
-                                  Set as Processing
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleStatusChange(order.id, 'paid')}>
-                                  Set as Paid
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleStatusChange(order.id, 'completed')}>
-                                  Set as Completed
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleStatusChange(order.id, 'cancelled')}>
-                                  Set as Cancelled
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                      {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                        selectedOrder.items.map((item, index) => (
+                          <TableRow key={item.id || index}>
+                            <TableCell className="font-medium">
+                              {item.item_type === 'premium_membership' ? 'Premium Membership' : 
+                               item.item_type === 'pro_membership' ? 'Pro Membership' : 
+                               item.item_type}
+                            </TableCell>
+                            <TableCell className="text-right">${item.price?.toFixed(2) || '0.00'}</TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={2} className="text-center text-sm text-muted-foreground py-4">
+                            No items found
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )}
+                      <TableRow>
+                        <TableCell className="font-bold">Total</TableCell>
+                        <TableCell className="text-right font-bold">
+                          ${selectedOrder.total_amount?.toFixed(2) || '0.00'}
+                        </TableCell>
+                      </TableRow>
                     </TableBody>
                   </Table>
                 </div>
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground mb-4">No orders found matching the criteria</p>
-                  <Button onClick={generateTestOrder} variant="outline">
-                    Create Test Order Data
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+              </div>
+              
+              <div className="pt-2 flex justify-end">
+                <Button 
+                  onClick={() => setShowOrderDetails(false)} 
+                  className="w-1/3"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </AdminLayout>
   );
 };

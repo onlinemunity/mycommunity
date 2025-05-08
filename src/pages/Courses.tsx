@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
@@ -7,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -224,9 +225,9 @@ const Courses = () => {
                       level={safeCourse.level}
                       instructor={safeCourse.instructor}
                       category={safeCourse.category || ''}
-                      href={`/${safeCourse.href}`}
+                      href={`/courses/${safeCourse.href}`}
                       course_type={safeCourse.course_type}
-                      onClick={() => navigate(`/${safeCourse.href}`)}
+                      onClick={() => navigate(`/courses/${safeCourse.href}`)}
                       onEnrollClick={() => handleEnrollClick(safeCourse)}
                       isPremium={safeCourse.course_type === 'premium'}
                       isLocked={safeCourse.course_type === 'premium' && !hasPremiumAccess}
