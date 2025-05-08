@@ -25,7 +25,11 @@ interface CourseCardProps {
   className?: string;
   animated?: boolean;
   delay?: number;
-  course_type?: string;
+  course_type?: string | null;
+  onClick?: () => void;
+  onEnrollClick?: () => void;
+  isPremium?: boolean;
+  isLocked?: boolean;
 }
 
 export const CourseCard = ({
@@ -46,6 +50,10 @@ export const CourseCard = ({
   animated = true,
   delay = 0,
   course_type,
+  onClick,
+  onEnrollClick,
+  isPremium,
+  isLocked,
 }: CourseCardProps) => {
   const { user } = useAuth();
   const [enrollmentProgress, setEnrollmentProgress] = useState<number | null>(null);
@@ -122,6 +130,7 @@ export const CourseCard = ({
         className
       )}
       style={animated ? { animationDelay: `${delay}ms` } : {}}
+      onClick={onClick}
     >
       <div className="relative aspect-video overflow-hidden">
         <img
