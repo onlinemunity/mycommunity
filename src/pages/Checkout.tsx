@@ -105,9 +105,17 @@ const Checkout = () => {
   }, [user, form]);
 
   // Get membership type from cart
-  const membershipType = items.find(item => 
-    item.type === 'yearly_membership' || item.type === 'lifetime_membership'
-  )?.type.split('_')[0] as 'yearly' | 'lifetime' | undefined;
+  const membershipType = (() => {
+    const item = items.find(item => 
+      item.type === 'premium_membership' || item.type === 'pro_membership'
+    );
+    
+    if (!item) return undefined;
+    
+    if (item.type === 'premium_membership') return 'premium';
+    if (item.type === 'pro_membership') return 'pro';
+    return undefined;
+  })();
 
   const updateUserProfile = async (values: FormValues) => {
     if (!user) return;
@@ -194,7 +202,7 @@ const Checkout = () => {
       // For testing purposes, update the user's profile with the membership type
       // In a real application, this would happen after payment confirmation
       if (membershipType) {
-        const membershipExpiresAt = membershipType === 'yearly' 
+        const membershipExpiresAt = membershipType === 'premium' 
           ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() 
           : null;
 

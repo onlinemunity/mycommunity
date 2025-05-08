@@ -49,8 +49,25 @@ export const OrderHistory = () => {
         return <Badge className="bg-amber-500">Pending</Badge>;
       case 'cancelled':
         return <Badge className="bg-red-500">Cancelled</Badge>;
+      case 'paid':
+        return <Badge className="bg-blue-500">Paid</Badge>;
+      case 'processing':
+        return <Badge className="bg-purple-500">Processing</Badge>;
       default:
         return <Badge>{status}</Badge>;
+    }
+  };
+
+  const formatMembershipType = (type: string | null | undefined) => {
+    switch(type) {
+      case 'premium':
+        return 'Premium Membership';
+      case 'pro':
+        return 'Pro Membership';
+      case 'basic':
+        return 'Basic Membership';
+      default:
+        return 'N/A';
     }
   };
 
@@ -141,8 +158,7 @@ export const OrderHistory = () => {
                 <div className="text-sm">
                   <p className="mb-1">
                     <span className="font-medium">Membership Type:</span>{' '}
-                    {order.membership_type === 'premium' ? 'Premium Membership' : 
-                     order.membership_type === 'pro' ? 'Pro Membership' : 'Basic'}
+                    {formatMembershipType(order.membership_type)}
                   </p>
                   <p className="mb-1">
                     <span className="font-medium">Billing Name:</span> {order.billing_name || 'N/A'}

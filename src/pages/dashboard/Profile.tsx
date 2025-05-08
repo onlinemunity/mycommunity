@@ -96,16 +96,16 @@ const Profile = () => {
 
   // Get the appropriate membership badge styling
   const getMembershipBadge = () => {
-    if (profile?.user_type === 'lifetime') {
+    if (profile?.user_type === 'pro') {
       return (
         <div className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
-          Lifetime
+          Pro
         </div>
       );
-    } else if (profile?.user_type === 'yearly') {
+    } else if (profile?.user_type === 'premium') {
       return (
         <div className="px-2 py-1 rounded-full text-xs bg-emerald-100 text-emerald-800">
-          Yearly
+          Premium
         </div>
       );
     } else {
@@ -119,9 +119,9 @@ const Profile = () => {
 
   // Get membership icon
   const getMembershipIcon = () => {
-    if (profile?.user_type === 'lifetime') {
+    if (profile?.user_type === 'pro') {
       return <Star className="h-4 w-4 text-purple-500 ml-1" />;
-    } else if (profile?.user_type === 'yearly') {
+    } else if (profile?.user_type === 'premium') {
       return <Star className="h-4 w-4 text-emerald-500 ml-1" />;
     }
     return null;
@@ -266,17 +266,17 @@ const Profile = () => {
                   <div>
                     <p className="font-medium">{t('profile.membershipType') || 'Membership Type'}</p>
                     <p className="text-sm text-muted-foreground flex items-center">
-                      {profile?.user_type === 'lifetime' ? (
+                      {profile?.user_type === 'pro' ? (
                         <>
-                          Lifetime Access <Star className="h-4 w-4 text-purple-500 ml-1" />
+                          Pro Membership <Star className="h-4 w-4 text-purple-500 ml-1" />
                         </>
-                      ) : profile?.user_type === 'yearly' ? (
+                      ) : profile?.user_type === 'premium' ? (
                         <>
-                          Yearly Membership <Star className="h-4 w-4 text-emerald-500 ml-1" />
+                          Premium Membership <Star className="h-4 w-4 text-emerald-500 ml-1" />
                         </>
                       ) : 'Basic'}
                     </p>
-                    {profile?.user_type === 'yearly' && profile.membership_expires_at && (
+                    {profile?.user_type === 'premium' && profile.membership_expires_at && (
                       <p className="text-xs text-muted-foreground flex items-center mt-1">
                         <Calendar className="h-3 w-3 mr-1" />
                         Expires: {formatExpirationDate(profile.membership_expires_at)}
@@ -297,7 +297,7 @@ const Profile = () => {
               </CardContent>
             </Card>
 
-            {profile?.user_type === 'basic' && (
+            {(!profile?.user_type || profile?.user_type === 'basic') && (
               <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -327,7 +327,7 @@ const Profile = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      Yearly members get access to live events
+                      Pro members get access to live events
                     </li>
                     <li className="flex items-start text-sm">
                       <div className="rounded-full bg-amber-200 p-1 mr-2 mt-0.5">

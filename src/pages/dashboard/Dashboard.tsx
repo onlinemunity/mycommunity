@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 const Dashboard = () => {
   const { t } = useTranslation();
   const { profile } = useAuth();
-
+  
   const stats = [
     {
       title: t('dashboard.stats.members') || 'Community Members',
@@ -38,6 +38,13 @@ const Dashboard = () => {
       description: t('dashboard.stats.activityDesc') || 'Posts and interactions per day',
     },
   ];
+
+  // Helper to format membership name
+  const formatMembershipName = (userType: string | null | undefined) => {
+    if (userType === 'pro') return 'Pro Membership';
+    if (userType === 'premium') return 'Premium Membership';
+    return 'Basic Plan';
+  };
 
   return (
     <DashboardLayout>
@@ -78,11 +85,9 @@ const Dashboard = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <p className="text-lg font-medium">
-                  {profile?.user_type === 'lifetime' ? 'Lifetime Access' : 
-                   profile?.user_type === 'yearly' ? 'Yearly Membership' : 
-                   'Basic Plan'}
+                  {formatMembershipName(profile?.user_type)}
                 </p>
-                {profile?.user_type === 'yearly' && profile?.membership_expires_at && (
+                {profile?.user_type === 'premium' && profile?.membership_expires_at && (
                   <p className="text-sm text-muted-foreground">
                     Expires: {new Date(profile.membership_expires_at).toLocaleDateString()}
                   </p>

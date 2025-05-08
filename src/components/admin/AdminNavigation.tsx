@@ -2,84 +2,92 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  VideoIcon, 
-  Users, 
+import { Button } from '@/components/ui/button';
+import {
+  LayoutDashboard,
+  Users,
+  BookOpen,
+  FileText,
+  ShoppingCart,
   Settings,
-  ShoppingCart
+  Home
 } from 'lucide-react';
 
-const navItems = [
-  {
-    name: 'Dashboard',
-    path: '/admin',
-    icon: <LayoutDashboard size={18} />,
-    exact: true
-  },
-  {
-    name: 'Courses',
-    path: '/admin/courses',
-    icon: <BookOpen size={18} />,
-    exact: false
-  },
-  {
-    name: 'Lectures',
-    path: '/admin/lectures',
-    icon: <VideoIcon size={18} />,
-    exact: false
-  },
-  {
-    name: 'Users',
-    path: '/admin/users',
-    icon: <Users size={18} />,
-    exact: false
-  },
-  {
-    name: 'Orders',
-    path: '/admin/orders',
-    icon: <ShoppingCart size={18} />,
-    exact: false
-  },
-  {
-    name: 'Settings',
-    path: '/admin/settings',
-    icon: <Settings size={18} />,
-    exact: false
-  },
-];
-
-export const AdminNavigation = () => {
+export function AdminNavigation() {
   const location = useLocation();
-  
-  // Updated isActive check to handle exact matches and sub-paths
-  const isActive = (path: string, exact: boolean) => {
-    if (exact) {
-      return location.pathname === path;
+  const currentPath = location.pathname;
+
+  const isActive = (path: string) => {
+    if (path === '/admin' && currentPath === '/admin') {
+      return true;
     }
-    return location.pathname === path || location.pathname.startsWith(`${path}/`);
+    if (path !== '/admin' && currentPath.startsWith(path)) {
+      return true;
+    }
+    return false;
   };
 
+  const navItems = [
+    {
+      title: 'Dashboard',
+      href: '/admin',
+      icon: <LayoutDashboard className="h-5 w-5" />,
+    },
+    {
+      title: 'Users',
+      href: '/admin/users',
+      icon: <Users className="h-5 w-5" />,
+    },
+    {
+      title: 'Courses',
+      href: '/admin/courses',
+      icon: <BookOpen className="h-5 w-5" />,
+    },
+    {
+      title: 'Lectures',
+      href: '/admin/lectures',
+      icon: <FileText className="h-5 w-5" />,
+    },
+    {
+      title: 'Orders',
+      href: '/admin/orders',
+      icon: <ShoppingCart className="h-5 w-5" />,
+    },
+    {
+      title: 'Settings',
+      href: '/admin/settings',
+      icon: <Settings className="h-5 w-5" />,
+    },
+  ];
+
   return (
-    <nav className="flex overflow-x-auto pb-2 mb-6 border-b">
-      <div className="flex space-x-1">
-        {navItems.map(item => (
+    <div className="group flex flex-col gap-4">
+      <div className="flex items-center gap-2 px-2 mb-2">
+        <Link to="/">
+          <Button variant="ghost" size="icon">
+            <Home className="h-5 w-5" />
+          </Button>
+        </Link>
+        <div>
+          <p className="text-sm font-medium leading-none">Admin Panel</p>
+          <p className="text-xs text-muted-foreground">Manage your application</p>
+        </div>
+      </div>
+      <nav className="grid gap-1 px-2">
+        {navItems.map((item, index) => (
           <Link
-            key={item.path}
-            to={item.path}
+            key={index}
+            to={item.href}
             className={cn(
-              'flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors',
-              isActive(item.path, item.exact)
-                ? 'bg-primary/10 text-primary'
-                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground",
+              isActive(item.href) ? "bg-accent text-accent-foreground" : "transparent"
             )}
           >
             {item.icon}
-            <span>{item.name}</span>
+            {item.title}
           </Link>
         ))}
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
-};
+}

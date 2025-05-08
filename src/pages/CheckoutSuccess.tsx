@@ -40,8 +40,8 @@ const CheckoutSuccess = () => {
           
           if (data) {
             // Ensure status is a valid enum value
-            const validStatus = ['completed', 'pending', 'cancelled'].includes(data.status) 
-              ? data.status as 'completed' | 'pending' | 'cancelled'
+            const validStatus = ['completed', 'pending', 'cancelled', 'processing', 'paid'].includes(data.status) 
+              ? data.status as 'completed' | 'pending' | 'cancelled' | 'processing' | 'paid'
               : 'pending';
             
             // Validate membership_type to ensure it's a valid enum value
