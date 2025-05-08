@@ -99,6 +99,12 @@ const Courses = () => {
       : "beginner";
   };
 
+  // Helper function to safely type cast the course type
+  const safelyTypeCastCourseType = (courseType: string | null): "basic" | "premium" | null => {
+    if (!courseType) return null;
+    return courseType === "premium" ? "premium" : "basic";
+  };
+
   return (
     <Layout>
       <div className="page-transition container py-12 md:py-24">
@@ -204,6 +210,7 @@ const Courses = () => {
                   const safeCourse: Course = {
                     ...course,
                     level: safelyTypeCastCourseLevel(course.level || 'beginner'),
+                    course_type: safelyTypeCastCourseType(course.course_type)
                   };
                   
                   return (
@@ -217,11 +224,13 @@ const Courses = () => {
                       duration={safeCourse.duration}
                       level={safeCourse.level}
                       instructor={safeCourse.instructor}
+                      category={safeCourse.category || ''}
                       href={`/courses/${safeCourse.href}`}
+                      course_type={safeCourse.course_type}
                       onClick={() => navigate(`/courses/${safeCourse.href}`)}
+                      onEnrollClick={() => handleEnrollClick(safeCourse)}
                       isPremium={safeCourse.course_type === 'premium'}
                       isLocked={safeCourse.course_type === 'premium' && !hasPremiumAccess}
-                      onEnrollClick={() => handleEnrollClick(safeCourse)}
                       delayAnimation={true}
                     />
                   );
