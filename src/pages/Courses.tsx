@@ -224,7 +224,7 @@ const Courses = () => {
                       level={safeCourse.level}
                       instructor={safeCourse.instructor}
                       category={safeCourse.category || ''}
-                      href={`/courses/${safeCourse.href}`}
+                      href={`/${safeCourse.href}`}
                       course_type={safeCourse.course_type}
                       onClick={() => navigate(`/${safeCourse.href}`)}
                       onEnrollClick={() => handleEnrollClick(safeCourse)}
